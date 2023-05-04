@@ -1,0 +1,56 @@
+
+###GET login page
+
+GET http://localhost:3001/api/login
+
+###POST to add lens:
+
+POST http://localhost:3001/api/lenses
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4MjI2NDI3NiwiZXhwIjoxNjg0ODU2Mjc2fQ.X3foWvE-f8JaNjqfLsW24p0Ghx5uVDPs49c0RSywgg4 
+
+{
+    "name":"1.5 CYL-4.00",
+    "index":"1.5",
+    "diameter":"(+)65/(-)70",
+    "minusRange":"-6",
+    "plusRange":"+4",
+    "coating":"none",
+    "price":310
+}
+
+### GET all lenses
+GET http://localhost:3001/api/lenses
+
+###PUT to update a lens:
+PUT http://localhost:3001/api/:id
+Content-Type: application/json
+
+{
+"name":"1.5 CYL-3.00",
+"index":"1.6",
+"diameter":"(+)65/(-)70",
+"minusRange":"-6",
+"plusRange":"+4",
+"coating":"blue",
+"price":250
+}
+
+###POST to add user:
+POST http://localhost:3001/api/auth/signup
+Content-Type: application/json
+
+{
+    "username":"lea",
+    "email":"leamor96@gmail.com",
+    "password":"Pricer@1234!!"
+}
+
+###POST to signin user:
+POST http://localhost:3001/api/auth/signin
+Content-Type: application/json
+
+{
+    "email":"leamor96@gmail.com",
+    "password":"Pricer@1234!!"
+}
