@@ -1,26 +1,25 @@
-import { useEffect } from 'react';
-import './App.css';
+import { useContext } from "react";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar"; 
+import AuthContext from "./context/AuthContext"; 
+import About from "./routes/About"; 
+import Home from "./routes/Home"; 
+import Login from "./routes/Login"; 
+import Register from "./routes/Register"; 
 
 function App() {
-  useEffect(()=>{
-    fetch("http://localhost:3001/api/auth/signin", {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body: JSON.stringify({
-        email: "leamor96@gmail.com",
-        password: "Pricer@1234!!",
-      }),
-    })
-    .then((res)=>res.json())
-    .then((json)=>{
-      console.log(json);
-    })
-    .catch((e)=>{
-      console.log(e);   
-    })
-  },[]);
+  const { isLoggedIn } = useContext(AuthContext);
   return (
-    <div className="App"></div>
+    <>
+      <Navbar />
+      <Routes>
+        {isLoggedIn && <Route path="/" element={<Home />} />}
+        <Route path="/about" element={<About />} />
+        {!isLoggedIn && <Route path="/login" element={<Login />} />}
+        {!isLoggedIn && <Route path="/register" element={<Register />} />}
+      </Routes>
+    </>
   );
 }
 
