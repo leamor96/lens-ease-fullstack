@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.brand{
+    font-family: 'Bebas Neue', sans-serif;
+     font-size: 3rem;
+}

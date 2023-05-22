@@ -1,8 +1,8 @@
-import React from 'react'
+import AppInfo from "../components/app-info/AppInfo"
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div><AppInfo/></div>
   )
 }
 
