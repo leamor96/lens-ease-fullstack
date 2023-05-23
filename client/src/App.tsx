@@ -8,6 +8,8 @@ import Home from "./routes/Home";
 import Login from "./routes/Login"; 
 import Register from "./routes/Register"; 
 import AlgorithmPage from "./components/algorithm/AlgorithmPage";
+import SingleVisionForm from "./components/forms/SingleVisionForm";
+import ProgressiveForm from "./components/forms/ProgressiveForm";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -20,6 +22,8 @@ function App() {
         {!isLoggedIn && <Route path="/login" element={<Login />} />}
         {!isLoggedIn && <Route path="/register" element={<Register />} />}
         <Route path="/algorithm" element={<AlgorithmPage/>}/>
+        <Route path="/algorithm/single" element={<SingleVisionForm/>}/>
+        <Route path="/algorithm/Progressive" element={<ProgressiveForm/>}/>
       </Routes>
     </>
   );

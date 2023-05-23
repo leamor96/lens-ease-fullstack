@@ -11,7 +11,7 @@ const AppInfo = () => {
           This app helps you calculate the appropriate lens options based on
           your patient's prescription and measurements.
         </p>
-        <NavLink to="/algorithm" className="btn btn-warning">
+        <NavLink to="/algorithm" className="btn btn-warning p-3 btn-start">
           Start Calculating
         </NavLink>
       </div>

@@ -22,3 +22,14 @@ export type LoginFormType = {
   email: string;
   password: string;
 };
+
+
+export interface Lens {
+  name: string;
+  index: string;
+  diameter: string;
+  minusRange: string;
+  plusRange: string;
+  coating: "none" | "anti-reflective" | "scratch-resistant";
+  price: number;
+}

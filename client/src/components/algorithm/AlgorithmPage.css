@@ -1,6 +1,10 @@
  .btn-select{
    width: 15rem;
   }
+  .btn-select:hover{
+    color: white !important;
+    background-color:black !important;
+  }
 
 
 

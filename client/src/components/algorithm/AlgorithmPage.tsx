@@ -1,6 +1,8 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import "./AlgorithmPage.css"
+import { NavLink, Route, Routes } from "react-router-dom";
+import SingleVisionForm from "../forms/SingleVisionForm";
+import ProgressiveForm from "../forms/ProgressiveForm";
+import "./AlgorithmPage.css";
 
 const AlgorithmPage = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -8,31 +10,33 @@ const AlgorithmPage = () => {
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
+
   return (
     <div className="algorithm-page">
       <div className="select-options bg-dark d-flex justify-content-center align-items-center vh-100">
-        <Button
-          variant={selectedOption === "single" ? "light" : "outline-dark"}
+        <NavLink
+          to="/algorithm/single"
+          className="btn btn-warning btn-select p-3 m-3"
           onClick={() => handleOptionSelect("single")}
-          className="btn-warning btn-select p-3 m-3"
         >
           <h2> Single Vision</h2>
-        </Button>
-        <Button
-          variant={selectedOption === "progressive" ? "light" : "outline-dark"}
+        </NavLink>
+        <NavLink
+          to="/algorithm/progressive"
+          className="btn btn-warning p-3 m-3 btn-select"
           onClick={() => handleOptionSelect("progressive")}
-          className="btn-warning p-3 m-3 btn-select"
         >
           <h2> Progressive</h2>
-        </Button>
+        </NavLink>
       </div>
 
       {/* Render the form component based on the selected option */}
-      {selectedOption && (
-        <div className="form-container">
-          {/* Add your form components here */}
-        </div>
-      )}
+      <div className="form-container">
+        <Routes>
+          <Route path="/algorithm/single" element={<SingleVisionForm />} />
+          <Route path="/algorithm/progressive" element={<ProgressiveForm />} />
+        </Routes>
+      </div>
     </div>
   );
 };

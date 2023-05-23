@@ -24,7 +24,7 @@ const Navabar = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/" className="brand">
+          <Navbar.Brand className="brand">
             PRICER
             <GiMicroscopeLens className="logo" />
           </Navbar.Brand>
