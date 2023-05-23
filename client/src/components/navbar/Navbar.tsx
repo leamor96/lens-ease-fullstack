@@ -24,10 +24,11 @@ const Navabar = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home" className="brand">
+          <Navbar.Brand href="/" className="brand">
             PRICER
             <GiMicroscopeLens className="logo" />
           </Navbar.Brand>
+          <div className="spacer"></div>
           <NavLink to="/" className="nav-link text-light">
             Home
           </NavLink>
@@ -47,7 +48,7 @@ const Navabar = () => {
             </NavLink>
           )}
           {isLoggedIn && (
-            <button onClick={handleLogout} className="btn btn-warning">
+            <button onClick={handleLogout} className="btn btn-warning logout">
               Logout
             </button>
           )}

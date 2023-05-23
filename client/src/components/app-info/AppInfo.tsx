@@ -1,15 +1,19 @@
-import { useState } from "react";
+import "./AppInfo.css";
+import { NavLink } from "react-router-dom";
 
 const AppInfo = () => {
+
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-dark text-light">
-      <div className="container text-center">
+    <div className="text-light bg-dark d-flex justify-content-center align-items-center vh-100">
+      <div className="text-center">
         <h1>Welcome to PRICER</h1>
         <p>
           This app helps you calculate the appropriate lens options based on
           your patient's prescription and measurements.
         </p>
-        <button className="btn btn-warning">Start Calculating</button>
+        <NavLink to="/algorithm" className="btn btn-warning">
+          Start Calculating
+        </NavLink>
       </div>
     </div>
   );

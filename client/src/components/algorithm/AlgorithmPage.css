@@ -1,0 +1,11 @@
+ .btn-select{
+   width: 15rem;
+  }
+
+
+
+@media (max-width: 768px) {
+  .select-options {
+    flex-direction: column;
+  }
+}

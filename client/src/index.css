@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;500&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,4 +15,14 @@ code {
 }
 html {
   background-color: black;
+  
+}
+
+h1,h2{
+ font-family: 'Roboto Slab', serif;
+}
+
+*{
+  font-family: 'Roboto Slab', serif;
+  font-weight: 100;
 }
