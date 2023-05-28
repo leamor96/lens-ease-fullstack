@@ -54,3 +54,14 @@ Content-Type: application/json
     "email":"leamor96@gmail.com",
     "password":"Pricer@1234!!"
 }
+
+###POST to submit form and calculate lens options:
+POST http://localhost:3001/api/submit-form
+Content-Type: application/json
+
+{
+"sphRight": -2.5,
+"cylRight": -1.75,
+"sphLeft": -1.75,
+"cylLeft": -2.25
+}

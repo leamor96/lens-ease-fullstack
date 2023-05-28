@@ -21,7 +21,7 @@ function App() {
         <Route path="/about" element={<About />} />
         {!isLoggedIn && <Route path="/login" element={<Login />} />}
         {!isLoggedIn && <Route path="/register" element={<Register />} />}
-        <Route path="/algorithm" element={<AlgorithmPage/>}/>
+        <Route path="/algorithm/*" element={<AlgorithmPage/>}/>
         <Route path="/algorithm/single" element={<SingleVisionForm/>}/>
         <Route path="/algorithm/Progressive" element={<ProgressiveForm/>}/>
       </Routes>

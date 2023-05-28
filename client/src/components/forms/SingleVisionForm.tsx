@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { submitFormData} from "../../features/lenses/lensSlice"; 
+import { AppDispatch } from "../../app/store";
 
 const SingleVisionForm = () => {
+  const dispatch= useDispatch<AppDispatch>();
+
   const [pdBothEyes, setPdBothEyes] = useState("60");
   const [pdLeftEye, setPdLeftEye] = useState("30");
   const [pdRightEye, setPdRightEye] = useState("30");
@@ -26,9 +31,16 @@ const SingleVisionForm = () => {
     );
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    dispatch(submitFormData(formData));
+  };
+
   return (
     <div className="p-5 bg-dark text-light">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <div className="col">
             <h4>Right Eye (OD)</h4>
