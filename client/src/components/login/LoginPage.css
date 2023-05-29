@@ -1,0 +1,43 @@
+.login-page {
+  background-color: #343a40;
+  color: #fff;
+  display: flex;
+    flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  width: 20rem;
+  padding: 1rem;
+  background-color: #343a40;
+}
+
+.form-label {
+  color: #fff;
+}
+
+.form-control {
+  background-color: #212529;
+  color: #fff;
+}
+
+.alert-danger {
+  color: #dc3545;
+}
+
+.btn-primary {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.login-error {
+  margin-bottom: 1.25rem; 
+}
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem; 
+}
