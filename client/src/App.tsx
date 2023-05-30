@@ -10,6 +10,7 @@ import Register from "./routes/Register";
 import AlgorithmPage from "./components/algorithm/AlgorithmPage";
 import SingleVisionForm from "./components/forms/SingleVisionForm";
 import ProgressiveForm from "./components/forms/ProgressiveForm";
+import LensOptionsPage from "./components/lenses/LensOptionsPage";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -17,13 +18,14 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        {isLoggedIn && <Route path="/" element={<Home />} />}
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         {!isLoggedIn && <Route path="/login" element={<Login />} />}
         {!isLoggedIn && <Route path="/register" element={<Register />} />}
-        <Route path="/algorithm/*" element={<AlgorithmPage/>}/>
-        <Route path="/algorithm/single" element={<SingleVisionForm/>}/>
-        <Route path="/algorithm/Progressive" element={<ProgressiveForm/>}/>
+        <Route path="/algorithm/*" element={<AlgorithmPage />} />
+        <Route path="/algorithm/single" element={<SingleVisionForm />} />
+        <Route path="/algorithm/Progressive" element={<ProgressiveForm />} />
+        <Route path="/lens-options" element={<LensOptionsPage/>} />
       </Routes>
     </>
   );

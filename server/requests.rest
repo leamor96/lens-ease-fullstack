@@ -7,16 +7,16 @@ GET http://localhost:3001/api/login
 
 POST http://localhost:3001/api/lenses
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4MjI2NDI3NiwiZXhwIjoxNjg0ODU2Mjc2fQ.X3foWvE-f8JaNjqfLsW24p0Ghx5uVDPs49c0RSywgg4 
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTQ4MTc5NSwiZXhwIjoxNjg4MDczNzk1fQ.3abPLNo4bTfv4bT7rDxY7e73Aovwo8-70cvGvQe457Y
 
 {
-    "name":"1.5 CYL-4.00",
+    "name":"1.5 FLAT55 CYL-2.00",
     "index":"1.5",
-    "diameter":"(+)65/(-)70",
-    "minusRange":"-6",
-    "plusRange":"+4",
+    "diameter":"(+)55",
+    "minusRange":"0",
+    "plusRange":"+1 +8",
     "coating":"none",
-    "price":310
+    "price":250
 }
 
 ### GET all lenses
@@ -54,6 +54,7 @@ Content-Type: application/json
     "email":"leamor96@gmail.com",
     "password":"Pricer@1234!!"
 }
+
 
 ###POST to submit form and calculate lens options:
 POST http://localhost:3001/api/submit-form

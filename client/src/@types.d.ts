@@ -25,6 +25,7 @@ export type LoginFormType = {
 
 
 export interface Lens {
+  _id:string;
   name: string;
   index: string;
   diameter: string;

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ThunkDispatch, ThunkAction } from "@reduxjs/toolkit";
 
 import { AnyAction } from "redux";
-import { RootState} from "../../app/store";
+import { RootState } from "../../app/store";
 import {
   getLensData,
   submitFormDataToServer,
@@ -39,12 +39,16 @@ const lensSlice = createSlice({
       state.loading = false;
       state.error = error as string;
     },
+    updateLensData(state, action: PayloadAction<Lens[]>) {
+      state.data = action.payload;
+    },
   },
 });
 export const {
   fetchLensDataStart,
   fetchLensDataSuccess,
   fetchLensDataFailure,
+  updateLensData,
 } = lensSlice.actions;
 
 // Thunk action to fetch the lens data
@@ -62,11 +66,9 @@ export const fetchLensData =
   };
 
 export const submitFormData =
-  (formData: FormData): ThunkAction<
-  Promise<void>,
-  RootState,
-  unknown,
-  AnyAction>=>
+  (
+    formData: FormData
+  ): ThunkAction<Promise<Lens[]>, RootState, unknown, AnyAction> =>
   async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
     try {
       dispatch(fetchLensDataStart());
@@ -74,6 +76,7 @@ export const submitFormData =
       const response = await getLensData();
       const lensData = response.data;
       dispatch(fetchLensDataSuccess(lensData));
+      return lensData;
     } catch (error: any) {
       dispatch(fetchLensDataFailure(error.message));
     }

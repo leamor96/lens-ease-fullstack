@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { submitFormData} from "../../features/lenses/lensSlice"; 
+import { submitFormData, updateLensData,fetchLensData} from "../../features/lenses/lensSlice"; 
 import { AppDispatch } from "../../app/store";
+import { useNavigate } from "react-router-dom";
 
 const SingleVisionForm = () => {
-  const dispatch= useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  // Fetch lens data from the server on component mount
+  useEffect(() => {
+    dispatch(fetchLensData());
+  }, [dispatch]);
 
   const [pdBothEyes, setPdBothEyes] = useState("60");
   const [pdLeftEye, setPdLeftEye] = useState("30");
@@ -35,8 +42,15 @@ const SingleVisionForm = () => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
-    dispatch(submitFormData(formData));
+    dispatch(submitFormData(formData)).then((lensData) => {
+      // Update the lens data in the Redux store
+      dispatch(updateLensData(lensData));
+
+      // Navigate to LensOptionsPage
+      navigate("/lens-options");
+    });
   };
+
 
   return (
     <div className="p-5 bg-dark text-light">
