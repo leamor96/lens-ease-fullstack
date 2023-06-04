@@ -38,10 +38,12 @@ router.post("/",validateToken,isAdmin, async (req, res) => {
     // check if a lens with the same properties already exists
     const existingLens = await Lens.findOne({
       name: newLens.name,
+      category: newLens.category,
       index: newLens.index,
       diameter: newLens.diameter,
-      minusRange: newLens.minusRange,
-      plusRange: newLens.plusRange,
+      "sphRange.minus": newLens.sphRange.minus,
+      "sphRange.plus": newLens.sphRange.plus,
+      cylMax: newLens.cylMax,
       coating: newLens.coating,
       price: newLens.price,
     });

@@ -34,3 +34,14 @@ export interface Lens {
   coating: "none" | "anti-reflective" | "scratch-resistant";
   price: number;
 }
+
+export interface LensFormData {
+  sphRight: number;
+  cylRight: number;
+  sphLeft: number;
+  cylLeft: number;
+}
+export interface LensOptions {
+  rightEyeOptions: Lens[];
+  leftEyeOptions: Lens[];
+}

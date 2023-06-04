@@ -1,23 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ThunkDispatch, ThunkAction } from "@reduxjs/toolkit";
-
 import { AnyAction } from "redux";
 import { RootState } from "../../app/store";
-import {
-  getLensData,
-  submitFormDataToServer,
-} from "../../services/lens.service";
-import { Lens } from "../../@types";
+import { submitFormDataToServer } from "../../services/lens.service";
+import { LensFormData, LensOptions } from "../../@types";
+import axios from "axios";
 
 // Define the initial state
 interface LensState {
-  data: Lens[];
+  lensOptions: LensOptions;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: LensState = {
-  data: [],
+  lensOptions: {
+    rightEyeOptions: [],
+    leftEyeOptions: [],
+  },
   loading: false,
   error: null,
 };
@@ -30,60 +30,64 @@ const lensSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    fetchLensDataSuccess(state, action: PayloadAction<Lens[]>) {
-      state.data = action.payload;
+    fetchLensDataSuccess(state, action: PayloadAction<LensOptions>) {
+      state.lensOptions = action.payload;
       state.loading = false;
+      state.error=null;
     },
     fetchLensDataFailure(state, action: PayloadAction<string>) {
       const error = action.payload || "Unknown error occurred";
       state.loading = false;
       state.error = error as string;
     },
-    updateLensData(state, action: PayloadAction<Lens[]>) {
-      state.data = action.payload;
-    },
   },
 });
+
 export const {
   fetchLensDataStart,
   fetchLensDataSuccess,
   fetchLensDataFailure,
-  updateLensData,
 } = lensSlice.actions;
 
 // Thunk action to fetch the lens data
 export const fetchLensData =
   (): ThunkAction<Promise<void>, RootState, unknown, AnyAction> =>
   async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
-    try {
-      dispatch(fetchLensDataStart());
-      const response = await getLensData();
-      const lensData = response.data; // Extract the data from the AxiosResponse object
-      dispatch(fetchLensDataSuccess(lensData));
-    } catch (error: any) {
-      dispatch(fetchLensDataFailure(error.message));
-    }
+  try {
+    dispatch(fetchLensDataStart());
+    const response = await axios.post(
+      "http://localhost:3001/api/submit-form",
+      
+    );
+    const lensOptions = response.data;
+    dispatch(fetchLensDataSuccess(lensOptions));
+  } catch (error: any) {
+    dispatch(fetchLensDataFailure(error.message));
+  }
   };
 
+// Thunk action to submit the form data
 export const submitFormData =
   (
-    formData: FormData
-  ): ThunkAction<Promise<Lens[]>, RootState, unknown, AnyAction> =>
+    formData: LensFormData
+  ): ThunkAction<Promise<void>, RootState, unknown, AnyAction> =>
   async (dispatch: ThunkDispatch<RootState, unknown, AnyAction>) => {
     try {
       dispatch(fetchLensDataStart());
       await submitFormDataToServer(formData);
-      const response = await getLensData();
-      const lensData = response.data;
-      dispatch(fetchLensDataSuccess(lensData));
-      return lensData;
+       const lensOptions = {
+         rightEyeOptions: [],
+         leftEyeOptions: [],
+       };
+      dispatch(fetchLensDataSuccess(lensOptions));
     } catch (error: any) {
       dispatch(fetchLensDataFailure(error.message));
+      throw error; // Rethrow the error to handle it in the component
     }
   };
 
 // Selectors to access the lens data from the Redux store
-export const selectLensData = (state: RootState) => state.lens.data;
+export const selectLensOptions = (state: RootState) => state.lens.lensOptions;
 export const selectLensLoading = (state: RootState) => state.lens.loading;
 export const selectLensError = (state: RootState) => state.lens.error;
 

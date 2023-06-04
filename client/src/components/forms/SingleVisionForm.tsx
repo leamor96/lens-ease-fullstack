@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { submitFormData, updateLensData,fetchLensData} from "../../features/lenses/lensSlice"; 
+import {
+  submitFormData,
+  fetchLensData,
+} from "../../features/lenses/lensSlice";
 import { AppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
+import { LensFormData } from "../../@types"; 
 
 const SingleVisionForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,18 +42,28 @@ const SingleVisionForm = () => {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    dispatch(submitFormData(formData)).then((lensData) => {
-      // Update the lens data in the Redux store
-      dispatch(updateLensData(lensData));
-
-      // Navigate to LensOptionsPage
-      navigate("/lens-options");
-    });
+  const target = e.target as typeof e.target & {
+    "sph-right": { value: string };
+    "cyl-right": { value: string };
+    "sph-left": { value: string };
+    "cyl-left": { value: string };
   };
+
+  const formData: LensFormData = {
+    sphRight: parseFloat(target["sph-right"].value),
+    cylRight: parseFloat(target["cyl-right"].value),
+    sphLeft: parseFloat(target["sph-left"].value),
+    cylLeft: parseFloat(target["cyl-left"].value),
+  };
+
+  dispatch(submitFormData(formData)).then(() => {
+    navigate("/lens-options");
+  });
+};
+
 
 
   return (
@@ -74,6 +88,7 @@ const SingleVisionForm = () => {
               defaultValue="0"
               className="form-control"
               id="sph-right"
+              name="sph-right"
             />
           </div>
           <div className="col">
@@ -88,6 +103,7 @@ const SingleVisionForm = () => {
               defaultValue="0"
               className="form-control"
               id="cyl-right"
+              name="cyl-right"
             />
           </div>
           <div className="col">
@@ -150,6 +166,7 @@ const SingleVisionForm = () => {
               defaultValue="0"
               className="form-control"
               id="sph-left"
+              name="sph-left"
             />
           </div>
           <div className="col">
@@ -164,6 +181,7 @@ const SingleVisionForm = () => {
               defaultValue="0"
               className="form-control"
               id="cyl-left"
+              name="cyl-left"
             />
           </div>
           <div className="col">
@@ -267,5 +285,4 @@ const SingleVisionForm = () => {
     </div>
   );
 };
-
 export default SingleVisionForm;

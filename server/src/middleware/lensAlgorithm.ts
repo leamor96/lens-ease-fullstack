@@ -1,25 +1,38 @@
-export const calculateLensOptions = (formData) => {
+import { Lens } from "../db/models/lens.js";
+
+export const calculateLensOptions = async (formData) => {
   const sphRight = parseFloat(formData.sphRight);
   const cylRight = parseFloat(formData.cylRight);
   const sphLeft = parseFloat(formData.sphLeft);
   const cylLeft = parseFloat(formData.cylLeft);
 
-  const rightEyeOptions = {
-    sph: sphRight,
-    cyl: cylRight,
-    // Additional calculated properties based on the right eye data
-  };
+  try {
+    const rightEyeLenses = await Lens.find({
+      "sphRange.minus": { $lte: sphRight },
+      "sphRange.plus": { $gte: sphRight },
+      cylMax: { $lte: cylRight },
+    }).sort({ price: 1 });
 
-  const leftEyeOptions = {
-    sph: sphLeft,
-    cyl: cylLeft,
-    // Additional calculated properties based on the left eye data
-  };
+    const leftEyeLenses = await Lens.find({
+      "sphRange.minus": { $lte: sphLeft },
+      "sphRange.plus": { $gte: sphLeft },
+      cylMax: { $lte: cylLeft },
+    }).sort({ price: 1 });
 
-  const lensOptions = {
-    rightEye: rightEyeOptions,
-    leftEye: leftEyeOptions,
-  };
+    if (rightEyeLenses.length === 0 && leftEyeLenses.length === 0) {
+      // No matching lenses found for both eyes
+      return {
+        rightEyeOptions: [],
+        leftEyeOptions: [],
+      };
+    }
 
-  return lensOptions;
+    return {
+      rightEyeOptions: rightEyeLenses,
+      leftEyeOptions: leftEyeLenses,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to fetch lens options");
+  }
 };

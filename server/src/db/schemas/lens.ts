@@ -6,21 +6,44 @@ const lensSchema = new Schema({
     type: String,
     required: true,
   },
-  index: {
+  category: {
     type: String,
+    required: true,
+  },
+  index: {
+    type: Number,
     required: true,
   },
   diameter: {
     type: String,
     required: true,
   },
-  minusRange: {
-    type: String,
-    required: true,
+  sphRange: {
+    minus: {
+      type: [Number],
+      default: null,
+      validate: {
+        validator: function (range) {
+          return range.length === 1 || range.length === 2;
+        },
+        message: "Invalid sphRange for minus. Should have 1 or 2 values.",
+      },
+    },
+    plus: {
+      type: [Number],
+      default: null,
+      validate: {
+        validator: function (range) {
+          return range.length === 1 || range.length === 2;
+        },
+        message: "Invalid sphRange for plus. Should have 1 or 2 values.",
+      },
+    },
   },
-  plusRange: {
-    type: String,
-    required: true,
+
+  cylMax: {
+    type: Number,
+    required: false,
   },
   coating: {
     type: String,
@@ -33,4 +56,4 @@ const lensSchema = new Schema({
   },
 });
 
-export {lensSchema};
+export { lensSchema };
