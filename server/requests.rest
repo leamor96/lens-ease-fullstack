@@ -1,7 +1,4 @@
 
-###GET login page
-
-GET http://localhost:3001/api/login
 
 ###POST to add lens:
 

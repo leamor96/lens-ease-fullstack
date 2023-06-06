@@ -87,7 +87,7 @@ export const submitFormData =
   };
 
 // Selectors to access the lens data from the Redux store
-export const selectLensOptions = (state: RootState) => state.lens.lensOptions;
+export const selectLensOptions = (state: RootState):LensOptions => state.lens.lensOptions;
 export const selectLensLoading = (state: RootState) => state.lens.loading;
 export const selectLensError = (state: RootState) => state.lens.error;
 

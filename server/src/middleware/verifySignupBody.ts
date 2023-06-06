@@ -8,9 +8,10 @@ const validateSignUp: RequestHandler = (req, res, next) => {
   const { error } = userSignUpSchema.validate(body);
 
   if (error) {
+    const validationErrors = error.details.map((ed) => ed.message);
     return res.status(400).json({
       message: "Validation Failed",
-      errors: error.details.map((ed) => ed.message),
+      errors: validationErrors,
     });
   }
 

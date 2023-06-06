@@ -25,12 +25,16 @@ export type LoginFormType = {
 
 
 export interface Lens {
-  _id:string;
+  _id: string;
   name: string;
-  index: string;
+  category: string;
+  index: number;
   diameter: string;
-  minusRange: string;
-  plusRange: string;
+  sphRange: {
+    minus: number[] | null;
+    plus: number[] | null;
+  };
+  cylMax: number | null;
   coating: "none" | "anti-reflective" | "scratch-resistant";
   price: number;
 }

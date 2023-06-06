@@ -30,10 +30,11 @@ const Card: React.FC<CardProps> = ({ lens, isFavorite }) => {
         )}
       </div>
       <div className="card-body">
+        <p>{lens.name}</p>
         <p>Index: {lens.index}</p>
         <p>Diameter: {lens.diameter}</p>
-        <p>Minus Range: {lens.minusRange}</p>
-        <p>Plus Range: {lens.plusRange}</p>
+        <p>Minus Range: {lens.sphRange.minus}</p>
+        <p>Plus Range: {lens.sphRange.plus}</p>
         <p>Coating: {lens.coating}</p>
         <p>Price: ₪{lens.price}</p>
       </div>

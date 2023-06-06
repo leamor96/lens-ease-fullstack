@@ -23,9 +23,18 @@ const RegisterPage = () => {
 
   //Validations:
   const validationSchema = Yup.object({
-    username: Yup.string().min(3, "Name is too short").required(),
-    email: Yup.string().email("Must be a valid email").required(),
-    password: Yup.string().min(3, "Password is too short").required(),
+    username: Yup.string()
+      .min(3, "Name must be at least 2 characters long and a maximum of 30.")
+      .required(),
+    email: Yup.string()
+      .email("Must be a valid email (e.g., example@example.com).")
+      .required(),
+    password: Yup.string()
+      .min(
+        3,
+        "Password needs to be 8-30 characters,at least one lowercase letter (a-z),at least one uppercase letter (A-Z),at least one digit (0-9),and at least one special character from #$@!%&*?"
+      )
+      .required(),
   });
 
   //submit function:if all is valid=> this method is invoked
@@ -62,7 +71,7 @@ const RegisterPage = () => {
   return (
     <div className="register-page">
       <div className="register-error">
-        {errMessage && <div>${errMessage}</div>}
+        {errMessage && <div>{errMessage}</div>}
       </div>
       <div className="loader-container">
         {isLoading && (
@@ -94,7 +103,7 @@ const RegisterPage = () => {
             <ErrorMessage
               name="username"
               component="div"
-              className="alert alert-danger"
+              className="alert alert-warning"
             />
           </div>
           <br />
@@ -111,7 +120,7 @@ const RegisterPage = () => {
             <ErrorMessage
               name="email"
               component="div"
-              className="alert alert-danger"
+              className="alert alert-warning"
             />
           </div>
           <br />
@@ -128,7 +137,7 @@ const RegisterPage = () => {
             <ErrorMessage
               name="password"
               component="div"
-              className="alert alert-danger"
+              className="alert alert-warning"
             />
           </div>
           <br />

@@ -32,11 +32,9 @@ const Navabar = () => {
           <NavLink to="/" className="nav-link text-light">
             Home
           </NavLink>
-          {isLoggedIn && (
             <NavLink to="/about" className="nav-link text-light">
               About
             </NavLink>
-          )}
           {!isLoggedIn && (
             <NavLink to="/register" className="nav-link text-light">
               Register

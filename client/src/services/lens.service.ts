@@ -12,6 +12,8 @@ const submitFormDataToServer = async (formData: LensFormData) => {
   };
 
   try {
+    console.log(requestBody);
+    
     await axios.post(baseUrl, requestBody);
   } catch (error) {
     throw new Error("Failed to submit form data to the server.");

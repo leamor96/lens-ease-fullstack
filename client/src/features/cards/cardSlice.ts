@@ -4,11 +4,15 @@ import axios from "axios";
 export interface LensData {
   _id: string;
   name: string;
-  index: string;
+  category: string;
+  index: number;
   diameter: string;
-  minusRange: string;
-  plusRange: string;
-  coating: string;
+  sphRange: {
+    minus: number[] | null;
+    plus: number[] | null;
+  };
+  cylMax: number | null;
+  coating: "none" | "anti-reflective" | "scratch-resistant";
   price: number;
 }
 

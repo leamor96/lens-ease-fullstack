@@ -57,7 +57,9 @@ const LoginPage = () => {
      }
   return (
     <div className="login-page">
- <div className="login-error">{errMessage && <div>${errMessage}</div>}</div>
+      <div className="login-error">
+        {errMessage && <div>{errMessage}</div>}
+      </div>
       <div className="loader-container">
         {isLoading && (
           <ColorRing
@@ -88,7 +90,7 @@ const LoginPage = () => {
             <ErrorMessage
               name="email"
               component="div"
-              className="alert alert-danger"
+              className="alert alert-warning"
             />
           </div>
           <br />
@@ -105,7 +107,7 @@ const LoginPage = () => {
             <ErrorMessage
               name="password"
               component="div"
-              className="alert alert-danger"
+              className="alert alert-warning"
             />
           </div>
           <br />

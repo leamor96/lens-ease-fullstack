@@ -7,15 +7,17 @@ import {
 import { AppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { LensFormData } from "../../@types"; 
+import { useMediaQuery } from "react-responsive";
+
 
 const SingleVisionForm = () => {
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   // Fetch lens data from the server on component mount
   useEffect(() => {
     // No need to fetch the lens data on component mount
-    // dispatch(fetchLensData());
   }, [dispatch]);
 
   const [pdBothEyes, setPdBothEyes] = useState("60");
@@ -106,7 +108,6 @@ const SingleVisionForm = () => {
             <h4>Right Eye (OD)</h4>
           </div>
         </div>
-
         <div className="row mb-3">
           <div className="col">
             <label htmlFor="sph-right" className="form-label">
@@ -152,6 +153,11 @@ const SingleVisionForm = () => {
               id="axis-right"
             />
           </div>
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="prism-right" className="form-label">
               Prism
@@ -178,13 +184,16 @@ const SingleVisionForm = () => {
             </select>
           </div>
         </div>
-
+        {isMobile && (
+          <div>
+            <br />
+          </div>
+        )}
         <div className="row mb-3">
           <div className="col">
             <h4>Left Eye (OS)</h4>
           </div>
         </div>
-
         <div className="row mb-3">
           <div className="col">
             <label htmlFor="sph-left" className="form-label">
@@ -230,6 +239,11 @@ const SingleVisionForm = () => {
               id="axis-left"
             />
           </div>
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="prism-left" className="form-label">
               Prism
@@ -256,7 +270,11 @@ const SingleVisionForm = () => {
             </select>
           </div>
         </div>
-
+        {isMobile && (
+          <div>
+            <br />
+          </div>
+        )}
         <div className="row mb-3">
           <div className="col">
             <h4>Pupil Distance (PD)</h4>

@@ -1,25 +1,13 @@
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import AboutUs from "../components/about-us/AboutUs";
 
 const About = () => {
-  const { username } = useContext(AuthContext) ?? "Guest";
+ 
 
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/" />;
-  }
-
-  fetch("http://localhost:3001/api/:id", {
-    headers: { Authorization: token },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-    });
-
-  return <div>Hello {username}</div>;
+  return (
+    <div>
+      <AboutUs />
+    </div>
+  ); 
 };
 
 export default About;

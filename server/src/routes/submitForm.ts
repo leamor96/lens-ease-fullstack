@@ -1,10 +1,11 @@
+import { Request, Response } from "express";
 import { Router } from "express";
 import { calculateLensOptions } from "../middleware/lensAlgorithm.js";
 
 const router = Router();
 
 // POST request handler
-router.post("/", async (req, res) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const formData = req.body;
 
@@ -13,12 +14,10 @@ router.post("/", async (req, res) => {
 
     // Return the lens options to the client
     res.status(200).json({
-      formData: formData,
       rightEyeOptions: lensOptions.rightEyeOptions,
       leftEyeOptions: lensOptions.leftEyeOptions,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).send("Server error");
   }
 });

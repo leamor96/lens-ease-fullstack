@@ -6,23 +6,21 @@ export const calculateLensOptions = async (formData) => {
   const sphLeft = parseFloat(formData.sphLeft);
   const cylLeft = parseFloat(formData.cylLeft);
 
-  // Validate cylRight and cylLeft values
-  if (isNaN(cylRight) || isNaN(cylLeft)) {
-    throw new Error("Invalid cylinder value");
-  }
-
   try {
-    const rightEyeLenses = await Lens.find({
+    const queryRight = {
       "sphRange.minus": { $lte: sphRight },
       "sphRange.plus": { $gte: sphRight },
       cylMax: { $lte: cylRight },
-    }).sort({ price: 1 });
+    };
 
-    const leftEyeLenses = await Lens.find({
+    const queryLeft = {
       "sphRange.minus": { $lte: sphLeft },
       "sphRange.plus": { $gte: sphLeft },
       cylMax: { $lte: cylLeft },
-    }).sort({ price: 1 });
+    };
+
+    const rightEyeLenses = await Lens.find(queryRight).sort({ price: 1 });
+    const leftEyeLenses = await Lens.find(queryLeft).sort({ price: 1 });
 
     if (rightEyeLenses.length === 0 && leftEyeLenses.length === 0) {
       // No matching lenses found for both eyes
