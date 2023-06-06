@@ -35,7 +35,7 @@ const Card: React.FC<CardProps> = ({ lens, isFavorite }) => {
         <p>Minus Range: {lens.minusRange}</p>
         <p>Plus Range: {lens.plusRange}</p>
         <p>Coating: {lens.coating}</p>
-        <p>Price: ${lens.price}</p>
+        <p>Price: ₪{lens.price}</p>
       </div>
     </div>
   );

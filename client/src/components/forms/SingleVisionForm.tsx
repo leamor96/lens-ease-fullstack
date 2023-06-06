@@ -14,55 +14,87 @@ const SingleVisionForm = () => {
 
   // Fetch lens data from the server on component mount
   useEffect(() => {
-    dispatch(fetchLensData());
+    // No need to fetch the lens data on component mount
+    // dispatch(fetchLensData());
   }, [dispatch]);
 
   const [pdBothEyes, setPdBothEyes] = useState("60");
   const [pdLeftEye, setPdLeftEye] = useState("30");
   const [pdRightEye, setPdRightEye] = useState("30");
 
+  // Validation function to check if a value is a valid number
+  const isValidNumber = (value: any) => {
+    return !Number.isNaN(parseFloat(value));
+  };
+
   const handlePdBothEyesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pdValue = e.target.value;
-    setPdBothEyes(pdValue);
-    setPdLeftEye((parseInt(pdValue, 10) / 2).toString());
-    setPdRightEye((parseInt(pdValue, 10) / 2).toString());
+    if (isValidNumber(pdValue)) {
+      setPdBothEyes(pdValue);
+      setPdLeftEye((parseInt(pdValue, 10) / 2).toString());
+      setPdRightEye((parseInt(pdValue, 10) / 2).toString());
+    }
   };
 
   const handlePdRightEyeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pdValue = e.target.value;
-    setPdRightEye(pdValue);
-    setPdBothEyes((parseInt(pdValue, 10) + parseInt(pdLeftEye, 10)).toString());
+    if (isValidNumber(pdValue)) {
+      setPdRightEye(pdValue);
+      setPdBothEyes(
+        (parseInt(pdValue, 10) + parseInt(pdLeftEye, 10)).toString()
+      );
+    }
   };
 
   const handlePdLeftEyeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pdValue = e.target.value;
-    setPdLeftEye(pdValue);
-    setPdBothEyes(
-      (parseInt(pdValue, 10) + parseInt(pdRightEye, 10)).toString()
-    );
+    if (isValidNumber(pdValue)) {
+      setPdLeftEye(pdValue);
+      setPdBothEyes(
+        (parseInt(pdValue, 10) + parseInt(pdRightEye, 10)).toString()
+      );
+    }
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-  const target = e.target as typeof e.target & {
-    "sph-right": { value: string };
-    "cyl-right": { value: string };
-    "sph-left": { value: string };
-    "cyl-left": { value: string };
-  };
+   // Validate form input before submitting
+   const target = e.target as typeof e.target & {
+     "sph-right": { value: string };
+     "cyl-right": { value: string };
+     "sph-left": { value: string };
+     "cyl-left": { value: string };
+   };
 
-  const formData: LensFormData = {
-    sphRight: parseFloat(target["sph-right"].value),
-    cylRight: parseFloat(target["cyl-right"].value),
-    sphLeft: parseFloat(target["sph-left"].value),
-    cylLeft: parseFloat(target["cyl-left"].value),
-  };
+   const cylRightValue = target["cyl-right"].value;
+   const cylLeftValue = target["cyl-left"].value;
+   const sphRightValue = target["sph-right"].value;
+   const sphLeftValue = target["sph-left"].value;
 
-  dispatch(submitFormData(formData)).then(() => {
-    navigate("/lens-options");
-  });
-};
+   if (
+     isValidNumber(cylRightValue) &&
+     isValidNumber(cylLeftValue) &&
+     isValidNumber(sphRightValue) &&
+     isValidNumber(sphLeftValue)
+   ) {
+   const formData: LensFormData = {
+     sphRight: parseFloat(sphRightValue),
+     cylRight: parseFloat(cylRightValue),
+     sphLeft: parseFloat(sphLeftValue),
+     cylLeft: parseFloat(cylLeftValue),
+   };
+
+     dispatch(submitFormData(formData)).then(() => {
+       // Fetch lens data after form submission
+       dispatch(fetchLensData());
+       navigate("/lens-options");
+     });
+   } else {
+     // Handle invalid input values for cylMax
+     console.log("Invalid input for cylMax");
+   }
+ };
 
 
 

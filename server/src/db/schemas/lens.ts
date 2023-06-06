@@ -43,7 +43,7 @@ const lensSchema = new Schema({
 
   cylMax: {
     type: Number,
-    required: false,
+    default: null,
   },
   coating: {
     type: String,

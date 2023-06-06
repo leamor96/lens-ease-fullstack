@@ -26,19 +26,7 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZ
 ### GET all lenses
 GET http://localhost:3001/api/lenses
 
-###PUT to update a lens:
-PUT http://localhost:3001/api/:id
-Content-Type: application/json
 
-{
-"name":"1.5 CYL-3.00",
-"index":"1.6",
-"diameter":"(+)65/(-)70",
-"minusRange":"-6",
-"plusRange":"+4",
-"coating":"blue",
-"price":250
-}
 
 ###POST to add user:
 POST http://localhost:3001/api/auth/signup
@@ -70,4 +58,7 @@ Content-Type: application/json
   "sphLeft": -3,
   "cylLeft": -3.75
 }
+
+
+
 

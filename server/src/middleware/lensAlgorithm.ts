@@ -6,6 +6,11 @@ export const calculateLensOptions = async (formData) => {
   const sphLeft = parseFloat(formData.sphLeft);
   const cylLeft = parseFloat(formData.cylLeft);
 
+  // Validate cylRight and cylLeft values
+  if (isNaN(cylRight) || isNaN(cylLeft)) {
+    throw new Error("Invalid cylinder value");
+  }
+
   try {
     const rightEyeLenses = await Lens.find({
       "sphRange.minus": { $lte: sphRight },
