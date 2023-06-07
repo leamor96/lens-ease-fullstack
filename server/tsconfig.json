@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES5",
     "module": "NodeNext",
+    "esModuleInterop": true,
     "moduleResolution": "NodeNext",
     "outDir": "dist"
+  },
+  "ts-node": {
+    "esm": true,
   },
   "include": ["src/**/*"]
 }
