@@ -21,6 +21,7 @@ export const calculateLensOptions = async (formData) => {
 
     const rightEyeLenses = await Lens.find(queryRight).sort({ price: 1 });
     const leftEyeLenses = await Lens.find(queryLeft).sort({ price: 1 });
+   
 
     if (rightEyeLenses.length === 0 && leftEyeLenses.length === 0) {
       // No matching lenses found for both eyes

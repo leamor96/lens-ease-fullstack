@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  submitFormData,
-  fetchLensData,
-} from "../../features/lenses/lensSlice";
+import {submitFormData} from "../../features/lenses/lensSlice";
 import { AppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { LensFormData } from "../../@types"; 
@@ -15,10 +12,6 @@ const SingleVisionForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  // Fetch lens data from the server on component mount
-  useEffect(() => {
-    // No need to fetch the lens data on component mount
-  }, [dispatch]);
 
   const [pdBothEyes, setPdBothEyes] = useState("60");
   const [pdLeftEye, setPdLeftEye] = useState("30");
@@ -58,47 +51,44 @@ const SingleVisionForm = () => {
     }
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-   e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-   // Validate form input before submitting
-   const target = e.target as typeof e.target & {
-     "sph-right": { value: string };
-     "cyl-right": { value: string };
-     "sph-left": { value: string };
-     "cyl-left": { value: string };
-   };
+    const target = e.target as typeof e.target & {
+      "sph-right": { value: string };
+      "cyl-right": { value: string };
+      "sph-left": { value: string };
+      "cyl-left": { value: string };
+    };
 
-   const cylRightValue = target["cyl-right"].value;
-   const cylLeftValue = target["cyl-left"].value;
-   const sphRightValue = target["sph-right"].value;
-   const sphLeftValue = target["sph-left"].value;
+    const cylRightValue = target["cyl-right"].value;
+    const cylLeftValue = target["cyl-left"].value;
+    const sphRightValue = target["sph-right"].value;
+    const sphLeftValue = target["sph-left"].value;
 
-   if (
-     isValidNumber(cylRightValue) &&
-     isValidNumber(cylLeftValue) &&
-     isValidNumber(sphRightValue) &&
-     isValidNumber(sphLeftValue)
-   ) {
-   const formData: LensFormData = {
-     sphRight: parseFloat(sphRightValue),
-     cylRight: parseFloat(cylRightValue),
-     sphLeft: parseFloat(sphLeftValue),
-     cylLeft: parseFloat(cylLeftValue),
-   };
+    if (
+      isValidNumber(cylRightValue) &&
+      isValidNumber(cylLeftValue) &&
+      isValidNumber(sphRightValue) &&
+      isValidNumber(sphLeftValue)
+    ) {
+      const formData: LensFormData = {
+        sphRight: parseFloat(sphRightValue),
+        cylRight: parseFloat(cylRightValue),
+        sphLeft: parseFloat(sphLeftValue),
+        cylLeft: parseFloat(cylLeftValue),
+      };
 
-     dispatch(submitFormData(formData)).then(() => {
-       // Fetch lens data after form submission
-       dispatch(fetchLensData());
-       navigate("/lens-options");
-     });
-   } else {
-     // Handle invalid input values for cylMax
-     console.log("Invalid input for cylMax");
-   }
- };
-
-
+      try {
+        await dispatch(submitFormData(formData));
+        navigate("/lens-options");
+      } catch (error:any) {
+        console.log("Error submitting form data:", error.message);
+      }
+    } else {
+      console.log("Invalid input for cylMax");
+    }
+  };
 
   return (
     <div className="p-5 bg-dark text-light">

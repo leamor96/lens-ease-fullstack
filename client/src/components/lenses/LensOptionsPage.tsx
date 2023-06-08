@@ -4,7 +4,6 @@ import Card from "../cards/Card";
 
 const LensOptionsPage = () => {
   const lensData = useSelector(selectLensOptions);
-console.log(lensData);
   return (
     <div className="container p-2 d-flex flex-wrap">
       {/* Render the cards for right eye options */}
