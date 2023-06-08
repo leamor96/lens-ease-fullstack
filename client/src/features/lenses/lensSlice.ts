@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { submitFormDataToServer } from "../../services/lens.service";
 import { AppThunk, RootState } from "../../app/store";
-import {  LensFormData, LensOptions } from "../../@types";
+import { LensFormData, LensOptions } from "../../@types";
 
 interface LensState {
   lensOptions: LensOptions;
@@ -20,19 +20,24 @@ const initialState: LensState = {
 };
 
 // Thunk action to fetch the lens data
-export const fetchLensOptions = createAsyncThunk("lens/fetchLensOptions", async () => {
-  try {
-    const response = await axios.post("http://localhost:3001/api/submit-form");
-    const { rightEyeOptions, leftEyeOptions } = response.data;
+export const fetchLensOptions = createAsyncThunk(
+  "lens/fetchLensOptions",
+  async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/submit-form"
+      );
+      const { rightEyeOptions, leftEyeOptions } = response.data;
 
-    return {
-      rightEyeOptions,
-      leftEyeOptions,
-    };
-  } catch (error) {
-    throw new Error("Failed to fetch lens options");
+      return {
+        rightEyeOptions,
+        leftEyeOptions,
+      };
+    } catch (error) {
+      throw new Error("Failed to fetch lens options");
+    }
   }
-});
+);
 
 const lensSlice = createSlice({
   name: "lens",
@@ -59,18 +64,14 @@ export const selectLensOptions = (state: RootState) => state.lens.lensOptions;
 
 export const submitFormData =
   (formData: LensFormData): AppThunk =>
-  async (dispatch) => {
+  async () => {
     try {
-      const requestBody = {
-        sphRight: formData.sphRight,
-        cylRight: formData.cylRight,
-        sphLeft: formData.sphLeft,
-        cylLeft: formData.cylLeft,
-      };
-      await submitFormDataToServer(requestBody)
+      const { data } = await submitFormDataToServer(formData);
+      
+      return data;
 
       // After successfully submitting the form, fetch the updated lens options
-      dispatch(fetchLensOptions());
+      // dispatch(fetchLensOptions());
     } catch (error) {
       throw new Error("Failed to submit form data to the server.");
     }

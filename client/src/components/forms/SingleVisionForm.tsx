@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {submitFormData} from "../../features/lenses/lensSlice";
+import { submitFormData } from "../../features/lenses/lensSlice";
 import { AppDispatch } from "../../app/store";
 import { useNavigate } from "react-router-dom";
-import { LensFormData } from "../../@types"; 
+import { LensFormData } from "../../@types";
 import { useMediaQuery } from "react-responsive";
-
 
 const SingleVisionForm = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
 
   const [pdBothEyes, setPdBothEyes] = useState("60");
   const [pdLeftEye, setPdLeftEye] = useState("30");
@@ -80,9 +78,11 @@ const SingleVisionForm = () => {
       };
 
       try {
-        await dispatch(submitFormData(formData));
-        navigate("/lens-options");
-      } catch (error:any) {
+        const data = await dispatch(submitFormData(formData));
+        console.log(data);
+
+        navigate("/lens-options", { state: { data } });
+      } catch (error: any) {
         console.log("Error submitting form data:", error.message);
       }
     } else {
