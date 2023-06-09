@@ -14,6 +14,7 @@ export interface LensData {
   cylMax: number | null;
   coating: "none" | "anti-reflective" | "scratch-resistant";
   price: number;
+  isFavorite:boolean
 }
 
 interface CardState {
@@ -32,7 +33,7 @@ const initialState: CardState = {
 
 // Async thunk to fetch the card data from the server
 export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
-  const response = await axios.get("/api/lenses");
+  const response = await axios.get("http://localhost:3001/api/lenses");
   return response.data;
 });
 

@@ -11,6 +11,8 @@ import AlgorithmPage from "./components/algorithm/AlgorithmPage";
 import SingleVisionForm from "./components/forms/SingleVisionForm";
 import ProgressiveForm from "./components/forms/ProgressiveForm";
 import LensOptionsPage from "./components/lenses/LensOptionsPage";
+import Favorites from "./components/cards/Favorites";
+import CardList from "./components/cards/CardList";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -25,7 +27,9 @@ function App() {
         <Route path="/algorithm/*" element={<AlgorithmPage />} />
         <Route path="/algorithm/single" element={<SingleVisionForm />} />
         <Route path="/algorithm/Progressive" element={<ProgressiveForm />} />
-        <Route path="/lens-options" element={<LensOptionsPage/>} />
+        <Route path="/lens-options" element={<LensOptionsPage />} />
+        {isLoggedIn && <Route path="/favorites" element={<Favorites />} />}
+        {isLoggedIn && <Route path="/card-list" element={<CardList/>} />}
       </Routes>
     </>
   );

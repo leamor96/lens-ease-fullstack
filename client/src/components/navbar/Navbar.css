@@ -5,11 +5,16 @@
   height: 1.5rem;
 }
 .brand{
-  font-weight: 300;
-  font-size: 1.5rem;
+  font-size: 2rem !important;
 }
 .spacer {
   flex-grow: 0.8;
+}
+.lensesIcon{
+  font-size: 2rem;
+}
+.favIcon{
+  font-size: 1.1rem;
 }
 
 @media (max-width: 768px) {

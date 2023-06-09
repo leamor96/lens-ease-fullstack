@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { GiMicroscopeLens } from "react-icons/gi";
+import { GiMicroscopeLens, GiSpectacleLenses } from "react-icons/gi";
+import { MdFavorite } from "react-icons/md";
 import "./Navbar.css"
+
 
 const Navabar = () => {
   const { isLoggedIn, logout } = useContext(AuthContext);
@@ -25,16 +27,16 @@ const Navabar = () => {
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand className="brand">
-            PRICER
+            LensEase
             <GiMicroscopeLens className="logo" />
           </Navbar.Brand>
           <div className="spacer"></div>
           <NavLink to="/" className="nav-link text-light">
             Home
           </NavLink>
-            <NavLink to="/about" className="nav-link text-light">
-              About
-            </NavLink>
+          <NavLink to="/about" className="nav-link text-light">
+            About
+          </NavLink>
           {!isLoggedIn && (
             <NavLink to="/register" className="nav-link text-light">
               Register
@@ -43,6 +45,16 @@ const Navabar = () => {
           {!isLoggedIn && (
             <NavLink to="/login" className="nav-link text-light">
               Login
+            </NavLink>
+          )}
+          {isLoggedIn && (
+            <NavLink to="/card-list" className="nav-link text-light">
+              <GiSpectacleLenses className="lensesIcon" />
+            </NavLink>
+          )}
+          {isLoggedIn && (
+            <NavLink to="/favorites" className="nav-link text-light">
+              <MdFavorite className="favIcon" />
             </NavLink>
           )}
           {isLoggedIn && (
