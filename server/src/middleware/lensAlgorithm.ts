@@ -6,23 +6,17 @@ export const calculateLensOptions = async (formData) => {
   const sphLeft = parseFloat(formData.sphLeft);
   const cylLeft = parseFloat(formData.cylLeft);
 
-  console.log("start here");
-  
-
-  console.log(sphLeft,sphLeft,cylRight,cylLeft);
-  
-
   try {
     const queryRight = {
       "sphRange.minus": { $lte: sphRight },
       "sphRange.plus": { $gte: sphRight },
-      cylMax: { $lte: cylRight },
+      $or: [{ cylMax: { $lte: cylRight } }, { cylMax: null }],
     };
 
     const queryLeft = {
       "sphRange.minus": { $lte: sphLeft },
       "sphRange.plus": { $gte: sphLeft },
-      cylMax: { $lte: cylLeft },
+      $or: [{ cylMax: { $lte: cylLeft } }, { cylMax: null }],
     };
 
     const rightEyeLenses = await Lens.find(queryRight).sort({ price: 1 });

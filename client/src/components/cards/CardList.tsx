@@ -1,14 +1,12 @@
-import { Dispatch, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCards,
-  LensData,
-} from "../../features/cards/cardSlice";
+import { fetchCards, LensData } from "../../features/cards/cardSlice";
 import Card from "./Card";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
+
 
 const CardList: React.FC = () => {
-  const dispatch:Dispatch<any> = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const cards = useSelector((state: RootState) => state.card.cards);
 
   useEffect(() => {
@@ -16,9 +14,9 @@ const CardList: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="card-list-container d-flex flex-wrap justify-content-center align-items-center p-3">
       {cards.map((card: LensData) => (
-        <Card key={card._id} lens={card} isFavorite={card.isFavorite} />
+        <Card key={card._id} lens={card} isFavorite={false} token=""/>
       ))}
     </div>
   );

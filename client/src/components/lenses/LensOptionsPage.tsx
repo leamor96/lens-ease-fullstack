@@ -1,29 +1,39 @@
+import { LensData } from "../../features/cards/cardSlice";
 import Card from "../cards/Card";
 import { useLocation } from "react-router-dom";
+import { LensFormData } from "../../@types";
 
 const LensOptionsPage = () => {
   const location = useLocation();
-  // const lensData = useSelector(selectLensOptions);
   const data = location?.state?.data;
+  const formData: LensFormData = data?.formData;
 
   return (
-    <div className="container p-2 text-center">
+    <div className="bg-dark text-light p-5">
+      <p>
+        <strong>Prescription R:</strong>{" "}
+        {formData &&
+          `${formData.sphRight}/ ${formData.cylRight}`}
+      </p>
       <h2>Right Eye options:</h2>
-      <div className="d-flex flex-wrap justify-content-center">
-        {/* Render the cards for right eye options */}
-        {data?.lensOptions?.rightEyeOptions.map((lens: any) => (
-          <div key={lens._id} className="card">
-            <Card lens={lens} isFavorite={false} />
+      <div className="d-flex flex-wrap">
+        {data?.lensOptions?.rightEyeOptions.map((lens: LensData) => (
+          <div key={lens._id}>
+            <Card lens={lens} isFavorite={false} token="" />
           </div>
         ))}
       </div>
       <br />
+      <p>
+        <strong>Prescription L:</strong>{" "}
+        {formData &&
+          ` ${formData.sphLeft}/ ${formData.cylLeft}`}
+      </p>
       <h2>Left Eye options:</h2>
-      <div className="d-flex flex-wrap justify-content-center">
-        {/* Render the cards for left eye options */}
-        {data?.lensOptions?.leftEyeOptions.map((lens: any) => (
-          <div key={lens._id} className="card">
-            <Card lens={lens} isFavorite={false} />
+      <div className="d-flex flex-wrap">
+        {data?.lensOptions?.leftEyeOptions.map((lens: LensData) => (
+          <div key={lens._id}>
+            <Card lens={lens} isFavorite={false} token="" />
           </div>
         ))}
       </div>

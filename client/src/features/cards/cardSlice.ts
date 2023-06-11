@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 import axios from "axios";
 
 export interface LensData {
@@ -54,14 +56,34 @@ const cardSlice = createSlice({
         state.cards[index] = action.payload;
       }
     },
-    toggleFavorite(state, action: PayloadAction<string>) {
-      const cardId = action.payload;
-      const isFavorite = state.favorites.includes(cardId);
+    toggleFavorite: (
+      state,
+      action: PayloadAction<{ lensId: string; token: string }>
+    ) => {
+      const {lensId,token} = action.payload;
+      const index = state.cards.findIndex((c) => c._id === lensId);
 
-      if (isFavorite) {
-        state.favorites = state.favorites.filter((id) => id !== cardId);
-      } else {
-        state.favorites.push(cardId);
+      if (index !== -1) {
+        // Update the isFavorite field locally
+        state.cards[index].isFavorite = !state.cards[index].isFavorite;
+        const favoriteStatus = state.cards[index].isFavorite;
+
+        // Send a request to the server to update the favorite status
+        axios
+          .post(`http://localhost:3001/api/lenses/${lensId}/favorite`, null, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            // Handle the response if needed
+          })
+          .catch((error) => {
+            // Handle any errors
+            console.error("Failed to update favorite status", error);
+            // Reset the local favorite status to its previous value
+            state.cards[index].isFavorite = !favoriteStatus;
+          });
       }
     },
   },

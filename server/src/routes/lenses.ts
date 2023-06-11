@@ -2,9 +2,10 @@ import { Router } from "express";
 import { Lens } from "../db/models/lens.js";
 import { validateToken } from "../middleware/validateToken.js";
 import { isAdmin } from "../middleware/isAdmin.js";
+import { Favorite } from "../db/models/favorite.js";
 const router = Router();
 
-//get all the lenses from db
+// Get all the lenses from the database
 router.get("/", async (req, res) => {
   try {
     const lenses = await Lens.find({});
@@ -13,11 +14,11 @@ router.get("/", async (req, res) => {
     console.error(error);
     res.status(500).send("Server error");
   }
-})
+});
 
-//get a single lens by ID
-router.get("/:id",async (req,res) => {
-  const {id}=req.params;
+// Get a single lens by ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     const lens = await Lens.findById(id);
     if (!lens) {
@@ -27,15 +28,15 @@ router.get("/:id",async (req,res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
-  } 
-})
+  }
+});
 
-//protected routes
-//create a new lens
-router.post("/",validateToken,isAdmin, async (req, res) => {
+// Protected routes
+// Create a new lens
+router.post("/", validateToken, isAdmin, async (req, res) => {
   try {
     const newLens = new Lens(req.body);
-    // check if a lens with the same properties already exists
+    // Check if a lens with the same properties already exists
     const existingLens = await Lens.findOne({
       name: newLens.name,
       category: newLens.category,
@@ -59,14 +60,15 @@ router.post("/",validateToken,isAdmin, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-// UPDATE a lens by ID
-router.put("/:id",validateToken, isAdmin, async (req, res) => {
+
+// Update a lens by ID
+router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
-    const updatedLens = await Lens.findOneAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      { new: true }
-    );
+    const lensId = req.params.id;
+
+    const updatedLens = await Lens.findByIdAndUpdate(lensId, req.body, {
+      new: true,
+    });
     res.json(updatedLens);
   } catch (error) {
     console.error(error);
@@ -74,7 +76,7 @@ router.put("/:id",validateToken, isAdmin, async (req, res) => {
   }
 });
 
-// DELETE a lens by ID
+// Delete a lens by ID
 router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
   try {
@@ -89,4 +91,28 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   }
 });
 
-export {router as lensesRouter};
+// Toggle favorite status of a lens for the authenticated user
+router.post("/:id/favorite", validateToken, async (req, res) => {
+  try {
+    const userId = req.userId; // Retrieve the user ID from req.userId
+    const lensId = req.params.id;
+
+    // Find the favorite entry for the user and lens
+    const favorite = await Favorite.findOne({ user: userId, lens: lensId });
+
+    if (!favorite) {
+      // Favorite entry does not exist, create it
+      await Favorite.create({ user: userId, lens: lensId });
+    } else {
+      // Favorite entry exists, delete it
+      await Favorite.findByIdAndDelete(favorite._id);
+    }
+
+    res.status(200).send("Favorite status updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+
+export { router as lensesRouter };

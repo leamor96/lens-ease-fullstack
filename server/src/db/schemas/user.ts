@@ -20,6 +20,12 @@ const userSchema = new Schema({
       ref: "Role",
     },
   ],
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Favorite",
+    },
+  ],
 });
 
 export { userSchema };

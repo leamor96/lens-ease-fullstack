@@ -4,12 +4,15 @@ import { useAppSelector } from "../../app/hooks";
 import Card from "./Card";
 import { LensData } from "../../features/cards/cardSlice";
 import { RootState } from "../../app/store";
+import { useMediaQuery } from "react-responsive";
+import "./Cards.css"
 
 const Favorites= () => {
 const { cards } = useAppSelector((state:RootState) => state.card);
   const favoriteLenses = cards.filter((c: LensData) => c.isFavorite);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   const filteredLenses = favoriteLenses.filter((lens: LensData) => {
     const matchesCategory =
@@ -22,16 +25,16 @@ const { cards } = useAppSelector((state:RootState) => state.card);
   const categories:string[] = Array.from(new Set(favoriteLenses.map((lens) => lens.category)));
 
   return (
-    <div>
-      <Container className="mt-3 d-flex justify-content-end">
+    <div className="bg-cards">
+      <Container className="d-flex justify-content-end p-3 sort-section">
         <Button
-          className="btn btn-info text-light"
+          className="btn category-btn btn-warning m-1"
           onClick={() => setSelectedCategory("")}
           disabled={selectedCategory === ""}
         >
           Clear Category
         </Button>
-        <Form.Group className="ml-3">
+        <Form.Group className="ml-3 m-1">
           <Form.Control
             as="select"
             value={selectedCategory}
@@ -45,7 +48,8 @@ const { cards } = useAppSelector((state:RootState) => state.card);
             ))}
           </Form.Control>
         </Form.Group>
-        <Form.Group className="ml-3">
+        {isMobile && <div></div>}
+        <Form.Group className="ml-3 m-1">
           <Form.Control
             type="text"
             placeholder="Search by name"
@@ -59,12 +63,13 @@ const { cards } = useAppSelector((state:RootState) => state.card);
         {filteredLenses.length > 0 ? (
           <div className="d-flex flex-wrap justify-content-center">
             {filteredLenses.map((lens: LensData) => (
-              <Card lens={lens} isFavorite={true} key={lens._id} />
+              <Card lens={lens} isFavorite={true} key={lens._id} token="" />
             ))}
           </div>
         ) : (
           <div className="text-center p-xl-4">
-            Sorry, there aren't any favorite lenses matching the selected criteria.
+            Sorry, there aren't any favorite lenses matching the selected
+            criteria.
           </div>
         )}
       </Container>

@@ -13,6 +13,7 @@ import ProgressiveForm from "./components/forms/ProgressiveForm";
 import LensOptionsPage from "./components/lenses/LensOptionsPage";
 import Favorites from "./components/cards/Favorites";
 import CardList from "./components/cards/CardList";
+import Footer from "./components/footer/Footer";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -31,6 +32,7 @@ function App() {
         {isLoggedIn && <Route path="/favorites" element={<Favorites />} />}
         {isLoggedIn && <Route path="/card-list" element={<CardList/>} />}
       </Routes>
+      <Footer/>
     </>
   );
 }

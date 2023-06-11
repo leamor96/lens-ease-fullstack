@@ -1,42 +1,60 @@
-import { useContext } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { toggleFavorite, LensData } from "../../features/cards/cardSlice";
-import AuthContext from "../../context/AuthContext";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import "./Cards.css";
 
 interface CardProps {
   lens: LensData;
   isFavorite: boolean;
+  token:string;
 }
 
-const Card: React.FC<CardProps> = ({ lens, isFavorite }) => {
+const Card: React.FC<CardProps> = ({ lens, isFavorite,token }) => {
   const dispatch = useDispatch();
-  const {isLoggedIn } = useContext(AuthContext);
+ 
+  const headerRef = useRef<HTMLDivElement>(null);
 
   const handleFavoriteToggle = () => {
-    if (isLoggedIn){
-       dispatch(toggleFavorite(lens._id));
-    }
+   dispatch(toggleFavorite({ lensId: lens._id, token }));
   };
- const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
+
+  useEffect(() => {
+    const headerElement = headerRef.current;
+    if (headerElement) {
+      const availableWidth = headerElement.offsetWidth;
+      const scrollWidth = headerElement.scrollWidth;
+      if (scrollWidth > availableWidth) {
+        const fontSize = availableWidth / scrollWidth;
+        headerElement.style.fontSize = `${fontSize}rem`;
+      }
+    }
+  }, []);
+
+  const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
   return (
-    <div className="card">
-      {isLoggedIn && (
-        <button className="border-0 bg-transparent favorite-icon" onClick={handleFavoriteToggle}>
-          <FavoriteIcon />
-        </button>
-      )}
+    <div className="card card-size m-2">
       <div className="card-header">
-        <h2>{lens.name}</h2>
+        <div className="header-field" ref={headerRef}>
+          {lens.name}
+        </div>
       </div>
+      <div className="bg-warning text-center lens-category"> {lens.category}</div>
       <div className="card-body">
-        <p>{lens.name}</p>
-        <p>Index: {lens.index}</p>
-        <p>Diameter: {lens.diameter}</p>
-        <p>Minus Range: {lens.sphRange.minus}</p>
-        <p>Plus Range: {lens.sphRange.plus}</p>
-        <p>Coating: {lens.coating}</p>
-        <p>Price: ₪{lens.price}</p>
+        <p className="card-field">Index: {lens.index}</p>
+        <p className="card-field">Diameter: {lens.diameter}</p>
+        <p className="card-field">Minus Range: {lens.sphRange.minus}</p>
+        <p className="card-field">Plus Range: {lens.sphRange.plus}</p>
+        <p className="card-field">Coating: {lens.coating}</p>
+        <p className="card-field lens-price">Price: ₪{lens.price}</p>
+      
+          <button
+            className="border-0 bg-transparent favorite-icon"
+            onClick={handleFavoriteToggle}
+          >
+            <FavoriteIcon />
+          </button>
+    
       </div>
     </div>
   );

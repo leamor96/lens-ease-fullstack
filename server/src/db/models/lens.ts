@@ -1,4 +1,4 @@
-import { Model, model } from "mongoose";
+import {  model } from "mongoose";
 import { lensSchema } from "../schemas/lens.js";
 
 const Lens= model("Lenses", lensSchema);

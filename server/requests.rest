@@ -7,17 +7,17 @@ Content-Type: application/json
 Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTg5NDg0NywiZXhwIjoxNjg4NDg2ODQ3fQ.n7KjX6K1L6itvpH-IcHpok3QKFBb7Cs6RKqT_qA9igE
 
 {
-    "name": "1.56 FLAT&THIN CYL-2.00",
-    "category":"stock",
-    "index": 1.56,
-    "diameter": "(+)60",
+    "name": "1.5 UV400",
+    "category":"production",
+    "index": 1.5,
+    "diameter": "90",
     "sphRange": {
-        "minus": [null],
+        "minus": [-6],
         "plus": [6]
     },
-    "cylMax":-2,
-    "coating": "scratch-resistant",
-    "price": 145
+    "cylMax":null,
+    "coating": "none",
+    "price": 350
 }
 
 ### GET all lenses
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 {
   "sphRight": -2.5,
-  "cylRight": -2.75,
+  "cylRight": -4.75,
   "sphLeft": -3,
   "cylLeft": -3.75
 }
