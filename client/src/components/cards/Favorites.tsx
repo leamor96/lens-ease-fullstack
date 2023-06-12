@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Container, Button, Form } from "react-bootstrap";
 import { useAppSelector } from "../../app/hooks";
 import Card from "./Card";
-import { LensData } from "../../features/cards/cardSlice";
 import { RootState } from "../../app/store";
 import { useMediaQuery } from "react-responsive";
-import "./Cards.css"
+import "./Cards.css";
+import { LensData } from "../../@types";
 
-const Favorites= () => {
-const { cards } = useAppSelector((state:RootState) => state.card);
+const Favorites = () => {
+  const { cards } = useAppSelector((state: RootState) => state.card);
   const favoriteLenses = cards.filter((c: LensData) => c.isFavorite);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,12 +17,15 @@ const { cards } = useAppSelector((state:RootState) => state.card);
   const filteredLenses = favoriteLenses.filter((lens: LensData) => {
     const matchesCategory =
       selectedCategory === "" || lens.category === selectedCategory;
-    const matchesSearch =
-      lens.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = lens.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const categories:string[] = Array.from(new Set(favoriteLenses.map((lens) => lens.category)));
+  const categories: string[] = Array.from(
+    new Set(favoriteLenses.map((lens) => lens.category))
+  );
 
   return (
     <div className="bg-cards">
@@ -65,7 +68,11 @@ const { cards } = useAppSelector((state:RootState) => state.card);
         {filteredLenses.length > 0 ? (
           <div className="d-flex flex-wrap justify-content-center">
             {filteredLenses.map((lens: LensData) => (
-              <Card lens={lens} isFavorite={true} key={lens._id} token="" />
+              <Card
+                lens={lens}
+                key={lens._id}
+                token={localStorage.getItem("token") || ""}
+              />
             ))}
           </div>
         ) : (

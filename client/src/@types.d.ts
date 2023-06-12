@@ -38,12 +38,45 @@ export interface Lens {
   coating: "none" | "anti-reflective" | "scratch-resistant";
   price: number;
 }
-
+export interface LensData {
+  _id: string;
+  name: string;
+  category: string;
+  index: number;
+  diameter: string;
+  sphRange: {
+    minus: number[] | null;
+    plus: number[] | null;
+  };
+  cylMax: number | null;
+  coating: "none" | "anti-reflective" | "scratch-resistant";
+  price: number;
+  isFavorite: boolean;
+}
+export interface ProLensData {
+  _id: string;
+  name: string;
+  lensType: string;
+  index: number;
+  diameter: string;
+  sphRange: {
+    minus: number[] | null;
+    plus: number[] | null;
+  };
+  adjustmentHeight: string | null;
+  coating: string;
+  price: number;
+  isFavorite: boolean;
+}
 export interface LensFormData {
   sphRight: number;
   cylRight: number;
   sphLeft: number;
   cylLeft: number;
+}
+export interface LensProFormData {
+  sphRight: number;
+  sphLeft: number;
 }
 export interface LensOptions {
   rightEyeOptions: Lens[];

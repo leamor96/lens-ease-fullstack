@@ -6,6 +6,8 @@ import { lensesRouter } from "./routes/lenses.js";
 import { authRouter } from "./routes/users.js";
 import cors from "cors";
 import { submitFormRouter } from "./routes/submitForm.js";
+import { proLensesRouter } from "./routes/proLenses.js";
+import { submitProFormRouter } from "./routes/submitProForm.js";
 
 //create an instance of the Express application:
 const app = express();
@@ -28,8 +30,9 @@ app.use(morgan("dev"));
 //define routes:
 app.use("/api/lenses", lensesRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/submit-form", submitFormRouter); // Use the submitFormRouter middleware
-
+app.use("/api/submit-form", submitFormRouter); 
+app.use("/api/pro-lenses",proLensesRouter);
+app.use("/api/submit-pro-form", submitProFormRouter); 
 //define the logout route:
 
 

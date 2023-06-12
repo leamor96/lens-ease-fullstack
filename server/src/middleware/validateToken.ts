@@ -8,6 +8,8 @@ const validateToken: RequestHandler = (req, res, next) => {
 
   if (!token) {
     //403 = unauthorized
+   
+    
     return res.status(403).json({ message: "No Token Provided" });
   }
 

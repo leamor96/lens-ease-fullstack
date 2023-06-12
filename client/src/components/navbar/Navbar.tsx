@@ -48,7 +48,7 @@ const Navabar = () => {
             </NavLink>
           )}
           {isLoggedIn && (
-            <NavLink to="/card-list" className="nav-link text-light">
+            <NavLink to="/lenses" className="nav-link text-light">
               <GiSpectacleLenses className="lensesIcon" />
             </NavLink>
           )}

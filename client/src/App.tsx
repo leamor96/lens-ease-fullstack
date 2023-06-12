@@ -14,6 +14,10 @@ import LensOptionsPage from "./components/lenses/LensOptionsPage";
 import Favorites from "./components/cards/Favorites";
 import CardList from "./components/cards/CardList";
 import Footer from "./components/footer/Footer";
+import ProLensOptions from "./components/lenses/ProLensOptions";
+import ProCardList from "./components/cards/pro-cards/ProCardList";
+import Lenses from "./routes/Lenses";
+
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -29,8 +33,11 @@ function App() {
         <Route path="/algorithm/single" element={<SingleVisionForm />} />
         <Route path="/algorithm/Progressive" element={<ProgressiveForm />} />
         <Route path="/lens-options" element={<LensOptionsPage />} />
+        <Route path="/pro-lens-options" element={< ProLensOptions/>} />
         {isLoggedIn && <Route path="/favorites" element={<Favorites />} />}
-        {isLoggedIn && <Route path="/card-list" element={<CardList/>} />}
+        {isLoggedIn && <Route path="/lenses/*" element={<Lenses/>} />}
+        {isLoggedIn && <Route path="/lenses/card-list" element={<CardList/>} />}
+        {isLoggedIn && <Route path="/lenses/pro-card-list" element={<ProCardList/>} />}
       </Routes>
       <Footer/>
     </>

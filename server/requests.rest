@@ -57,5 +57,25 @@ Content-Type: application/json
 }
 
 
+###POST to add proLens:
+
+POST http://localhost:3001/api/pro-lenses
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NjU2NDg2MCwiZXhwIjoxNjg5MTU2ODYwfQ.5yLj7FZm-QxvGA7vXu1xD2XpfPvmxERJtHb6E8L7rN4
+
+{
+    "name": "FIT",
+    "lensType":"DEFENDER UV+420cut",
+    "index": 1.74,
+    "diameter": "90",
+    "sphRange": {
+        "minus": [-12],
+        "plus": [11]
+    },
+    "adjustmentHeight":"10/12/14/16/18",
+    "coating": "A.R",
+    "price": 3450
+}
+
 
 

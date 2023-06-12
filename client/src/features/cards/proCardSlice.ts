@@ -1,17 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { LensData } from "../../@types";
+import { ProLensData } from "../../@types";
 
-
-
-interface CardState {
-  cards: LensData[];
+interface ProCardState {
+  cards: ProLensData[];
   favorites: string[]; // Array of card IDs that are marked as favorites
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
 }
 
-const initialState: CardState = {
+const initialState: ProCardState = {
   cards: [],
   favorites: [],
   status: "idle",
@@ -19,22 +17,22 @@ const initialState: CardState = {
 };
 
 // Async thunk to fetch the card data from the server
-export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
-  const response = await axios.get("http://localhost:3001/api/lenses");
+export const fetchProCards = createAsyncThunk("proCard/fetchProCards", async () => {
+  const response = await axios.get("http://localhost:3001/api/pro-lenses");
   return response.data;
 });
 
-const cardSlice = createSlice({
-  name: "card",
+const proCardSlice = createSlice({
+  name: "proCard",
   initialState,
   reducers: {
-    addCard(state, action: PayloadAction<LensData>) {
+    addCard(state, action: PayloadAction<ProLensData>) {
       state.cards.push(action.payload);
     },
     deleteCard(state, action: PayloadAction<string>) {
       state.cards = state.cards.filter((card) => card._id !== action.payload);
     },
-    editCard(state, action: PayloadAction<LensData>) {
+    editCard(state, action: PayloadAction<ProLensData>) {
       const { _id } = action.payload;
       const index = state.cards.findIndex((card) => card._id === _id);
       if (index !== -1) {
@@ -42,28 +40,28 @@ const cardSlice = createSlice({
       }
     },
     toggleFavorite: (state, action: PayloadAction<string>) => {
-      const lensId = action.payload;
+      const proLensId = action.payload;
       const token = localStorage.getItem("token");
       console.log(token);
 
-      const index = state.cards.findIndex((c) => c._id === lensId);
+      const index = state.cards.findIndex((c) => c._id === proLensId);
 
       if (index !== -1) {
-           const updatedCards = [...state.cards]; // Create a new array
+        const updatedCards = [...state.cards]; // Create a new array
 
-           // Update the isFavorite field of the corresponding card in the new array
-           updatedCards[index] = {
-             ...updatedCards[index],
-             isFavorite: !updatedCards[index].isFavorite,
-           };
+        // Update the isFavorite field of the corresponding card in the new array
+        updatedCards[index] = {
+          ...updatedCards[index],
+          isFavorite: !updatedCards[index].isFavorite,
+        };
 
-           const favoriteStatus = updatedCards[index].isFavorite;
+        const favoriteStatus = updatedCards[index].isFavorite;
 
-           // Replace the cards array in the state with the updated array
-           state.cards = updatedCards;
+        // Replace the cards array in the state with the updated array
+        state.cards = updatedCards;
         // Send a request to the server to update the favorite status
         axios
-          .post(`http://localhost:3001/api/lenses/${lensId}/favorite`, {
+          .post(`http://localhost:3001/api/pro-lenses/${proLensId}/favorite`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -82,14 +80,14 @@ const cardSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCards.pending, (state) => {
+      .addCase(fetchProCards.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchCards.fulfilled, (state, action) => {
+      .addCase(fetchProCards.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.cards = action.payload;
       })
-      .addCase(fetchCards.rejected, (state, action) => {
+      .addCase(fetchProCards.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
@@ -97,6 +95,6 @@ const cardSlice = createSlice({
 });
 
 export const { addCard, deleteCard, editCard, toggleFavorite } =
-  cardSlice.actions;
+  proCardSlice.actions;
 
-export default cardSlice.reducer;
+export default proCardSlice.reducer;

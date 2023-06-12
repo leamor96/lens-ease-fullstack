@@ -1,31 +1,30 @@
 import { Router } from "express";
-import { Lens } from "../db/models/lens.js";
+import { ProLens } from "../db/models/proLens.js";
 import { validateToken } from "../middleware/validateToken.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 import { Favorite } from "../db/models/favorite.js";
+
 const router = Router();
 
-// Get all the lenses from the database
+// Get all the proLenses from the database
 router.get("/", async (req, res) => {
   try {
-    const lenses = await Lens.find({});
-    res.status(200).json(lenses);
-      console.log("start here");
+    const proLenses = await ProLens.find({});
+    res.status(200).json(proLenses);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
-
-// Get a single lens by ID
+// Get a single prolens by ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const lens = await Lens.findById(id);
-    if (!lens) {
+    const proLens = await ProLens.findById(id);
+    if (!proLens) {
       return res.status(404).send("Lens not found");
     }
-    res.status(200).json(lens);
+    res.status(200).json(proLens);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -36,38 +35,37 @@ router.get("/:id", async (req, res) => {
 // Create a new lens
 router.post("/", validateToken, isAdmin, async (req, res) => {
   try {
-    const newLens = new Lens(req.body);
+    const newProLens = new ProLens(req.body);
     // Check if a lens with the same properties already exists
-    const existingLens = await Lens.findOne({
-      name: newLens.name,
-      category: newLens.category,
-      index: newLens.index,
-      diameter: newLens.diameter,
-      "sphRange.minus": newLens.sphRange.minus,
-      "sphRange.plus": newLens.sphRange.plus,
-      cylMax: newLens.cylMax,
-      coating: newLens.coating,
-      price: newLens.price,
+    const existingProLens = await ProLens.findOne({
+      name: newProLens.name,
+      lensType: newProLens.lensType,
+      index: newProLens.index,
+      diameter: newProLens.diameter,
+      "sphRange.minus": newProLens.sphRange.minus,
+      "sphRange.plus": newProLens.sphRange.plus,
+      adjustmentHeight: newProLens.adjustmentHeight,
+      coating: newProLens.coating,
+      price: newProLens.price,
     });
 
-    if (existingLens) {
+    if (existingProLens) {
       res.status(400).json({ message: "Lens already exists" });
     } else {
-      await newLens.save();
-      res.status(201).json(newLens);
+      await newProLens.save();
+      res.status(201).json(newProLens);
     }
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
-
-// Update a lens by ID
+// Update a proLens by ID
 router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
-    const lensId = req.params.id;
+    const proLensId = req.params.id;
 
-    const updatedLens = await Lens.findByIdAndUpdate(lensId, req.body, {
+    const updatedLens = await ProLens.findByIdAndUpdate(proLensId, req.body, {
       new: true,
     });
     res.json(updatedLens);
@@ -77,11 +75,11 @@ router.put("/:id", validateToken, isAdmin, async (req, res) => {
   }
 });
 
-// Delete a lens by ID
+// Delete a proLens by ID
 router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedLens = await Lens.findByIdAndDelete(id);
+    const deletedLens = await ProLens.findByIdAndDelete(id);
     if (!deletedLens) {
       return res.status(404).send("Lens not found");
     }
@@ -92,20 +90,19 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   }
 });
 
-// Toggle favorite status of a lens for the authenticated user
+// Toggle favorite status of a proLens for the authenticated user
 router.post("/:id/favorite", validateToken, async (req, res) => {
   try {
-     console.log("start here");
     const userId = req.userId; // Retrieve the user ID from req.userId
-    const lensId = req.params.id;
+    const proLensId = req.params.id;
     
 
     // Find the favorite entry for the user and lens
-    const favorite = await Favorite.findOne({ user: userId, lens: lensId });
+    const favorite = await Favorite.findOne({ user: userId, proLens: proLensId });
 
     if (!favorite) {
       // Favorite entry does not exist, create it
-      await Favorite.create({ user: userId, lens: lensId });
+      await Favorite.create({ user: userId, proLens: proLensId });
     } else {
       // Favorite entry exists, delete it
       await Favorite.findByIdAndDelete(favorite._id);
@@ -118,4 +115,4 @@ router.post("/:id/favorite", validateToken, async (req, res) => {
   }
 });
 
-export { router as lensesRouter };
+export { router as proLensesRouter };

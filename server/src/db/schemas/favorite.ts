@@ -9,6 +9,10 @@ const favoriteSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Lens",
   },
+  proLens: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ProLens",
+  },
 });
 
 export {favoriteSchema};

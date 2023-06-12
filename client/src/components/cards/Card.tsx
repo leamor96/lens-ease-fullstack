@@ -1,22 +1,26 @@
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { toggleFavorite, LensData } from "../../features/cards/cardSlice";
+import { useDispatch ,useSelector} from "react-redux";
+import { toggleFavorite } from "../../features/cards/cardSlice";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import "./Cards.css";
+import { LensData } from "../../@types";
 
 interface CardProps {
   lens: LensData;
-  isFavorite: boolean;
   token:string;
 }
 
-const Card: React.FC<CardProps> = ({ lens, isFavorite,token }) => {
+const Card: React.FC<CardProps> = ({ lens,token }) => {
   const dispatch = useDispatch();
+  const favorites = useSelector(
+    (state: { card: { favorites: string[] } }) => state.card.favorites
+  );
+  const isFavorite = favorites.includes(lens._id);
  
   const headerRef = useRef<HTMLDivElement>(null);
 
   const handleFavoriteToggle = () => {
-   dispatch(toggleFavorite({ lensId: lens._id, token }));
+   dispatch(toggleFavorite(lens._id));
   };
 
   useEffect(() => {
