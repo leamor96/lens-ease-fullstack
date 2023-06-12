@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Button, Form } from "react-bootstrap";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import Card from "./Card";
 import { RootState } from "../../app/store";
 import { useMediaQuery } from "react-responsive";
 import "./Cards.css";
 import { LensData } from "../../@types";
+import { fetchFavoriteLenses } from "../../features/cards/cardSlice";
 
 const Favorites = () => {
   const { cards } = useAppSelector((state: RootState) => state.card);
@@ -13,6 +14,8 @@ const Favorites = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  
+  
 
   const filteredLenses = favoriteLenses.filter((lens: LensData) => {
     const matchesCategory =
@@ -26,6 +29,12 @@ const Favorites = () => {
   const categories: string[] = Array.from(
     new Set(favoriteLenses.map((lens) => lens.category))
   );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoriteLenses()); // Dispatch the fetchFavoriteLenses action when the component mounts
+  }, [dispatch]);
 
   return (
     <div className="bg-cards">
@@ -74,6 +83,7 @@ const Favorites = () => {
                 token={localStorage.getItem("token") || ""}
               />
             ))}
+            <br />
           </div>
         ) : (
           <div className="text-center p-xl-4">

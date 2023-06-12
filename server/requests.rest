@@ -44,6 +44,15 @@ Content-Type: application/json
     "password":"Pricer@1234!!"
 }
 
+###POST to signin user:
+POST http://localhost:3001/api/auth/signin
+Content-Type: application/json
+
+{
+    "email":"jhon@gmail.com",
+    "password":"JHONjhon12#$"
+}
+
 
 ###POST to submit form and calculate lens options:
 POST http://localhost:3001/api/submit-form
@@ -78,4 +87,13 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZ
 }
 
 
+###POST to add lens to favorites:
+POST http://localhost:3001/api/lenses/6485e46a918d230d941a9896/favorite
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTg5NDg0NywiZXhwIjoxNjg4NDg2ODQ3fQ.n7KjX6K1L6itvpH-IcHpok3QKFBb7Cs6RKqT_qA9igE
 
+
+###GET all favorite lenses
+GET http://localhost:3001/api/lenses/favorites/6486163aa7d0b70eda5e2fa7
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTg5NDg0NywiZXhwIjoxNjg4NDg2ODQ3fQ.n7KjX6K1L6itvpH-IcHpok3QKFBb7Cs6RKqT_qA9igE

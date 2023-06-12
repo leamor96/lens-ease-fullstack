@@ -19,6 +19,18 @@
   width: 13rem !important;
   height: 19rem !important; 
 }
+.admin-btn {
+  margin-right: 0.2rem;
+}
+.delete-edit-buttons {
+ position: absolute;
+  top: 4.5rem;
+  right: 0.5rem;
+}
+
+.delete-edit-buttons button {
+  font-size: 0.7rem;
+}
 
 .header-field {
   font-size: 0.9rem !important;

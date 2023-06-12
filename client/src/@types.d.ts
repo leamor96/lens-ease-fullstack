@@ -6,6 +6,7 @@ export type AuthContextType = {
   token?: string;
   login: (username: string, email: string, token: string) => void;
   logout: () => void;
+  isAdmin:boolean;
 };
 
 export type ChildProps = {

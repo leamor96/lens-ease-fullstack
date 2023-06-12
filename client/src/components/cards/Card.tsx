@@ -1,9 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useDispatch ,useSelector} from "react-redux";
-import { toggleFavorite } from "../../features/cards/cardSlice";
+import { deleteCard, toggleFavorite } from "../../features/cards/cardSlice";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import "./Cards.css";
 import { LensData } from "../../@types";
+import {AuthContext} from "../../context/AuthContext"
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { BsPencil, BsTrash } from "react-icons/bs";
 
 interface CardProps {
   lens: LensData;
@@ -16,9 +20,10 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
     (state: { card: { favorites: string[] } }) => state.card.favorites
   );
   const isFavorite = favorites.includes(lens._id);
- 
   const headerRef = useRef<HTMLDivElement>(null);
-
+  const { isAdmin } = useContext(AuthContext);
+  const nav = useNavigate();
+  
   const handleFavoriteToggle = () => {
    dispatch(toggleFavorite(lens._id));
   };
@@ -36,6 +41,7 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
   }, []);
 
   const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
+
   return (
     <div className="card card-size m-2">
       <div className="card-header">
@@ -43,7 +49,10 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
           {lens.name}
         </div>
       </div>
-      <div className="bg-warning text-center lens-category"> {lens.category}</div>
+      <div className="bg-warning text-center lens-category">
+        {" "}
+        {lens.category}
+      </div>
       <div className="card-body">
         <p className="card-field">Index: {lens.index}</p>
         <p className="card-field">Diameter: {lens.diameter}</p>
@@ -51,14 +60,57 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
         <p className="card-field">Plus Range: {lens.sphRange.plus}</p>
         <p className="card-field">Coating: {lens.coating}</p>
         <p className="card-field lens-price">Price: ₪{lens.price}</p>
-      
+
+        <button
+          className="border-0 bg-transparent favorite-icon"
+          onClick={handleFavoriteToggle}
+        >
+          <FavoriteIcon />
+        </button>
+     {isAdmin && ( // Conditionally render the add/edit/delete buttons for admin */}
+        <div className="delete-edit-buttons">
           <button
-            className="border-0 bg-transparent favorite-icon"
-            onClick={handleFavoriteToggle}
+            className="btn admin-btn btn-secondary mt-0"
+            onClick={() => {
+              nav(`/edit/${lens._id}`);
+            }}
           >
-            <FavoriteIcon />
+            <BsPencil />
           </button>
-    
+          <button
+            className="btn admin-btn btn-dark mt-0"
+            onClick={() => {
+              Swal.fire({
+                title: "Are you sure you want to delete this?",
+                showDenyButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: `No`,
+                confirmButtonColor: "#ffc107",
+                denyButtonColor: "black",
+                showCancelButton: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(deleteCard(lens._id));
+                  Swal.fire({
+                    title: "Deleted!",
+                    icon: "success",
+                    confirmButtonColor: "#ffc107",
+                  });
+                } else if (result.isDenied) {
+                  Swal.fire({
+                    title: "lens not deleted",
+                    icon: "info",
+                    iconColor: "#343a40",
+                    confirmButtonColor: "#ffc107",
+                  });
+                }
+              });
+            }}
+          >
+            <BsTrash />
+          </button>
+        </div>
+         )} 
       </div>
     </div>
   );
