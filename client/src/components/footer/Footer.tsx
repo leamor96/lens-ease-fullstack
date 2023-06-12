@@ -36,9 +36,9 @@ const currentYear = new Date().getFullYear();
             <FaWhatsapp />
           </a>
         </div>
-        <div className="copyright-mobile d-none">
-          <small className="m-2">© {currentYear} Copyright: Lea Ohayon</small>
-        </div>
+      </div>
+      <div className="copyright-mobile text-center">
+        <small className="m-2">© {currentYear} Copyright: Lea Ohayon</small>
       </div>
     </footer>
   );

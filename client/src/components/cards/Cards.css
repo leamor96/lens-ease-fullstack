@@ -39,15 +39,20 @@
   color: #fff;
 }
 
-.category-btn{
+.category-btn,.select-option,.search-box{
   font-size: 0.8rem !important;
+  height: 2rem;
 }
+
 .card-list-container{
    background-color: #343a40;
 }
 .lens-price,.lens-category{
   color: #343a40 ;
   font-weight: 400;
+}
+.content-size{
+  height: 13rem;
 }
 
 /* כרגע לא עובד */
@@ -56,5 +61,9 @@
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
   }
+  .category-btn,.select-option,.search-box{
+  font-size: 0.5rem !important;
+  height: 2rem;
+}
 
 }

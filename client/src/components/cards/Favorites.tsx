@@ -37,6 +37,7 @@ const { cards } = useAppSelector((state:RootState) => state.card);
         <Form.Group className="ml-3 m-1">
           <Form.Control
             as="select"
+            className="select-option"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -52,6 +53,7 @@ const { cards } = useAppSelector((state:RootState) => state.card);
         <Form.Group className="ml-3 m-1">
           <Form.Control
             type="text"
+            className="search-box"
             placeholder="Search by name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,6 +72,7 @@ const { cards } = useAppSelector((state:RootState) => state.card);
           <div className="text-center p-xl-4">
             Sorry, there aren't any favorite lenses matching the selected
             criteria.
+            <div className="content-size"></div>
           </div>
         )}
       </Container>
