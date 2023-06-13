@@ -23,6 +23,9 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZ
 ### GET all lenses
 GET http://localhost:3001/api/lenses
 
+### GET all pro-lenses
+GET http://localhost:3001/api/pro-lenses
+
 
 
 ###POST to add user:
@@ -49,8 +52,8 @@ POST http://localhost:3001/api/auth/signin
 Content-Type: application/json
 
 {
-    "email":"jhon@gmail.com",
-    "password":"JHONjhon12#$"
+    "email":"test96@gmail.com",
+    "password":"Pricer@1234!!"
 }
 
 
@@ -73,27 +76,27 @@ Content-Type: application/json
 Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NjU2NDg2MCwiZXhwIjoxNjg5MTU2ODYwfQ.5yLj7FZm-QxvGA7vXu1xD2XpfPvmxERJtHb6E8L7rN4
 
 {
-    "name": "FIT",
-    "lensType":"DEFENDER UV+420cut",
+    "name": "STEPPER",
+    "lensType":"DSP Technology",
     "index": 1.74,
     "diameter": "90",
     "sphRange": {
-        "minus": [-12],
-        "plus": [11]
+        "minus": [-15],
+        "plus": [13]
     },
-    "adjustmentHeight":"10/12/14/16/18",
-    "coating": "A.R",
-    "price": 3450
+    "adjustmentHeight":"14/15/17/18",
+    "coating": "SN",
+    "price": 3650
 }
 
 
 ###POST to add lens to favorites:
-POST http://localhost:3001/api/lenses/6485e46a918d230d941a9896/favorite
+POST http://localhost:3001/api/pro-lenses/6486f0f668a1cf8ecf821c56/favorite
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTg5NDg0NywiZXhwIjoxNjg4NDg2ODQ3fQ.n7KjX6K1L6itvpH-IcHpok3QKFBb7Cs6RKqT_qA9igE
 
 
 ###GET all favorite lenses
-GET http://localhost:3001/api/lenses/favorites/6486163aa7d0b70eda5e2fa7
+GET http://localhost:3001/api/lenses/favorites/6488aa710bef40d5c79c9bd4
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NTg5NDg0NywiZXhwIjoxNjg4NDg2ODQ3fQ.n7KjX6K1L6itvpH-IcHpok3QKFBb7Cs6RKqT_qA9igE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODhhYTcxMGJlZjQwZDVjNzljOWJkNCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2ODY2ODU2MzcsImV4cCI6MTY4OTI3NzYzN30.WiSukMZN4Q8VnaI4q_-QBT2OswstEWFQElN0NeXlkXo

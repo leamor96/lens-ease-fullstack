@@ -90,11 +90,12 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   }
 });
 
-// Toggle favorite status of a proLens for the authenticated user
+// Toggle favorite status of a lens for the authenticated user
 router.post("/:id/favorite", validateToken, async (req, res) => {
   try {
     const userId = req.userId; // Retrieve the user ID from req.userId
     const proLensId = req.params.id;
+    
     
 
     // Find the favorite entry for the user and lens
@@ -109,6 +110,27 @@ router.post("/:id/favorite", validateToken, async (req, res) => {
     }
 
     res.status(200).send("Favorite status updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+// Get all favorite lenses for the authenticated user
+router.get("/favorites/:id", validateToken, async (req, res) => {
+  try {
+    const userId = req.userId; // Retrieve the user ID from req.userId
+
+    // Find all favorite entries for the user
+    const favorites = await Favorite.find({ user: userId });
+
+    // Retrieve the lens IDs from the favorite entries
+    const proLensIds = favorites.map((favorite) => favorite.proLens);
+
+    // Fetch the lens details for the retrieved IDs
+    const proLenses = await ProLens.find({ _id: { $in: proLensIds } });
+
+
+    res.status(200).json(proLenses);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");

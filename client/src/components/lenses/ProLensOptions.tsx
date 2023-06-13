@@ -9,19 +9,19 @@ const ProLensOptions = () => {
   const token = localStorage.getItem("token");
 
   return (
-    <div className="bg-dark text-light p-5">
-      <h2>Right Eye options:</h2>
-      <div className="d-flex flex-wrap">
-        {data?.lensOptions?.rightEyeOptions.map((proLens: ProLensData) => (
+    <div className="bg-dark text-light p-3">
+      <h2 className="text-center">Right Eye options:</h2>
+      <div className="d-flex flex-wrap justify-content-center">
+        {data?.proLensOptions?.rightEyeOptions.map((proLens: ProLensData) => (
           <div key={proLens._id}>
             <ProCard proLens={proLens} token={token || ""} />
           </div>
         ))}
       </div>
       <br />
-      <h2>Left Eye options:</h2>
-      <div className="d-flex flex-wrap">
-        {data?.lensOptions?.leftEyeOptions.map((proLens: ProLensData) => (
+      <h2 className="text-center">Left Eye options:</h2>
+      <div className="d-flex flex-wrap justify-content-center">
+        {data?.proLensOptions?.leftEyeOptions.map((proLens: ProLensData) => (
           <div key={proLens._id}>
             <ProCard proLens={proLens} token={token || ""} />
           </div>

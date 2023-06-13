@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import { useDispatch ,useSelector} from "react-redux";
-import { deleteCard, toggleFavorite } from "../../features/cards/cardSlice";
+import { deleteCard } from "../../features/cards/cardSlice";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import "./Cards.css";
 import { LensData } from "../../@types";
@@ -8,6 +8,7 @@ import {AuthContext} from "../../context/AuthContext"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { BsPencil, BsTrash } from "react-icons/bs";
+import { toggleFavorite } from "../../features/favoriteProSlice";
 
 interface CardProps {
   lens: LensData;
@@ -17,7 +18,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ lens,token }) => {
   const dispatch = useDispatch();
   const favorites = useSelector(
-    (state: { card: { favorites: string[] } }) => state.card.favorites
+    (state: { card: { favorites?: string[] } }) => state.card.favorites||[]
   );
   const isFavorite = favorites.includes(lens._id);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -67,7 +68,7 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
         >
           <FavoriteIcon />
         </button>
-     {isAdmin && ( // Conditionally render the add/edit/delete buttons for admin */}
+     {/* isAdmin && */ ( // Conditionally render the add/edit/delete buttons for admin */}
         <div className="delete-edit-buttons">
           <button
             className="btn admin-btn btn-secondary mt-0"

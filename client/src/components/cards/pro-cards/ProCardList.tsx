@@ -7,7 +7,7 @@ import { ProLensData } from "../../../@types";
 
 const ProCardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const cards = useSelector((state: RootState) => state.proCard.cards);
+  const proCards = useSelector((state: RootState) => state.proCard.proCards);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const ProCardList: React.FC = () => {
 
   return (
     <div className="card-list-container d-flex flex-wrap justify-content-center align-items-center p-3">
-      {cards.map((card: ProLensData) => (
+      {proCards.map((card: ProLensData) => (
         <ProCard key={card._id} proLens={card} token={token || ""} />
       ))}
     </div>

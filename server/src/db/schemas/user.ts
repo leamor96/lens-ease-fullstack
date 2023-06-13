@@ -14,12 +14,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  roles: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Role",
-    },
-  ],
+  // roles: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Role",
+  //   },
+  // ],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   favorites: [
     {
       type: mongoose.Schema.Types.ObjectId,

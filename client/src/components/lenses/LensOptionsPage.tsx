@@ -1,4 +1,4 @@
-
+import "./lenses.css"
 import Card from "../cards/Card";
 import { useLocation } from "react-router-dom";
 import { LensData, LensFormData } from "../../@types";
@@ -10,13 +10,16 @@ const LensOptionsPage = () => {
   const token= localStorage.getItem("token")
 
   return (
-    <div className="bg-dark text-light p-5">
-      <p>
-        <strong>Prescription R:</strong>{" "}
-        {formData && `${formData.sphRight}/ ${formData.cylRight}`}
-      </p>
-      <h2>Right Eye options:</h2>
-      <div className="d-flex flex-wrap">
+    <div className="bg-dark text-light p-3">
+      <div className="text-center">
+        <p>
+          <strong>Prescription R:</strong>{" "}
+          {formData && `${formData.sphRight}/ ${formData.cylRight}`}
+        </p>
+        <h2>Right Eye options:</h2>
+      </div>
+
+      <div className="d-flex flex-wrap justify-content-center">
         {data?.lensOptions?.rightEyeOptions.map((lens: LensData) => (
           <div key={lens._id}>
             <Card lens={lens} token={token || ""} />
@@ -24,12 +27,15 @@ const LensOptionsPage = () => {
         ))}
       </div>
       <br />
-      <p>
+      <div className="text-center">
+          <p>
         <strong>Prescription L:</strong>{" "}
         {formData && ` ${formData.sphLeft}/ ${formData.cylLeft}`}
       </p>
       <h2>Left Eye options:</h2>
-      <div className="d-flex flex-wrap">
+      </div>
+    
+      <div className="d-flex flex-wrap justify-content-center">
         {data?.lensOptions?.leftEyeOptions.map((lens: LensData) => (
           <div key={lens._id}>
             <Card lens={lens} token={token || ""} />

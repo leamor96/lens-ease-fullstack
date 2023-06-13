@@ -6,19 +6,22 @@ const isAdmin: RequestHandler = async (req, res, next) => {
 
   try {
     const user = await User.findById(userId);
-
+    if (!user.isAdmin) {
+      return res.status(401).json({ message: "Requires Admin Role" });
+    }
+    next();
+ 
     //user.roles = ['63e1fb4ff70ed483ab2fe1ad', '63e1fb4ff70ed483ab2fe1ab', '63e1fb4ff70ed483ab2fe1ac']
     //user.roles = ['63e1fb4ff70ed483ab2fe1ad']
 
     //~populate
-    const roles = await Role.find({ _id: { $in: user.roles } });
+    // const roles = await Role.find({ _id: { $in: user.roles } });
 
-    for (let role of roles) {
-      if (role.name === "admin") {
-        return next();
-      }
-    }
-    return res.status(403).json({ message: "Requires Admin Role" });
+    // for (let role of roles) {
+    //   if (role.name === "admin") {
+    //     return next();
+    //   }
+    // }
   } catch (e) {
     return res.status(500).json({ message: "Requires Admin Role", error: e });
   }

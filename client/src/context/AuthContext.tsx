@@ -5,7 +5,7 @@ const initialState: AuthContextType = {
   isLoggedIn: false,
   login(username, email, token) {},
   logout() {},
-  isAdmin:false,
+  isAdmin: false,
 };
 
 const AuthContext = createContext<AuthContextType>(initialState);
@@ -37,25 +37,27 @@ const AuthContextProvider = ({ children }: ChildProps) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     setToken(undefined);
     setEmail(undefined);
     setUsername(undefined);
   };
- const checkAdmin = () => {
-   // Retrieve the user data from local storage
-   const userData = localStorage.getItem("user");
+  const checkAdmin = () => {
+    // Retrieve the user data from local storage
+    const userData = localStorage.getItem("user");
 
-   if (userData) {
-     const user = JSON.parse(userData);
-     const userRoles = user.roles;
+    if (userData) {
+      const user = JSON.parse(userData);
+      const userRoles = user.roles;
 
-     // Check if the user has the admin role
-     const isAdmin = userRoles && userRoles.includes("admin");
+      // Check if the user has the admin role
+      const isAdmin = userRoles && userRoles.includes("admin");
 
-     setIsAdmin(isAdmin);
-   }
- };
+      setIsAdmin(isAdmin);
+    }
+  };
   // Call the checkAdmin function when the user logs in or on component mount
   useEffect(() => {
     if (isLoggedIn) {
@@ -63,7 +65,15 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     }
   }, [isLoggedIn]);
   //what we want to expose/share with the app:
-  const contextValues = { isLoggedIn, username, token, email, login, logout,isAdmin };
+  const contextValues = {
+    isLoggedIn,
+    username,
+    token,
+    email,
+    login,
+    logout,
+    isAdmin,
+  };
   return (
     <AuthContext.Provider value={contextValues}>
       {children}

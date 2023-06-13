@@ -1,9 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../../../features/cards/cardSlice";
+import { toggleFavorite } from "../../../features/favoriteProSlice";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { ProLensData } from "../../../@types";
-import "./ProCards.css"
+import "./ProCards.css";
+import AuthContext from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { BsPencil, BsTrash } from "react-icons/bs";
+import Swal from "sweetalert2";
+import { deleteProCard } from "../../../features/cards/proCardSlice";
 
 interface CardProps {
   proLens: ProLensData;
@@ -12,12 +17,15 @@ interface CardProps {
 
 const ProCard: React.FC<CardProps> = ({ proLens, token }) => {
   const dispatch = useDispatch();
-  const favorites = useSelector(
-    (state: { card: { favorites: string[] } }) => state.card.favorites
+  const favoritesPro = useSelector(
+    (state: { proCard: { favoritesPro?: string[] } }) =>
+      state.proCard.favoritesPro ||[]
   );
-  const isFavorite = favorites.includes(proLens._id);
+  const isFavorite = favoritesPro.includes(proLens._id);
 
   const headerRef = useRef<HTMLDivElement>(null);
+  const { isAdmin } = useContext(AuthContext);
+  const nav = useNavigate();
 
   const handleFavoriteToggle = () => {
     dispatch(toggleFavorite(proLens._id));
@@ -52,7 +60,9 @@ const ProCard: React.FC<CardProps> = ({ proLens, token }) => {
         <p className="card-field">Diameter: {proLens.diameter}</p>
         <p className="card-field">Minus Range: {proLens.sphRange.minus}</p>
         <p className="card-field">Plus Range: {proLens.sphRange.plus}</p>
-        <p className="card-field">Adjustment Height:{proLens.adjustmentHeight}</p>
+        <p className="card-field">
+          Adjustment Height:{proLens.adjustmentHeight}
+        </p>
         <p className="card-field">Coating: {proLens.coating}</p>
         <p className="card-field lens-price">Price: ₪{proLens.price}</p>
 
@@ -62,6 +72,51 @@ const ProCard: React.FC<CardProps> = ({ proLens, token }) => {
         >
           <FavoriteIcon />
         </button>
+        {
+          /* isAdmin && */ // Conditionally render the add/edit/delete buttons for admin */}
+          <div className="delete-edit-buttons">
+            <button
+              className="btn admin-btn btn-secondary mt-0"
+              onClick={() => {
+                nav(`/edit/${proLens._id}`);
+              }}
+            >
+              <BsPencil />
+            </button>
+            <button
+              className="btn admin-btn btn-dark mt-0"
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure you want to delete this?",
+                  showDenyButton: true,
+                  confirmButtonText: "Yes",
+                  denyButtonText: `No`,
+                  confirmButtonColor: "#ffc107",
+                  denyButtonColor: "black",
+                  showCancelButton: false,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    dispatch(deleteProCard(proLens._id));
+                    Swal.fire({
+                      title: "Deleted!",
+                      icon: "success",
+                      confirmButtonColor: "#ffc107",
+                    });
+                  } else if (result.isDenied) {
+                    Swal.fire({
+                      title: "lens not deleted",
+                      icon: "info",
+                      iconColor: "#343a40",
+                      confirmButtonColor: "#ffc107",
+                    });
+                  }
+                });
+              }}
+            >
+              <BsTrash />
+            </button>
+          </div>
+        }
       </div>
     </div>
   );

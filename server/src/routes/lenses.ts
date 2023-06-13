@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   try {
     const lenses = await Lens.find({});
     res.status(200).json(lenses);
-      console.log("start here");
+    console.log("start here");
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -97,16 +97,11 @@ router.post("/:id/favorite", validateToken, async (req, res) => {
   try {
     const userId = req.userId; // Retrieve the user ID from req.userId
     const lensId = req.params.id;
-    
 
     // Find the favorite entry for the user and lens
     const favorite = await Favorite.findOne({ user: userId, lens: lensId });
 
-
-    
     if (!favorite) {
-    
-      
       // Favorite entry does not exist, create it
       await Favorite.create({ user: userId, lens: lensId });
     } else {
@@ -124,21 +119,17 @@ router.post("/:id/favorite", validateToken, async (req, res) => {
 router.get("/favorites/:id", validateToken, async (req, res) => {
   try {
     const userId = req.userId; // Retrieve the user ID from req.userId
-    console.log("user"+userId);
-    
 
     // Find all favorite entries for the user
     const favorites = await Favorite.find({ user: userId });
+    console.log("favorites" + favorites);
 
-    console.log("fav"+favorites);
-    
     // Retrieve the lens IDs from the favorite entries
     const lensIds = favorites.map((favorite) => favorite.lens);
-console.log("lens"+ lensIds);
 
     // Fetch the lens details for the retrieved IDs
     const lenses = await Lens.find({ _id: { $in: lensIds } });
-console.log("lenses"+lenses);
+    console.log("lenses" + lenses);
 
     res.status(200).json(lenses);
   } catch (error) {
@@ -146,6 +137,5 @@ console.log("lenses"+lenses);
     res.status(500).send("Server error");
   }
 });
-
 
 export { router as lensesRouter };

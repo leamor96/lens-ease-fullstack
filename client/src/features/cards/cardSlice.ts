@@ -24,22 +24,6 @@ export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
   return response.data;
 });
 
-// Async thunk to fetch the favorite lenses data from the server
-export const fetchFavoriteLenses = createAsyncThunk(
-  "card/fetchFavoriteLenses",
-  async () => {
-    const token = localStorage.getItem("token");
-    const response = await axios.get<LensData[]>(
-      `http://localhost:3001/api/lenses/favorites/:id`,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    );
-    return response.data;
-  }
-);
 
 const cardSlice = createSlice({
   name: "card",
@@ -58,61 +42,8 @@ const cardSlice = createSlice({
         state.cards[index] = action.payload;
       }
     },
-    toggleFavorite: (state, action: PayloadAction<string>): void => {
-      const lensId = action.payload;
-      const token = localStorage.getItem("token");
 
-      const index = state.cards.findIndex((c) => c._id === lensId);
-
-      if (index !== -1) {
-        const updatedCards = [...state.cards]; // Create a new array
-
-        // Update the isFavorite field of the corresponding card in the new array
-        updatedCards[index] = {
-          ...updatedCards[index],
-          isFavorite: !updatedCards[index].isFavorite,
-        };
-
-        const favoriteStatus = updatedCards[index].isFavorite;
-
-        // Replace the cards array in the state with the updated array
-        state.cards = updatedCards;
-
-        // Update the favorites array in the state
-        if (favoriteStatus) {
-          state.favorites = state.favorites.filter((id) => id !== lensId);
-        } else {
-          state.favorites.push(lensId);
-        }
-
-        // Send a request to the server to update the favorite status
-        axios
-          .post(
-            `http://localhost:3001/api/lenses/${lensId}/favorite`,
-            {},
-            {
-              headers: {
-                Authorization: `${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            // Handle the response if needed
-          })
-          .catch((error) => {
-            // Handle any errors
-            console.error("Failed to update favorite status", error);
-            // Reset the local favorite status to its previous value
-            state.cards[index].isFavorite = !favoriteStatus;
-            // Reset the favorites array in the state
-            if (favoriteStatus) {
-              state.favorites.push(lensId);
-            } else {
-              state.favorites = state.favorites.filter((id) => id !== lensId);
-            }
-          });
-      }
-    },
+  
   },
   extraReducers: (builder) => {
     builder
@@ -127,21 +58,11 @@ const cardSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(fetchFavoriteLenses.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchFavoriteLenses.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.cards = action.payload;
-      })
-      .addCase(fetchFavoriteLenses.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
   },
-});
+}); 
 
-export const { addCard, deleteCard, editCard, toggleFavorite } =
+
+export const { addCard, deleteCard, editCard } =
   cardSlice.actions;
 
 export default cardSlice.reducer;
