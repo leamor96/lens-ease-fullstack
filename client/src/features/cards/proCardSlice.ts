@@ -39,6 +39,49 @@ const proCardSlice = createSlice({
         state.proCards[index] = action.payload;
       }
     },
+    toggleFavorite: (state, action: PayloadAction<string>): void => {
+      const proLensId = action.payload;
+      const token = localStorage.getItem("token");
+      const index = state.proCards.findIndex((c) => c._id === proLensId);
+
+      if (index !== -1) {
+        const updatedCardPro = [...state.proCards]; // Create a new array
+
+        // Update the isFavorite field of the corresponding card in the new array
+        updatedCardPro[index] = {
+          ...updatedCardPro[index],
+          isFavorite: !updatedCardPro[index].isFavorite,
+        };
+
+        const favoriteProStatus = updatedCardPro[index].isFavorite;
+
+        // Replace the cards array in the state with the updated array
+        state.proCards = updatedCardPro;
+
+
+        // Send a request to the server to update the favorite status
+        axios
+          .post(
+            `http://localhost:3001/api/pro-lenses/${proLensId}/favorite`,
+            {},
+            {
+              headers: {
+                Authorization: `${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            // Handle the response if needed
+          })
+          .catch((error) => {
+            // Handle any errors
+            console.error("Failed to update favorite status", error);
+            // Reset the local favorite status to its previous value
+            state.proCards[index].isFavorite = !favoriteProStatus;
+          
+          });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,11 +95,11 @@ const proCardSlice = createSlice({
       .addCase(fetchProCards.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      })
+      });
   },
 });
 
-export const { addProCard, deleteProCard, editProCard } =
+export const { addProCard, deleteProCard, editProCard ,toggleFavorite} =
   proCardSlice.actions;
 
 export default proCardSlice.reducer;

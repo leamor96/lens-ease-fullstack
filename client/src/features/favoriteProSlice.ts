@@ -43,66 +43,6 @@ const favoriteProSlice = createSlice({
         (proCard) => proCard._id !== action.payload
       );
     },
-    toggleFavorite: (state, action: PayloadAction<string>): void => {
-      const proLensId = action.payload;
-      const token = localStorage.getItem("token");
-      const index = state.favoritesPro.findIndex((c) => c._id === proLensId);
-
-      if (index !== -1) {
-        const updatedFavoritesPro = [...state.favoritesPro]; // Create a new array
-
-        // Update the isFavorite field of the corresponding card in the new array
-        updatedFavoritesPro[index] = {
-          ...updatedFavoritesPro[index],
-          isFavorite: !updatedFavoritesPro[index].isFavorite,
-        };
-
-        const favoriteProStatus = updatedFavoritesPro[index].isFavorite;
-
-        // Replace the cards array in the state with the updated array
-        state.favoritesPro = updatedFavoritesPro;
-
-        // Update the favorites array in the state
-        if (favoriteProStatus) {
-          state.favoritesPro = state.favoritesPro.filter(
-            (favorite) => favorite._id !== proLensId
-          );
-        } else {
-          state.favoritesPro[index].isFavorite =
-            !state.favoritesPro[index].isFavorite;
-        }
-
-        // Send a request to the server to update the favorite status
-        axios
-          .post(
-            `http://localhost:3001/api/pro-lenses/${proLensId}/favorite`,
-            {},
-            {
-              headers: {
-                Authorization: `${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            // Handle the response if needed
-          })
-          .catch((error) => {
-            // Handle any errors
-            console.error("Failed to update favorite status", error);
-            // Reset the local favorite status to its previous value
-            state.favoritesPro[index].isFavorite = !favoriteProStatus;
-            // Reset the favorites array in the state
-            if (favoriteProStatus) {
-              state.favoritesPro[index].isFavorite =
-                !state.favoritesPro[index].isFavorite;
-            } else {
-              state.favoritesPro = state.favoritesPro.filter(
-                (favorite) => favorite._id !== proLensId
-              );
-            }
-          });
-      }
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -120,7 +60,7 @@ const favoriteProSlice = createSlice({
   },
 });
 
-export const { getFavoritePro, deleteFavoritePro, toggleFavorite } =
+export const { getFavoritePro, deleteFavoritePro } =
   favoriteProSlice.actions;
 
 export default favoriteProSlice.reducer;

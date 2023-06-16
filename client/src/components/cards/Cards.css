@@ -19,18 +19,19 @@
   width: 13rem !important;
   height: 19rem !important; 
 }
+.card-details{
+  width: 24rem;
+  height: 23.5rem;
+}
 .admin-btn {
-  margin-right: 0.2rem;
+  margin-right: 0.4rem;
 }
 .delete-edit-buttons {
  position: absolute;
-  top: 4.5rem;
+ bottom: 0.9rem;
   right: 0.5rem;
 }
 
-.delete-edit-buttons button {
-  font-size: 0.7rem;
-}
 
 .header-field {
   font-size: 0.9rem !important;
@@ -44,7 +45,13 @@
  position: absolute;
  bottom: 0.5rem;
  right: 0.5rem;
- font-size: 1rem;
+ font-size: 1.2rem;
+}
+.more-icon{
+  position: absolute;
+ bottom: 0.5rem;
+ right: 2rem;
+ font-size: 1.2rem;
 }
 .bg-cards{
   background-color: #343a40;
@@ -78,4 +85,11 @@
   height: 2rem;
 }
 
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem; 
 }

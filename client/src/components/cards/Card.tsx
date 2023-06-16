@@ -1,14 +1,13 @@
-import { useContext, useEffect, useRef } from "react";
+
 import { useDispatch ,useSelector} from "react-redux";
-import { deleteCard } from "../../features/cards/cardSlice";
+
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import "./Cards.css";
 import { LensData } from "../../@types";
-import {AuthContext} from "../../context/AuthContext"
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import { BsPencil, BsTrash } from "react-icons/bs";
-import { toggleFavorite } from "../../features/favoriteProSlice";
+import { CiCircleMore } from "react-icons/ci";
+import { toggleFavorite } from "../../features/cards/cardSlice";
+import { useEffect, useRef } from "react";
 
 interface CardProps {
   lens: LensData;
@@ -22,7 +21,6 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
   );
   const isFavorite = favorites.includes(lens._id);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { isAdmin } = useContext(AuthContext);
   const nav = useNavigate();
   
   const handleFavoriteToggle = () => {
@@ -68,50 +66,14 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
         >
           <FavoriteIcon />
         </button>
-     {/* isAdmin && */ ( // Conditionally render the add/edit/delete buttons for admin */}
-        <div className="delete-edit-buttons">
-          <button
-            className="btn admin-btn btn-secondary mt-0"
-            onClick={() => {
-              nav(`/edit/${lens._id}`);
-            }}
-          >
-            <BsPencil />
-          </button>
-          <button
-            className="btn admin-btn btn-dark mt-0"
-            onClick={() => {
-              Swal.fire({
-                title: "Are you sure you want to delete this?",
-                showDenyButton: true,
-                confirmButtonText: "Yes",
-                denyButtonText: `No`,
-                confirmButtonColor: "#ffc107",
-                denyButtonColor: "black",
-                showCancelButton: false,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  dispatch(deleteCard(lens._id));
-                  Swal.fire({
-                    title: "Deleted!",
-                    icon: "success",
-                    confirmButtonColor: "#ffc107",
-                  });
-                } else if (result.isDenied) {
-                  Swal.fire({
-                    title: "lens not deleted",
-                    icon: "info",
-                    iconColor: "#343a40",
-                    confirmButtonColor: "#ffc107",
-                  });
-                }
-              });
-            }}
-          >
-            <BsTrash />
-          </button>
-        </div>
-         )} 
+        <button
+          className="border-0 bg-transparent text-light more-icon"
+          onClick={() => {
+            nav(`/cards/details/${lens._id}`);
+          }}
+        >
+          <CiCircleMore />
+        </button>
       </div>
     </div>
   );

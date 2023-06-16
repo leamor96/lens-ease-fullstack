@@ -18,12 +18,14 @@ import ProLensOptions from "./components/lenses/ProLensOptions";
 import ProCardList from "./components/cards/pro-cards/ProCardList";
 import Lenses from "./routes/Lenses";
 import jwt_decode from "jwt-decode";
-
+import CardDetails from "./components/cards/CardDetails";
+import EditLens from "./components/lenses/admin-only/EditLens";
+import ProCardDetails from "./components/cards/pro-cards/ProCardDetails";
 
 function App() {
-
-
   const { isLoggedIn } = useContext(AuthContext);
+
+  //להבין איך מוציאים אדמין מהטוקן נכון
   const token: string | null = localStorage.getItem("token");
   let isAdmin = false;
 
@@ -55,6 +57,13 @@ function App() {
         {isLoggedIn && (
           <Route path="/lenses/pro-card-list" element={<ProCardList />} />
         )}
+        {isLoggedIn && (
+          <Route path="/cards/details/:id" element={<CardDetails />} />
+        )}
+        {isLoggedIn && (
+          <Route path="/pro-cards/details/:id" element={<ProCardDetails />} />
+        )}
+        {isAdmin &&  <Route path="/edit/:id" element={<EditLens />} />}
       </Routes>
       <Footer />
     </>

@@ -24,7 +24,7 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZ
 GET http://localhost:3001/api/lenses
 
 ### GET all pro-lenses
-GET http://localhost:3001/api/pro-lenses
+GET http://localhost:3001/api/lenses
 
 
 
@@ -73,20 +73,20 @@ Content-Type: application/json
 
 POST http://localhost:3001/api/pro-lenses
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZjZmI1YjZjYmRkMCIsImlhdCI6MTY4NjU2NDg2MCwiZXhwIjoxNjg5MTU2ODYwfQ.5yLj7FZm-QxvGA7vXu1xD2XpfPvmxERJtHb6E8L7rN4
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODhhYTcxMGJlZjQwZDVjNzljOWJkNCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4NjkyNTA5MiwiZXhwIjoxNjg5NTE3MDkyfQ.oVxh2z4XymO6Lnine42MXDw8zoHPlziim-YiO4d3e8s
 
 {
     "name": "STEPPER",
-    "lensType":"DSP Technology",
+    "lensType":"Transitions gray",
     "index": 1.74,
     "diameter": "90",
     "sphRange": {
         "minus": [-15],
-        "plus": [13]
+        "plus": [11]
     },
     "adjustmentHeight":"14/15/17/18",
     "coating": "SN",
-    "price": 3650
+    "price": 4350
 }
 
 
@@ -100,3 +100,14 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDU0N2ZhNDQwYTZj
 GET http://localhost:3001/api/lenses/favorites/6488aa710bef40d5c79c9bd4
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODhhYTcxMGJlZjQwZDVjNzljOWJkNCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2ODY2ODU2MzcsImV4cCI6MTY4OTI3NzYzN30.WiSukMZN4Q8VnaI4q_-QBT2OswstEWFQElN0NeXlkXo
+
+
+###POST to add user:
+POST http://localhost:3001/api/auth/signup
+Content-Type: application/json
+
+{
+    "username":"mish",
+    "email":"mish@gmail.com",
+    "password":"Mish@1234!!"
+}
