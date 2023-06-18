@@ -1,3 +1,11 @@
+.nav-link{
+  transform: 0.3s ease-in-out;
+}
+.nav-link:hover{
+  color:#ffc107 !important;
+   transform: scale(1.1);
+}
+
 .logo {
   color:#ffc107;
   font-size: 2rem;

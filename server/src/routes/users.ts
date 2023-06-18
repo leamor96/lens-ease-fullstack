@@ -61,6 +61,7 @@ router.post("/signin", validateSignIn, async (req, res) => {
       username: user.username,
       email: user.email,
       accessToken: token,
+      id: user.id
     });
   } catch (e) {
     return res.status(500).json({ message: "Server error", error: e });

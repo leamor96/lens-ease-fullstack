@@ -3,7 +3,7 @@ import { AuthContextType, ChildProps } from "../@types";
 
 const initialState: AuthContextType = {
   isLoggedIn: false,
-  login(username, email, token) {},
+  login(username, email, token,id) {},
   logout() {},
   isAdmin: false,
 };
@@ -18,8 +18,9 @@ const AuthContextProvider = ({ children }: ChildProps) => {
       const token = user.token;
       const email = user.email;
       const username = user.username;
+      const id = user.id;
 
-      login(username, email, token);
+      login(username, email, token, id);
     }
   }, []);
 
@@ -27,22 +28,31 @@ const AuthContextProvider = ({ children }: ChildProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | undefined>(undefined);
+  const [id, setId] = useState<string | undefined>(undefined);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const login = (username: string, email: string, token: string) => {
+  const login = (
+    username: string,
+    email: string,
+    token: string,
+    id: string
+  ) => {
     setIsLoggedIn(true);
     setEmail(email);
     setUsername(username);
     setToken(token);
+    setId(id)
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
     setToken(undefined);
     setEmail(undefined);
     setUsername(undefined);
+    setId(undefined);
   };
   const checkAdmin = () => {
     // Retrieve the user data from local storage
@@ -70,6 +80,7 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     username,
     token,
     email,
+    id,
     login,
     logout,
     isAdmin,

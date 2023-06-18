@@ -3,12 +3,14 @@ import { Lens } from "../db/models/lens.js";
 import { validateToken } from "../middleware/validateToken.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 import { Favorite } from "../db/models/favorite.js";
+import { User } from "../db/models/user.js";
 const router = Router();
 
 // Get all the lenses from the database
 router.get("/", async (req, res) => {
   try {
     const lenses = await Lens.find({});
+
     res.status(200).json(lenses);
   } catch (error) {
     console.error(error);
@@ -65,13 +67,12 @@ router.post("/", validateToken, isAdmin, async (req, res) => {
 router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
     const lensId = req.params.id;
-    console.log("lensID ",lensId);
-    
+    console.log("lensID ", lensId);
 
     const updatedLens = await Lens.findByIdAndUpdate(lensId, req.body, {
       new: true,
     });
-     console.log("updatedLens ", updatedLens);
+    console.log("updatedLens ", updatedLens);
     res.json(updatedLens);
   } catch (error) {
     console.error(error);
@@ -95,21 +96,27 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
 });
 
 // Toggle favorite status of a lens for the authenticated user
-router.post("/:id/favorite", validateToken, async (req, res) => {
+router.post("/:userId/favorite/:lensId", validateToken, async (req, res) => {
   try {
-    const userId = req.userId; // Retrieve the user ID from req.userId
-    const lensId = req.params.id;
+    const userId = req.params.userId; // Retrieve the user ID from req.userId
+    const lensId = req.params.lensId;
 
     // Find the favorite entry for the user and lens
-    const favorite = await Favorite.findOne({ user: userId, lens: lensId });
+    const user = await User.findById(userId);
+    const lens = await Lens.findById(lensId);
 
-    if (!favorite) {
-      // Favorite entry does not exist, create it
-      await Favorite.create({ user: userId, lens: lensId });
-    } else {
-      // Favorite entry exists, delete it
-      await Favorite.findByIdAndDelete(favorite._id);
+    if (!user) {
+      return res.status(404).send("User not found.");
     }
+
+    const lensExists = user.favoritesLens.find((e) => e.toString() === lensId);
+
+    if (lensExists) {
+      return res.status(422).send("This Exists!");
+    }
+
+   user.favoritesLens.push(lens);
+    await user.save();
 
     res.status(200).send("Favorite status updated successfully");
   } catch (error) {
@@ -118,9 +125,9 @@ router.post("/:id/favorite", validateToken, async (req, res) => {
   }
 });
 // Get all favorite lenses for the authenticated user
-router.get("/favorites/:id", validateToken, async (req, res) => {
+router.get("/:userId/favorites", validateToken, async (req, res) => {
   try {
-    const userId = req.userId; // Retrieve the user ID from req.userId
+    const userId = req.params.id; // Retrieve the user ID from req.userId
 
     // Find all favorite entries for the user
     const favorites = await Favorite.find({ user: userId });

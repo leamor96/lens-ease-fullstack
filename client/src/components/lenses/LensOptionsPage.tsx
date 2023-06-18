@@ -27,14 +27,15 @@ const LensOptionsPage = () => {
         ))}
       </div>
       <br />
+      <hr className="my-hr" />
       <div className="text-center">
-          <p>
-        <strong>Prescription L:</strong>{" "}
-        {formData && ` ${formData.sphLeft}/ ${formData.cylLeft}`}
-      </p>
-      <h2>Left Eye options:</h2>
+        <p>
+          <strong>Prescription L:</strong>{" "}
+          {formData && ` ${formData.sphLeft}/ ${formData.cylLeft}`}
+        </p>
+        <h2>Left Eye options:</h2>
       </div>
-    
+
       <div className="d-flex flex-wrap justify-content-center">
         {data?.lensOptions?.leftEyeOptions.map((lens: LensData) => (
           <div key={lens._id}>

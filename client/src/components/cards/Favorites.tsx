@@ -23,17 +23,18 @@ const Favorites = () => {
 
   return (
     <div className="bg-dark text-light p-5">
-      <h2>Single Vision Favorites:</h2>
-      <div className="d-flex flex-wrap">
+      <h2 className="text-center">Single Vision Favorites:</h2>
+      <div className="d-flex flex-wrap justify-content-center">
         {favorites.map((lens: LensData) => (
           <div key={lens._id}>
             <Card lens={lens} token={token || ""} />
           </div>
         ))}
       </div>
+   
       <br />
-      <h2>Progressive Favorites:</h2>
-      <div className="d-flex flex-wrap">
+      <h2 className="text-center">Progressive Favorites:</h2>
+      <div className="d-flex flex-wrap justify-content-center">
         {favoritesPro.map((proLens: ProLensData) => (
           <div key={proLens._id}>
             <ProCard proLens={proLens} token={token || ""} />

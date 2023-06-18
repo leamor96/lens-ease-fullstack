@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { editCard } from "../../../features/cards/cardSlice";
 import { LensData } from "../../../@types";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AdminOnly.css";
 
@@ -12,6 +12,7 @@ const EditLens: React.FC = () => {
   const token = localStorage.getItem("token");
   const [editedLens, setEditedLens] = useState<LensData>(lens);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleInputChange = (
     e:
@@ -41,13 +42,14 @@ const EditLens: React.FC = () => {
 
       // Dispatch the editCard action to update the lens in the Redux store
       dispatch(editCard(editedLens));
+      navigate(-1);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <div className="bg-dark p-5 d-flex justify-content-center">
+    <div className="bg-dark p-3 d-flex justify-content-center">
       <div className="card-details card p-2">
         <label>
           Name:

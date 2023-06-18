@@ -74,6 +74,13 @@
   height: 13rem;
 }
 
+.my-hr{
+height: 0.5rem;
+background:#f8f9fa;
+border-radius: 1rem;
+}
+
+
 /* כרגע לא עובד */
 @media (max-width: 767px) {
    .card-list-container {

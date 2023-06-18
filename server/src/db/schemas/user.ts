@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import { lensSchema } from "./lens.js";
+import { proLensSchema } from "./proLens.js";
 
 const userSchema = new Schema({
   username: {
@@ -24,12 +26,14 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  favorites: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Favorite",
-    },
-  ],
+  // favorites: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Favorite",
+  //   },
+  // ],
+  favoritesLens: [lensSchema],
+  favoritesProLens: [proLensSchema],
 });
 
 export { userSchema };

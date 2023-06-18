@@ -1,11 +1,11 @@
 import { FaLinkedin, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import { GiMicroscopeLens } from "react-icons/gi";
-import "./Footer.css"
+import "./Footer.css";
 
 export const Footer = () => {
-const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-dark text-light">
+    <footer className=" text-light footer">
       <div
         className="container py-4 d-flex justify-content-between align-items-center"
         style={{ width: "80%" }}
@@ -21,17 +21,25 @@ const currentYear = new Date().getFullYear();
         </div>
         <div className="d-flex social">
           <a
+            target="_blank"
             href="https://www.linkedin.com/in/lea-ohayon-0938ab265"
-            className="text-light mx-2"
+            className="text-light mx-2" rel="noreferrer"
           >
             <FaLinkedin />
           </a>
-          <a href="mailto:leamor96@gmail.com" className="text-light mx-2">
+          <a
+            target="_blank"
+            href="mailto:leamor96@gmail.com"
+            className="text-light mx-2"
+            rel="noreferrer"
+          >
             <FaEnvelope />
           </a>
           <a
-            href="https://api.whatsapp.com/send?phone=0584182639"
+            target="_blank"
+            href="https://api.whatsapp.com/send?phone=972584182639"
             className="text-light mx-2"
+            rel="noreferrer"
           >
             <FaWhatsapp />
           </a>

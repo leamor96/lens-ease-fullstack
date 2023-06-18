@@ -31,7 +31,7 @@ const CardDetails: React.FC = () => {
     return <div className="bg-dark text-light p-5">Loading...</div>;
   }
   return (
-    <div className="bg-dark p-5 d-flex justify-content-center">
+    <div className="bg-dark p-3 d-flex justify-content-center">
       <div className="card-details card">
         <div className="card-header">
           <div className="header-field">{lens.name}</div>
@@ -48,7 +48,7 @@ const CardDetails: React.FC = () => {
           <p>Coating: {lens.coating}</p>
           <p>Price: ₪{lens.price}</p>
           <button
-            className="btn btn-dark"
+            className="btn btn-back btn-dark"
             onClick={() => {
               navigate(-1);
             }}

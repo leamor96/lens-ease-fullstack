@@ -32,7 +32,7 @@ const ProCardDetails: React.FC = () => {
   }
 
   return (
-    <div className="bg-dark p-5 d-flex justify-content-center">
+    <div className="bg-dark p-3 d-flex justify-content-center">
       <div className="card-details card">
         <div className="card-header">
           <div className="header-field">{proLens.name}</div>
@@ -57,13 +57,12 @@ const ProCardDetails: React.FC = () => {
           >
             Back
           </button>
-          {
-            /* isAdmin && */ // Conditionally render the add/edit/delete buttons for admin */}
+          { isAdmin &&  // Conditionally render the add/edit/delete buttons for admin}
             <div className="delete-edit-buttons">
               <button
                 className="btn admin-btn btn-secondary mt-0"
                 onClick={() => {
-                  navigate(`/admin/edit-pro/${proLens._id}`);
+                  navigate(`/edit-pro/${proLens._id}`, { state: { proLens }});
                 }}
               >
                 <BsPencil />

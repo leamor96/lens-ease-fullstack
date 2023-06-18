@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { LoginFormType } from "../../@types"; 
+import { LoginFormType } from "../../@types";
 import AuthContext from "../../context/AuthContext";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -9,57 +9,54 @@ import authService from "../../services/auth.service";
 import "./LoginPage.css";
 
 const LoginPage = () => {
-     const nav = useNavigate();
-     //prevent double submit:
-     const [isLoading, setIsLoading] = useState(false);
-     const [errMessage, setErrMessage] = useState<string | undefined>(
-       undefined
-     );
-     const { isLoggedIn, login } = useContext(AuthContext);
+  const nav = useNavigate();
+  //prevent double submit:
+  const [isLoading, setIsLoading] = useState(false);
+  const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
+  const { isLoggedIn, login } = useContext(AuthContext);
 
-     const initialValues = {
-       email: "",
-       password: "",
-     };
+  const initialValues = {
+    email: "",
+    password: "",
+  };
 
-     //Validations:
-     const validationSchema = Yup.object({
-       email: Yup.string().email("Must be a valid email").required(),
-       password: Yup.string().min(3, "Password is too short").required(),
-     });
+  //Validations:
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Must be a valid email").required(),
+    password: Yup.string().min(3, "Password is too short").required(),
+  });
 
-     //if all is valid=> this method is invoked
-     const handleLogin = (formValues: LoginFormType) => {
-       setIsLoading(true);
+  //if all is valid=> this method is invoked
+  const handleLogin = (formValues: LoginFormType) => {
+    setIsLoading(true);
 
-       const { email, password } = formValues;
-       authService
-         .login(email, password)
-         .then((res) => {
-           const token = res.accessToken;
-           const email = res.email;
-           const username = res.username;
-           //update the context...
-           login(username, email, token);
-           nav("/");
-         })
-         .catch((e) => {
-           console.log(e);
-           alert(e); //swal //modal
-           setErrMessage(JSON.stringify(e.response.data));
-         })
-         .finally(() => {
-           setIsLoading(false);
-         });
-     };
-     if (isLoggedIn) {
-       return <Navigate to="/" />;
-     }
+    const { email, password } = formValues;
+    authService
+      .login(email, password)
+      .then((res) => {
+        const token = res.accessToken;
+        const email = res.email;
+        const username = res.username;
+        const id = res.id;
+        //update the context...
+        login(username, email, token, id);
+        nav("/");
+      })
+      .catch((e) => {
+        console.log(e);
+        alert(e); //swal //modal
+        setErrMessage(JSON.stringify(e.response.data));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="login-page">
-      <div className="login-error">
-        {errMessage && <div>{errMessage}</div>}
-      </div>
+      <div className="login-error">{errMessage && <div>{errMessage}</div>}</div>
       <div className="loader-container">
         {isLoading && (
           <ColorRing

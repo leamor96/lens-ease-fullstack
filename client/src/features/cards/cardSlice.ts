@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../../@types";
 
+
 interface CardState {
   cards: LensData[];
   favorites: string[]; // Array of card IDs that are marked as favorites
@@ -45,6 +46,9 @@ const cardSlice = createSlice({
     toggleFavorite: (state, action: PayloadAction<string>): void => {
       const lensId = action.payload;
       const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      
+    
       const index = state.cards.findIndex((c) => c._id === lensId);
 
       if (index !== -1) {
@@ -64,7 +68,7 @@ const cardSlice = createSlice({
         // Send a request to the server to update the favorite status
         axios
           .post(
-            `http://localhost:3001/api/lenses/${lensId}/favorite`,
+            `http://localhost:3001/api/lenses/${userId}/favorite/${lensId}`,
             {},
             {
               headers: {

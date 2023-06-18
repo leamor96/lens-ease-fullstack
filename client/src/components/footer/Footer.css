@@ -1,38 +1,46 @@
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #212529a7;
+  z-index: 10;
+}
+
 .logo {
-  color:#ffc107;
+  color: #ffc107;
   font-size: 2rem;
   width: 1.5rem;
   height: 1.5rem;
 }
-.brand{
+.brand {
   font-size: 2rem !important;
   text-decoration: none !important;
 }
 
-.social{
-   font-size: 1.5rem !important;
+.social {
+  font-size: 1.5rem !important;
 }
-  .copyright-mobile{
-    display: none !important;
-  }
+.copyright-mobile {
+  display: none !important;
+}
 
 @media (max-width: 768px) {
   .logo {
-  font-size: 1rem;
-  width: 1rem;
-  height: 1rem;
-}
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
 
   .brand {
     font-size: 0.7rem !important;
   }
-  .social{
+  .social {
     font-size: 1rem !important;
   }
-  .copyright{
-    display:none;
+  .copyright {
+    display: none;
   }
-  .copyright-mobile{
+  .copyright-mobile {
     display: block !important;
   }
 }

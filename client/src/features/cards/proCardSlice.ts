@@ -42,6 +42,8 @@ const proCardSlice = createSlice({
     toggleFavorite: (state, action: PayloadAction<string>): void => {
       const proLensId = action.payload;
       const token = localStorage.getItem("token");
+const userId = localStorage.getItem("userId");
+
       const index = state.proCards.findIndex((c) => c._id === proLensId);
 
       if (index !== -1) {
@@ -62,7 +64,7 @@ const proCardSlice = createSlice({
         // Send a request to the server to update the favorite status
         axios
           .post(
-            `http://localhost:3001/api/pro-lenses/${proLensId}/favorite`,
+            `http://localhost:3001/api/pro-lenses/${userId}/favorite/${proLensId}`,
             {},
             {
               headers: {
@@ -78,7 +80,6 @@ const proCardSlice = createSlice({
             console.error("Failed to update favorite status", error);
             // Reset the local favorite status to its previous value
             state.proCards[index].isFavorite = !favoriteProStatus;
-          
           });
       }
     },

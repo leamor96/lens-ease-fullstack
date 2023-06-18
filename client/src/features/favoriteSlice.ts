@@ -1,7 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../@types";
 import { RootState } from "../app/store";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
 
 interface FavoritesState {
   favorites: LensData[]; // Array of card IDs that are marked as favorites
@@ -20,15 +22,19 @@ export const fetchFavoriteLenses = createAsyncThunk(
   "card/fetchFavoriteLenses",
   async () => {
     const token = localStorage.getItem("token");
-    const response = await axios.get<LensData[]>(
-      `http://localhost:3001/api/lenses/favorites/:id`,
+    const userId = localStorage.getItem("userId");
+    const { id } = useContext(AuthContext);
+
+    const { data } = await axios.get<LensData[]>(
+      `http://localhost:3001/api/lenses/${userId}/favorites`,
       {
         headers: {
           Authorization: `${token}`,
         },
       }
-    ); 
-    return response.data;
+    );
+
+    return data;
   }
 );
 
@@ -40,7 +46,9 @@ const favoriteSlice = createSlice({
       state.favorites.push(action.payload);
     },
     deleteFavorite(state, action: PayloadAction<string>) {
-      state.favorites = state.favorites.filter((favorite) => favorite._id !== action.payload);
+      state.favorites = state.favorites.filter(
+        (favorite) => favorite._id !== action.payload
+      );
     },
   },
   extraReducers: (builder) => {
@@ -57,7 +65,7 @@ const favoriteSlice = createSlice({
         state.error = action.error.message;
       });
   },
-}); 
+});
 
 export const selectFavorites = (state: RootState) => state.card.favorites;
 

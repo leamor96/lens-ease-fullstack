@@ -3,6 +3,7 @@ import { ProLens } from "../db/models/proLens.js";
 import { validateToken } from "../middleware/validateToken.js";
 import { isAdmin } from "../middleware/isAdmin.js";
 import { Favorite } from "../db/models/favorite.js";
+import { User } from "../db/models/user.js";
 
 const router = Router();
 
@@ -91,23 +92,26 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
 });
 
 // Toggle favorite status of a lens for the authenticated user
-router.post("/:id/favorite", validateToken, async (req, res) => {
+router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
   try {
-    const userId = req.userId; // Retrieve the user ID from req.userId
-    const proLensId = req.params.id;
-    
-    
+    const userId = req.params.userId; // Retrieve the user ID from req.userId
+    const proLensId = req.params.proLensId;
 
     // Find the favorite entry for the user and lens
-    const favorite = await Favorite.findOne({ user: userId, proLens: proLensId });
+    const user = await User.findById(userId);
+    const proLens = await ProLens.findById(proLensId);
 
-    if (!favorite) {
-      // Favorite entry does not exist, create it
-      await Favorite.create({ user: userId, proLens: proLensId });
-    } else {
-      // Favorite entry exists, delete it
-      await Favorite.findByIdAndDelete(favorite._id);
+    if (!user) {
+      return res.status(404).send("User not found.");
     }
+    const proLensExists = user.favoritesProLens.find(
+      (e) => e.toString() === proLensId
+    );
+    if (proLensExists) {
+      return res.status(422).send("This Exists!");
+    }
+     user.favoritesProLens.push(proLens);
+     await user.save();
 
     res.status(200).send("Favorite status updated successfully");
   } catch (error) {
@@ -128,7 +132,6 @@ router.get("/favorites/:id", validateToken, async (req, res) => {
 
     // Fetch the lens details for the retrieved IDs
     const proLenses = await ProLens.find({ _id: { $in: proLensIds } });
-
 
     res.status(200).json(proLenses);
   } catch (error) {

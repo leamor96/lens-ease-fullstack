@@ -3,10 +3,11 @@ export type AuthContextType = {
   isLoggedIn: boolean;
   username?: string;
   email?: string;
+  id?: string;
   token?: string;
-  login: (username: string, email: string, token: string) => void;
+  login: (username: string, email: string, token: string, id: string) => void;
   logout: () => void;
-  isAdmin:boolean;
+  isAdmin: boolean;
 };
 
 export type ChildProps = {
@@ -23,7 +24,6 @@ export type LoginFormType = {
   email: string;
   password: string;
 };
-
 
 export interface Lens {
   _id: string;

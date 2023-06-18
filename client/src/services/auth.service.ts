@@ -2,21 +2,28 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3001/api/auth";
 
-const register = (username: string, email: string, password: string) => {
-  return axios.post(baseUrl + "/signup", { username, email, password });
+const register = async (username: string, email: string, password: string) => {
+  return await axios.post(baseUrl + "/signup", { username, email, password });
 };
 
-const login = (email: string, password: string) => {
-  return axios.post(baseUrl + "/signin", { email, password }).then((res) => {
-    const token = res.data.accessToken;
-    const email = res.data.email;
-    const username = res.data.username;
-    if (token) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ email, username, token }));
-    }
-    return res.data;
-  });
+const login = async (email: string, password: string) => {
+  return await axios
+    .post(baseUrl + "/signin", { email, password })
+    .then((res) => {
+      const token = res.data.accessToken;
+      const email = res.data.email;
+      const username = res.data.username;
+      const id = res.data.id;
+      if (token) {
+        localStorage.setItem("token", token);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ email, username, token, id })
+        );
+        localStorage.setItem("userId", id);
+      }
+      return res.data;
+    });
 };
 
 const logout = () => {

@@ -15,6 +15,8 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ lens,token }) => {
+  console.log(lens);
+  
   const dispatch = useDispatch();
   const favorites = useSelector(
     (state: { card: { favorites?: string[] } }) => state.card.favorites||[]
@@ -38,8 +40,9 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
       }
     }
   }, []);
+  console.log(isFavorite);
 
-  const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
+  // const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
 
   return (
     <div className="card card-size m-2">
@@ -64,7 +67,7 @@ const Card: React.FC<CardProps> = ({ lens,token }) => {
           className="border-0 bg-transparent favorite-icon"
           onClick={handleFavoriteToggle}
         >
-          <FavoriteIcon />
+          {isFavorite ? <MdFavorite/> : <MdOutlineFavoriteBorder/>}
         </button>
         <button
           className="border-0 bg-transparent text-light more-icon"

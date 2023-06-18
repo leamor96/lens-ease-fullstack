@@ -1,4 +1,10 @@
-/* .card-details{
-  width: 24rem;
-  height: 23.5rem;
-} */
+
+
+@media (max-width: 767px) {
+.btn-back{
+  padding: 0.34rem !important;
+}
+.delete-edit-buttons{
+  padding: 0.01rem !important;
+}
+} 

@@ -21,6 +21,7 @@ import jwt_decode from "jwt-decode";
 import CardDetails from "./components/cards/CardDetails";
 import EditLens from "./components/lenses/admin-only/EditLens";
 import ProCardDetails from "./components/cards/pro-cards/ProCardDetails";
+import EditProLens from "./components/lenses/admin-only/EditProLens";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -33,7 +34,7 @@ function App() {
     const decodedToken: { isAdmin: boolean } = jwt_decode(token);
     isAdmin = decodedToken.isAdmin;
   }
-  console.log(isAdmin);
+ /*  console.log(isAdmin); */
   
 
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="/pro-cards/details/:id" element={<ProCardDetails />} />
         )}
         {isAdmin &&  <Route path="/edit/:id" element={<EditLens />} />}
+        {isAdmin &&  <Route path="/edit-pro/:id" element={<EditProLens />} />}
       </Routes>
       <Footer />
     </>
