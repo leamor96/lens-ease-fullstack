@@ -59,7 +59,9 @@ const CardDetails: React.FC = () => {
             <div className="delete-edit-buttons">
               <button
                 className="btn admin-btn btn-secondary mt-0"
-                onClick={() => navigate(`/edit/${lens._id},{state:{lens}}`)}
+                onClick={() =>
+                  navigate(`/edit/${lens._id}`, { state: { lens } })
+                }
               >
                 <BsPencil />
               </button>
@@ -70,7 +72,7 @@ const CardDetails: React.FC = () => {
                     title: "Are you sure you want to delete this?",
                     showDenyButton: true,
                     confirmButtonText: "Yes",
-                    denyButtonText: `No`,
+                    denyButtonText: "No",
                     confirmButtonColor: "#ffc107",
                     denyButtonColor: "black",
                     showCancelButton: false,

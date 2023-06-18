@@ -79,7 +79,6 @@ const SingleVisionForm = () => {
 
       try {
         const data = await dispatch(submitFormData(formData));
-        console.log(data);
 
         navigate("/lens-options", { state: { data } });
       } catch (error: any) {

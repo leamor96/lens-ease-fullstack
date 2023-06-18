@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
   try {
     const lenses = await Lens.find({});
     res.status(200).json(lenses);
-    console.log("start here");
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -66,10 +65,13 @@ router.post("/", validateToken, isAdmin, async (req, res) => {
 router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
     const lensId = req.params.id;
+    console.log("lensID ",lensId);
+    
 
     const updatedLens = await Lens.findByIdAndUpdate(lensId, req.body, {
       new: true,
     });
+     console.log("updatedLens ", updatedLens);
     res.json(updatedLens);
   } catch (error) {
     console.error(error);
