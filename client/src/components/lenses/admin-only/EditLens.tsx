@@ -41,7 +41,7 @@ const EditLens: React.FC = () => {
       );
 
       // Dispatch the editCard action to update the lens in the Redux store
-      dispatch(editCard(editedLens));
+      dispatch(editCard({...editedLens}));
       navigate(-1);
     } catch (error) {
       console.error(error);

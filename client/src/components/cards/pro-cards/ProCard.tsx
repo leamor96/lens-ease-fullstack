@@ -1,45 +1,68 @@
-import { useEffect, useRef } from "react";
+import {  useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../../../features/cards/proCardSlice";
+import {
+  toggleFavorite,
+  toggleUnFavorite,
+} from "../../../features/cards/proCardSlice";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { ProLensData } from "../../../@types";
 import "./ProCards.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CiCircleMore } from "react-icons/ci";
+
 
 interface CardProps {
   proLens: ProLensData;
   token: string;
+  clickFavorite: boolean;
+  setClickFavorite: any;
 }
 
-const ProCard: React.FC<CardProps> = ({ proLens, token }) => {
+const ProCard: React.FC<CardProps> = ({
+  proLens,
+  token,
+  clickFavorite,
+  setClickFavorite,
+}) => {
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const favoritesPro = useSelector(
-    (state: { proCard: { favoritesPro?: string[] } }) =>
-      state.proCard.favoritesPro ||[]
+    (state: { favoritePro: { favoritesPro?: ProLensData[] } }) =>
+      state.favoritePro.favoritesPro || []
   );
-  const isFavorite = favoritesPro.includes(proLens._id);
+
+  const isFavorite = favoritesPro.some(
+    (favoritePro) => favoritePro._id === proLens._id
+  );
 
   const headerRef = useRef<HTMLDivElement>(null);
   const nav = useNavigate();
 
   const handleFavoriteToggle = () => {
-    dispatch(toggleFavorite(proLens._id));
+    if (location.pathname === "/favorites") {
+      alert("removed from favorites");
+      dispatch(toggleUnFavorite(proLens));
+    } else {
+      alert("added to favorites");
+      dispatch(toggleFavorite(proLens));
+    }
+    setClickFavorite(!clickFavorite);
   };
 
-  useEffect(() => {
-    const headerElement = headerRef.current;
-    if (headerElement) {
-      const availableWidth = headerElement.offsetWidth;
-      const scrollWidth = headerElement.scrollWidth;
-      if (scrollWidth > availableWidth) {
-        const fontSize = availableWidth / scrollWidth;
-        headerElement.style.fontSize = `${fontSize}rem`;
-      }
-    }
-  }, []);
+  //useEffect(() => {
+  //const headerElement = headerRef.current;
+  // if (headerElement) {
+  // const availableWidth = headerElement.offsetWidth;
+  //const scrollWidth = headerElement.scrollWidth;
+  //if (scrollWidth > availableWidth) {
+  //const fontSize = availableWidth / scrollWidth;
+  //headerElement.style.fontSize = `${fontSize}rem`;
+  // }
+  //}
+  //}, []);
 
-  const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
+  //const FavoriteIcon = isFavorite ? MdFavorite : MdOutlineFavoriteBorder;
   return (
     <div className="card pro-card-size m-2">
       <div className="card-header">
@@ -66,7 +89,7 @@ const ProCard: React.FC<CardProps> = ({ proLens, token }) => {
           className="border-0 bg-transparent favorite-icon"
           onClick={handleFavoriteToggle}
         >
-          <FavoriteIcon />
+          {isFavorite ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
         </button>
         <button
           className="border-0 bg-transparent text-light more-icon"

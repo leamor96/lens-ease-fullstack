@@ -5,7 +5,16 @@ export type AuthContextType = {
   email?: string;
   id?: string;
   token?: string;
-  login: (username: string, email: string, token: string, id: string) => void;
+  favorite?: Array;
+  favoritePro?: Array;
+  login: (
+    username: string,
+    email: string,
+    token: string,
+    id: string,
+    favorite: Array,
+    favoritePro: Array
+  ) => void;
   logout: () => void;
   isAdmin: boolean;
 };

@@ -1,7 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Route, Routes } from 'react-router-dom';
-import CardList from '../components/cards/CardList';
-import ProCardList from '../components/cards/pro-cards/ProCardList';
+import { NavLink } from 'react-router-dom';
 
 const Lenses = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -30,12 +28,12 @@ const Lenses = () => {
       </div>
 
       {/* Render the form component based on the selected option */}
-      <div className="form-container">
+      {/* <div className="form-container">
         <Routes>
           <Route path="/lenses/card-list" element={<CardList />} />
           <Route path="/lenses/pro-card-list" element={<ProCardList />} />
         </Routes>
-      </div>
+      </div> */}
     </div>
   );
 }

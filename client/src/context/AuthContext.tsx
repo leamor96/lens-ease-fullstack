@@ -3,7 +3,7 @@ import { AuthContextType, ChildProps } from "../@types";
 
 const initialState: AuthContextType = {
   isLoggedIn: false,
-  login(username, email, token,id) {},
+  login(username, email, token, id, favorite,favoritePro) {},
   logout() {},
   isAdmin: false,
 };
@@ -19,8 +19,9 @@ const AuthContextProvider = ({ children }: ChildProps) => {
       const email = user.email;
       const username = user.username;
       const id = user.id;
-
-      login(username, email, token, id);
+      const favorite = user.favorite;
+      const favoritePro = user.favoritePro;
+      login(username, email, token, id, favorite,favoritePro);
     }
   }, []);
 
@@ -29,19 +30,25 @@ const AuthContextProvider = ({ children }: ChildProps) => {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | undefined>(undefined);
   const [id, setId] = useState<string | undefined>(undefined);
+  const [favorite, setFavorite] = useState([]);
+  const [favoritePro, setFavoritePro] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const login = (
     username: string,
     email: string,
     token: string,
-    id: string
+    id: string,
+    favorite: [],
+    favoritePro:[]
   ) => {
     setIsLoggedIn(true);
     setEmail(email);
     setUsername(username);
     setToken(token);
-    setId(id)
+    setId(id);
+    setFavorite(favorite);
+    setFavoritePro(favoritePro);
   };
 
   const logout = () => {
@@ -81,6 +88,8 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     token,
     email,
     id,
+    favorite,
+    favoritePro,
     login,
     logout,
     isAdmin,

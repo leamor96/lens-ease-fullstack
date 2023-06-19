@@ -2,8 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../@types";
 import { RootState } from "../app/store";
-import AuthContext from "../context/AuthContext";
-import { useContext } from "react";
 
 interface FavoritesState {
   favorites: LensData[]; // Array of card IDs that are marked as favorites
@@ -23,7 +21,7 @@ export const fetchFavoriteLenses = createAsyncThunk(
   async () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
-    const { id } = useContext(AuthContext);
+  /*   const { id } = useContext(AuthContext); */
 
     const { data } = await axios.get<LensData[]>(
       `http://localhost:3001/api/lenses/${userId}/favorites`,

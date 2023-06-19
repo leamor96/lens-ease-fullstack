@@ -2,12 +2,14 @@ import "./lenses.css"
 import Card from "../cards/Card";
 import { useLocation } from "react-router-dom";
 import { LensData, LensFormData } from "../../@types";
+import { useState } from "react";
 
 const LensOptionsPage = () => {
   const location = useLocation();
   const data = location?.state?.data;
   const formData: LensFormData = data?.formData;
   const token= localStorage.getItem("token")
+    const [clickFavorite, setClickFavorite] = useState<boolean>(false);
 
   return (
     <div className="bg-dark text-light p-3">
@@ -22,7 +24,12 @@ const LensOptionsPage = () => {
       <div className="d-flex flex-wrap justify-content-center">
         {data?.lensOptions?.rightEyeOptions.map((lens: LensData) => (
           <div key={lens._id}>
-            <Card lens={lens} token={token || ""} />
+            <Card
+              lens={lens}
+              token={token || ""}
+              clickFavorite={clickFavorite}
+              setClickFavorite={setClickFavorite}
+            />
           </div>
         ))}
       </div>
@@ -39,7 +46,12 @@ const LensOptionsPage = () => {
       <div className="d-flex flex-wrap justify-content-center">
         {data?.lensOptions?.leftEyeOptions.map((lens: LensData) => (
           <div key={lens._id}>
-            <Card lens={lens} token={token || ""} />
+            <Card
+              lens={lens}
+              token={token || ""}
+              clickFavorite={clickFavorite}
+              setClickFavorite={setClickFavorite}
+            />
           </div>
         ))}
       </div>

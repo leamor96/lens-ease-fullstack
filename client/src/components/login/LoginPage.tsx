@@ -38,8 +38,10 @@ const LoginPage = () => {
         const email = res.email;
         const username = res.username;
         const id = res.id;
+        const favorite = res.favorite;
+        const favoritePro = res.favoritePro;
         //update the context...
-        login(username, email, token, id);
+        login(username, email, token, id, favorite,favoritePro);
         nav("/");
       })
       .catch((e) => {

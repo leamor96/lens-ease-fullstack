@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import {  ProLensData } from "../@types";
-import AuthContext from "../context/AuthContext";
-import { useContext } from "react";
+import { ProLensData } from "../@types";
 
 interface FavoriteProState {
   favoritesPro: ProLensData[]; // Array of card IDs that are marked as favorites
@@ -21,10 +19,11 @@ export const fetchFavoriteProLenses = createAsyncThunk(
   "proCard/fetchFavoriteProLenses",
   async () => {
     const token = localStorage.getItem("token");
-     const { id } = useContext(AuthContext);
+    const userId = localStorage.getItem("userId");
+    /*   const { id } = useContext(AuthContext); */
 
     const { data } = await axios.get<ProLensData[]>(
-      `http://localhost:3001/api/pro-lenses/favorites/${id}`,
+      `http://localhost:3001/api/pro-lenses/${userId}/favorites`,
       {
         headers: {
           Authorization: `${token}`,
@@ -64,7 +63,6 @@ const favoriteProSlice = createSlice({
   },
 });
 
-export const { getFavoritePro, deleteFavoritePro } =
-  favoriteProSlice.actions;
+export const { getFavoritePro, deleteFavoritePro } = favoriteProSlice.actions;
 
 export default favoriteProSlice.reducer;

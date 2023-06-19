@@ -2,7 +2,6 @@ import { Router } from "express";
 import { ProLens } from "../db/models/proLens.js";
 import { validateToken } from "../middleware/validateToken.js";
 import { isAdmin } from "../middleware/isAdmin.js";
-import { Favorite } from "../db/models/favorite.js";
 import { User } from "../db/models/user.js";
 
 const router = Router();
@@ -77,6 +76,7 @@ router.put("/:id", validateToken, isAdmin, async (req, res) => {
 });
 
 // Delete a proLens by ID
+//בלי השינויים 
 router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   const { id } = req.params;
   try {
@@ -120,24 +120,65 @@ router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
   }
 });
 // Get all favorite lenses for the authenticated user
-router.get("/favorites/:id", validateToken, async (req, res) => {
+router.get("/:id/favorites", validateToken, async (req, res) => {
   try {
-    const userId = req.userId; // Retrieve the user ID from req.userId
+     const id = req.params.id; // Retrieve the user ID from req.userId
+
+      const user = await User.findById(id);
+
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
 
     // Find all favorite entries for the user
-    const favorites = await Favorite.find({ user: userId });
+    //const favoritesProLens = await Favorite.find({ user: id });
 
     // Retrieve the lens IDs from the favorite entries
-    const proLensIds = favorites.map((favorite) => favorite.proLens);
+    //const proLensIds = favoritesProLens.map((favorite) => favorite.proLens);
 
     // Fetch the lens details for the retrieved IDs
-    const proLenses = await ProLens.find({ _id: { $in: proLensIds } });
+    //const proLenses = await ProLens.find({ _id: { $in: proLensIds } });
 
-    res.status(200).json(proLenses);
+    res.status(200).json(user.favoritesProLens);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
+
+router.delete(
+  "/:userId/delete-from-pro-favorite/:proLensId",
+  validateToken,
+  async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const proLensId = req.params.proLensId;
+
+      const user = await User.findById(userId);
+      console.log(user);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+
+      const proLens = await ProLens.findById(proLensId);
+     
+      if (!proLens) {
+        return res.status(404).send("Lens not found");
+      }
+
+      const proLensExists = user.favoritesProLens.find(
+        (e) => e._id.toString() === proLensId
+      );
+
+      if (proLensExists) {
+        user.favoritesProLens.pull(proLensExists);
+      }
+      await user.save();
+      return res.status(200).send("Lens removed from favorites successfully");
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
 
 export { router as proLensesRouter };

@@ -80,6 +80,14 @@ background:#f8f9fa;
 border-radius: 1rem;
 }
 
+.btn-add-new{
+  position: absolute;
+  width: 10rem;
+  z-index: 50;
+  top:1.2rem;
+right: 44%;
+}
+
 
 /* כרגע לא עובד */
 @media (max-width: 767px) {

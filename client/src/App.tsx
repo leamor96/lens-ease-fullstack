@@ -25,8 +25,8 @@ import EditProLens from "./components/lenses/admin-only/EditProLens";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
-
-  //להבין איך מוציאים אדמין מהטוקן נכון
+ 
+    //להבין איך מוציאים אדמין מהטוקן נכון
   const token: string | null = localStorage.getItem("token");
   let isAdmin = false;
 
@@ -34,7 +34,10 @@ function App() {
     const decodedToken: { isAdmin: boolean } = jwt_decode(token);
     isAdmin = decodedToken.isAdmin;
   }
- /*  console.log(isAdmin); */
+  console.log(isAdmin);  
+
+/* const { isAdmin } = useContext(AuthContext);
+console.log(isAdmin); */
   
 
   return (

@@ -79,6 +79,7 @@ const CardDetails: React.FC = () => {
                   }).then((result) => {
                     if (result.isConfirmed) {
                       dispatch(deleteCard(lens._id));
+                      navigate(-1);
                       Swal.fire({
                         title: "Deleted!",
                         icon: "success",
