@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -10,11 +10,12 @@ import "./Navbar.css"
 
 const Navabar = () => {
   const { isLoggedIn, logout } = useContext(AuthContext);
+  const navigate= useNavigate()
   const handleLogout = async () => {
     try {
       // Call the logout function from the AuthContext
       await logout();
-
+      navigate(`/`)
       // Perform any additional actions after logout if needed
     } catch (error) {
       // Handle any errors that occur during the logout process

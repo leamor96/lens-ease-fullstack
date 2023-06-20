@@ -4,14 +4,14 @@ import { ProLensData } from "../../@types";
 
 interface ProCardState {
   proCards: ProLensData[];
-  favorites: string[]; // Array of card IDs that are marked as favorites
+  favoritesPro: string[]; 
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
 }
 
 const initialState: ProCardState = {
   proCards: [],
-  favorites: [],
+  favoritesPro: [],
   status: "idle",
   error: null,
 };
@@ -20,7 +20,7 @@ const initialState: ProCardState = {
 export const fetchProCards = createAsyncThunk(
   "proCard/fetchProCards",
   async () => {
-    const response = await axios.get("http://localhost:3001/api/pro-lenses");
+    const response = await axios.get<ProLensData[]>("http://localhost:3001/api/pro-lenses");
     return response.data;
   }
 );
@@ -31,6 +31,7 @@ const proCardSlice = createSlice({
   reducers: {
     addProCard(state, action: PayloadAction<ProLensData>) {
       state.proCards.push(action.payload);
+      //להוסיף אקסיוס לשרת
     },
     deleteProCard(state, action: PayloadAction<string>) {
       state.proCards = state.proCards.filter(
@@ -82,6 +83,7 @@ const proCardSlice = createSlice({
           })
           .catch((error) => {
             // Handle any errors
+            alert(error.response?.data);
             console.error("Failed to update favorite status", error);
             // Reset the local favorite status to its previous value
             state.proCards[index].isFavorite = !favoriteProStatus;

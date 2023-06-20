@@ -10,14 +10,12 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     const lenses = await Lens.find({});
-
     res.status(200).json(lenses);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
-
 // Get a single lens by ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -62,7 +60,6 @@ router.post("/", validateToken, isAdmin, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 // Update a lens by ID
 router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
@@ -96,17 +93,15 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
 // Toggle favorite status of a lens for the authenticated user
 router.post("/:userId/favorite/:lensId", validateToken, async (req, res) => {
   try {
-    const userId = req.params.userId; // Retrieve the user ID from req.userId
+    const userId = req.params.userId; 
     const lensId = req.params.lensId;
 
-    // Find the favorite entry for the user and lens
     const user = await User.findById(userId);
     const lens = await Lens.findById(lensId);
 
     if (!user) {
       return res.status(404).send("User not found.");
     }
-
     const lensExists = user.favoritesLens.find(
       (e) => e._id.toString() === lensId
     );

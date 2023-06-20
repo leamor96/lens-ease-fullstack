@@ -8,27 +8,31 @@ import Modal from "react-modal";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import "./Cards.css";
+import { useNavigate } from "react-router-dom";
+import Search from "../utils/Search";
+import { MdSearch } from "react-icons/md";
+
 
 const CardList: React.FC = () => {   
   const dispatch = useDispatch<AppDispatch>();
   const cards = useSelector((state: RootState) => state.card.cards);
-
   const token = localStorage.getItem("token");
   const isAdmin = useContext(AuthContext);
   const [clickFavorite, setClickFavorite] = useState<boolean>(false);
   const [isOpen, setOpen] = useState(false);
-
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const navigate= useNavigate()
 
   const [newLens, setNewLens] = useState({
-    name: "",
-    category: "",
-    index: "",
-    diameter: "",
+    name: "1.5 400UV",
+    category: "stock",
+    index: "1.5",
+    diameter: "(+)65/(-)70",
     sphRange: {
-      minus: [] as number[],
-      plus: [] as number[],
+      minus: [-6] as number[],
+      plus: [6] as number[],
     },
-    cylMax: "",
+    cylMax: "-2",
     coating: "none",
     price: "",
   });
@@ -62,34 +66,49 @@ const CardList: React.FC = () => {
       // Close the modal and update the list of lenses
       openModal();
       dispatch(fetchCards());
+      navigate(-1);
     } catch (error) {
       console.error(error);
     }
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNewLens((prevLens) => ({
-      ...prevLens,
-      sphRange: {
-        ...prevLens.sphRange,
+    if (name === "sphRange.minus" || name === "sphRange.plus") {
+      const axis = name.split(".")[1]; // Get the axis (minus or plus)
+      setNewLens((prevLens) => ({
+        ...prevLens,
+        sphRange: {
+          ...prevLens.sphRange,
+          [axis]: [Number(value)],
+        },
+      }));
+    } else {
+      setNewLens((prevLens) => ({
+        ...prevLens,
         [name]: value,
-      },
-    }));
+      }));
+    }
   };
   const handleCoatingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setNewLens((prevLens) => ({
       ...prevLens,
-      [name]: value,
+      coating: value as "none" | "anti-reflective" | "scratch-resistant",
     }));
   };
 
   return (
     <div className="card-list-container">
+      <MdSearch className="search-icon"/>
+      <Search
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Search by lens name"
+      />
       {isAdmin && (
         <>
-          <button className="btn btn-add-new btn-warning" onClick={openModal}>
-            Create New Lens
+          <button className="btn btn-add-new btn-warning p-2" onClick={openModal}>
+            Add New Lens
           </button>
           <Modal
             onRequestClose={closeModal}
@@ -149,12 +168,12 @@ const CardList: React.FC = () => {
                   />
                 </label>
                 <br />
-                {/*    <label>
+                <label>
                   Sph Range Minus:
                   <input
                     type="number"
                     name="sphRange.minus"
-                    value={newLens.sphRange.minus || ""}
+                    value={newLens.sphRange.minus.join(", ") || ""}
                     onChange={handleInputChange}
                   />
                 </label>
@@ -164,10 +183,10 @@ const CardList: React.FC = () => {
                   <input
                     type="number"
                     name="sphRange.plus"
-                    value={newLens.sphRange.plus || ""}
+                    value={newLens.sphRange.plus.join(", ") || ""}
                     onChange={handleInputChange}
                   />
-                </label> */}
+                </label>
                 <br />
                 <label>
                   Cyl Max:
@@ -209,16 +228,20 @@ const CardList: React.FC = () => {
           </Modal>
         </>
       )}
-      <div className="d-flex flex-wrap justify-content-center align-items-center">
-        {cards.map((card: LensData) => (
-          <Card
-            key={card._id}
-            lens={card}
-            token={token || ""}
-            clickFavorite={clickFavorite}
-            setClickFavorite={setClickFavorite}
-          />
-        ))}
+      <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 p-1">
+        {cards
+          .filter((card: LensData) =>
+            card.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((card: LensData) => (
+            <Card
+              key={card._id}
+              lens={card}
+              token={token || ""}
+              clickFavorite={clickFavorite}
+              setClickFavorite={setClickFavorite}
+            />
+          ))}
       </div>
     </div>
   );

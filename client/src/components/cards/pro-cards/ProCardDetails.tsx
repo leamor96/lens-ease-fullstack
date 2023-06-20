@@ -9,6 +9,7 @@ import "./ProCards.css"
 import { BsPencil, BsTrash } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { deleteProCard } from "../../../features/cards/proCardSlice";
+import axios from "axios";
 
 interface CardDetailsParams extends Record<string, string | undefined> {
   id: string;
@@ -21,6 +22,7 @@ const ProCardDetails: React.FC = () => {
   );
   const dispatch = useDispatch();
   const isAdmin = useContext(AuthContext);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,6 +83,24 @@ const ProCardDetails: React.FC = () => {
                   }).then((result) => {
                     if (result.isConfirmed) {
                       dispatch(deleteProCard(proLens._id));
+                        axios
+                          .delete(
+                            `http://localhost:3001/api/pro-lenses/${proLens._id}`,
+                            {
+                              headers: {
+                                Authorization: `${token}`,
+                              },
+                            }
+                          )
+                          .then((response) => {
+                            // Handle the response if needed
+                          })
+                          .catch((error) => {
+                            // Handle any errors
+                            console.error("Failed to delete the lens", error);
+                            // Add logic to handle the error, such as showing an error message to the user
+                          });
+                        navigate(-1);
                       Swal.fire({
                         title: "Deleted!",
                         icon: "success",

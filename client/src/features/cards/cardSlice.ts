@@ -2,10 +2,9 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../../@types";
 
-
 interface CardState {
   cards: LensData[];
-  favorites: string[]; // Array of card IDs that are marked as favorites
+  favorites: string[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
 }
@@ -25,17 +24,17 @@ export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
   return response.data;
 });
 
-
 const cardSlice = createSlice({
   name: "card",
   initialState,
   reducers: {
     addCard(state, action: PayloadAction<LensData>) {
       state.cards.push(action.payload);
+      //להוסיף אקסיוס לשרת
     },
     deleteCard(state, action: PayloadAction<string>) {
-      
       state.cards = state.cards.filter((card) => card._id !== action.payload);
+      //להוסיף אקסיוס לשרת
     },
     editCard(state, action: PayloadAction<LensData>) {
       const { _id } = action.payload;
@@ -50,7 +49,6 @@ const cardSlice = createSlice({
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       
-    
       const index = state.cards.findIndex((c) => c._id === lensId);
 
       if (index !== -1) {
@@ -96,7 +94,6 @@ const cardSlice = createSlice({
       const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       
-    
       const index = state.cards.findIndex((c) => c._id === lensId);
 
       if (index !== -1) {

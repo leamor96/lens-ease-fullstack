@@ -65,10 +65,10 @@ router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
     const proLensId = req.params.id;
 
-    const updatedLens = await ProLens.findByIdAndUpdate(proLensId, req.body, {
+    const updatedProLens = await ProLens.findByIdAndUpdate(proLensId, req.body, {
       new: true,
     });
-    res.json(updatedLens);
+    res.json(updatedProLens);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -91,13 +91,12 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
   }
 });
 
-// Toggle favorite status of a lens for the authenticated user
+// Toggle favorite status of a prolens for the authenticated user
 router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
   try {
-    const userId = req.params.userId; // Retrieve the user ID from req.userId
+    const userId = req.params.userId; 
     const proLensId = req.params.proLensId;
 
-    // Find the favorite entry for the user and lens
     const user = await User.findById(userId);
     const proLens = await ProLens.findById(proLensId);
 
@@ -105,7 +104,7 @@ router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
       return res.status(404).send("User not found.");
     }
     const proLensExists = user.favoritesProLens.find(
-      (e) => e.toString() === proLensId
+      (e) => e._id.toString() === proLensId
     );
     if (proLensExists) {
       return res.status(422).send("This Exists!");

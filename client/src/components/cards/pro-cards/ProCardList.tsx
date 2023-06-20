@@ -7,6 +7,9 @@ import { ProLensData } from "../../../@types";
 import AuthContext from "../../../context/AuthContext";
 import Modal from "react-modal";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Search from "../../utils/Search";
+import { MdSearch } from "react-icons/md";
 
 const ProCardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,18 +18,20 @@ const ProCardList: React.FC = () => {
   const isAdmin = useContext(AuthContext);
   const [clickFavorite, setClickFavorite] = useState<boolean>(false);
   const [isOpen, setOpen] = useState(false);
+   const [searchQuery, setSearchQuery] = useState<string>("");
+  const navigate = useNavigate();
 
   const [newProLens, setNewProLens] = useState({
-    name: "",
-    lensType: "",
-    index: "",
-    diameter: "",
+    name: "FIT",
+    lensType: "DSP Technology",
+    index: "1.5",
+    diameter: "90",
     sphRange: {
-      minus: [] as number[],
-      plus: [] as number[],
+      minus: [-6] as number[],
+      plus: [6] as number[],
     },
     adjustmentHeight: "",
-    coating: "none",
+    coating: "A.R",
     price: "",
   });
 
@@ -43,42 +48,57 @@ const ProCardList: React.FC = () => {
     dispatch(fetchProCards());
   }, [dispatch, clickFavorite]);
 
-   const handleSubmit = async (
-     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-   ) => {
-     e.preventDefault();
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
 
-     try {
-       // Make a POST request to create the new lens
-       await axios.post("http://localhost:3001/api/pro-lenses", newProLens, {
-         headers: {
-           Authorization: `${token}`,
-         },
-       });
-       // Close the modal and update the list of lenses
-       openModal();
-       dispatch(fetchProCards());
-     } catch (error) {
-       console.error(error);
-     }
-   };
-   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-     const { name, value } = e.target;
-     setNewProLens((prevLens) => ({
-       ...prevLens,
-       sphRange: {
-         ...prevLens.sphRange,
-         [name]: value,
-       },
-     }));
-   };
+    try {
+      // Make a POST request to create the new lens
+      await axios.post("http://localhost:3001/api/pro-lenses", newProLens, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      // Close the modal and update the list of lenses
+      openModal();
+      dispatch(fetchProCards());
+      navigate(-1);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "sphRange.minus" || name === "sphRange.plus") {
+      const axis = name.split(".")[1]; // Get the axis (minus or plus)
+      setNewProLens((prevLens) => ({
+        ...prevLens,
+        sphRange: {
+          ...prevLens.sphRange,
+          [axis]: [Number(value)],
+        },
+      }));
+    } else {
+      setNewProLens((prevLens) => ({
+        ...prevLens,
+        [name]: value,
+      }));
+    }
+  };
 
   return (
     <div className="card-list-container">
+      <MdSearch className="search-icon" />
+      <Search
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder="Search by lens name"
+      />
       {isAdmin && (
         <>
           <button className="btn btn-add-new btn-warning" onClick={openModal}>
-            Create New Lens
+            Add New Lens
           </button>
           <Modal
             onRequestClose={closeModal}
@@ -138,12 +158,12 @@ const ProCardList: React.FC = () => {
                   />
                 </label>
                 <br />
-                {/*    <label>
+                <label>
                   Sph Range Minus:
                   <input
                     type="number"
                     name="sphRange.minus"
-                    value={newLens.sphRange.minus || ""}
+                    value={newProLens.sphRange.minus.join(", ") || ""}
                     onChange={handleInputChange}
                   />
                 </label>
@@ -153,10 +173,10 @@ const ProCardList: React.FC = () => {
                   <input
                     type="number"
                     name="sphRange.plus"
-                    value={newLens.sphRange.plus || ""}
+                    value={newProLens.sphRange.plus.join(", ") || ""}
                     onChange={handleInputChange}
                   />
-                </label> */}
+                </label>
                 <br />
                 <label>
                   Adjustment Height:
@@ -195,16 +215,20 @@ const ProCardList: React.FC = () => {
           </Modal>
         </>
       )}
-      <div className="d-flex flex-wrap justify-content-center align-items-center">
-        {proCards.map((proCard: ProLensData) => (
-          <ProCard
-            key={proCard._id}
-            proLens={proCard}
-            token={token || ""}
-            clickFavorite={clickFavorite}
-            setClickFavorite={setClickFavorite}
-          />
-        ))}
+      <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 p-1">
+        {proCards
+          .filter((proCard: ProLensData) =>
+            proCard.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          .map((proCard: ProLensData) => (
+            <ProCard
+              key={proCard._id}
+              proLens={proCard}
+              token={token || ""}
+              clickFavorite={clickFavorite}
+              setClickFavorite={setClickFavorite}
+            />
+          ))}
       </div>
     </div>
   );
