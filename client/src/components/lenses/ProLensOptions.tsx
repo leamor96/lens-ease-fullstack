@@ -25,7 +25,7 @@ const ProLensOptions = () => {
           </div>
         ))}
       </div>
-      <br />
+      <hr className="my-hr" />
       <h2 className="text-center">Left Eye options:</h2>
       <div className="d-flex flex-wrap justify-content-center">
         {data?.proLensOptions?.leftEyeOptions.map((proLens: ProLensData) => (

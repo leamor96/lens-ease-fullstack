@@ -27,13 +27,13 @@ const LensOptionsPage = () => {
 
   return (
     <div className="bg-dark text-light p-3">
+      <SortBy onSortChange={handleSortChange}/>
       <div className="text-center">
-        <p>
+        <p className="mt-2">
           <strong>Prescription R:</strong>{" "}
           {formData && `${formData.sphRight}/ ${formData.cylRight}`}
         </p>
         <h2>Right Eye options:</h2>
-        <SortBy onSortChange={handleSortChange} />
       </div>
 
       <div className="d-flex flex-wrap justify-content-center mt-2">
@@ -58,7 +58,6 @@ const LensOptionsPage = () => {
           {formData && ` ${formData.sphLeft}/ ${formData.cylLeft}`}
         </p>
         <h2>Left Eye options:</h2>
-        <SortBy onSortChange={handleSortChange} />
       </div>
 
       <div className="d-flex flex-wrap justify-content-center mt-2">

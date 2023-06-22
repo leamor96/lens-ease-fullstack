@@ -7,6 +7,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { ColorRing } from "react-loader-spinner";
 import authService from "../../services/auth.service";
 import "./LoginPage.css";
+import LoadingSpinner from "../utils/LoadingSpinner";
 
 const LoginPage = () => {
   const nav = useNavigate();
@@ -58,17 +59,11 @@ const LoginPage = () => {
   }
   return (
     <div className="login-page">
-      <div className="login-error">{errMessage && <div>{errMessage}</div>}</div>
-      <div className="loader-container">
+      <div className="login-error">{errMessage && <div>{errMessage}</div>}</div> 
         {isLoading && (
-          <ColorRing
-            visible={true}
-            height={80}
-            width={80}
-            colors={["#ffc107", "#343a40", "#e15b64", "#f47e60", "#f8b26a"]}
+          <LoadingSpinner
           />
         )}
-      </div>
       <Formik
         initialValues={initialValues}
         onSubmit={handleLogin}

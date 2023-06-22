@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { RegisterFormType } from "../../@types"; 
+import { RegisterFormType } from "../../@types";
 import AuthContext from "../../context/AuthContext";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { ColorRing } from "react-loader-spinner";
 import authService from "../../services/auth.service";
 import "./RegisterPage.css";
+import LoadingSpinner from "../utils/LoadingSpinner";
 
 const RegisterPage = () => {
   const nav = useNavigate();
@@ -73,16 +74,7 @@ const RegisterPage = () => {
       <div className="register-error">
         {errMessage && <div>{errMessage}</div>}
       </div>
-      <div className="loader-container">
-        {isLoading && (
-          <ColorRing
-            visible={true}
-            height={80}
-            width={80}
-            colors={["#ffc107", "#343a40", "#e15b64", "#f47e60", "#f8b26a"]}
-          />
-        )}
-      </div>
+      {isLoading && <LoadingSpinner />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleRegister}

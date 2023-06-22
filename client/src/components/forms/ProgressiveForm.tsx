@@ -138,6 +138,11 @@ const ProgressiveForm = () => {
               id="axis-right"
             />
           </div>
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="prism-right" className="form-label">
               Prism
@@ -163,16 +168,18 @@ const ProgressiveForm = () => {
               <option value="down">DOWN</option>
             </select>
           </div>
-        </div>
-
-        <div className="row mb-3">
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="add-right" className="form-label">
               Add
             </label>
             <input
               type="number"
-              min="0.5"
+              min="0"
               max="5"
               step="0.25"
               defaultValue="0"
@@ -181,7 +188,7 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-
+        <hr className="my-hr" />
         <div className="row mb-3">
           <div className="col">
             <h4>Left Eye (OS)</h4>
@@ -232,6 +239,11 @@ const ProgressiveForm = () => {
               id="axis-left"
             />
           </div>
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="prism-left" className="form-label">
               Prism
@@ -257,16 +269,18 @@ const ProgressiveForm = () => {
               <option value="down">DOWN</option>
             </select>
           </div>
-        </div>
-
-        <div className="row mb-3">
+          {isMobile && (
+            <div>
+              <br />
+            </div>
+          )}
           <div className="col">
             <label htmlFor="add-left" className="form-label">
               Add
             </label>
             <input
               type="number"
-              min="0.5"
+              min="0"
               max="5"
               step="0.25"
               defaultValue="0"
@@ -275,7 +289,7 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-
+        <hr className="my-hr" />
         <div className="row mb-3">
           <div className="col">
             <h4>Pupil Distance (PD)</h4>
@@ -329,7 +343,6 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-
         <button type="submit" className="btn btn-warning">
           Finish
         </button>
