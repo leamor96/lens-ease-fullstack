@@ -15,7 +15,6 @@ const ProgressiveForm = () => {
    const [pdLeftEye, setPdLeftEye] = useState("30");
    const [pdRightEye, setPdRightEye] = useState("30");
 
-   // Validation function to check if a value is a valid number
    const isValidNumber = (value: any) => {
      return !Number.isNaN(parseFloat(value));
    };
@@ -86,14 +85,13 @@ const ProgressiveForm = () => {
         }
       };
   return (
-    <div className="p-5 bg-dark text-light">
+    <div className="p-5 bg-dark text-light vh-100">
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <div className="col">
             <h4>Right Eye (OD)</h4>
           </div>
         </div>
-
         <div className="row mb-3">
           <div className="col">
             <label htmlFor="sph-right" className="form-label">
@@ -188,7 +186,6 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-        <hr className="my-hr" />
         <div className="row mb-3">
           <div className="col">
             <h4>Left Eye (OS)</h4>
@@ -289,7 +286,6 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-        <hr className="my-hr" />
         <div className="row mb-3">
           <div className="col">
             <h4>Pupil Distance (PD)</h4>
@@ -343,7 +339,7 @@ const ProgressiveForm = () => {
             />
           </div>
         </div>
-        <button type="submit" className="btn btn-warning">
+        <button type="submit" className="btn btn-warning btn-finish">
           Finish
         </button>
       </form>

@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { editProCard } from "../../../features/cards/proCardSlice";
 import { ProLensData } from "../../../@types";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./AdminOnly.css";
+import axios from "../../../api/axios";
 
 const EditProLens: React.FC = () => {
   const location = useLocation();
@@ -28,9 +28,8 @@ const EditProLens: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // Make a PUT request to update the lens on the server
       await axios.put(
-        `http://localhost:3001/api/pro-lenses/${editedProLens._id}`,
+        `/pro-lenses/${editedProLens._id}`,
         editedProLens,
         {
           headers: {
@@ -38,7 +37,6 @@ const EditProLens: React.FC = () => {
           },
         }
       );
-      // Dispatch the editCard action to update the lens in the Redux store
       dispatch(editProCard(editedProLens));
        navigate(-1);
     } catch (error) {
@@ -47,7 +45,7 @@ const EditProLens: React.FC = () => {
   };
 
   return (
-    <div className="bg-dark p-3 d-flex justify-content-center">
+    <div className="bg-dark p-5 d-flex justify-content-center">
       <div className="card-details card p-2">
         <label>
           Name:

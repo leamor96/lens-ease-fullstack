@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { submitProFormDataToServer } from "../../services/lens.service";
 import { AppThunk, RootState } from "../../app/store";
 import { LensOptions, LensProFormData } from "../../@types";
-import { API_URL } from "../../env";
+import axios from "../../api/axios";
 
 interface ProLensState {
   lensOptions: LensOptions;
@@ -24,7 +23,7 @@ export const fetchProLensOptions = createAsyncThunk(
   "pro-lens/fetchProLensOptions",
   async () => {
     try {
-      const response = await axios.post(`${API_URL}/submit-pro-form`);
+      const response = await axios.post('/submit-pro-form');
       const { rightEyeOptions, leftEyeOptions } = response.data;
 
       return {

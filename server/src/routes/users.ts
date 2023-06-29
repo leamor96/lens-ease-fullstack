@@ -17,8 +17,6 @@ router.post("/signup", validateSignUp, userAlreadyExists, async (req, res) => {
   body.password = await bcrypt.hash(body.password, 12);
   const user = new User(body);
 
-  //before saving the user:
-
   try {
     await user.save();
     return res.json({ message: "user saved", id: user._id });
@@ -51,8 +49,6 @@ router.post("/signin", validateSignIn, async (req, res) => {
         expiresIn: "30d",
       }
     );
-  /*   const favoritesIds = user.favoritesLens.map((f) => f._id);
-    const favoritesProIds = user.favoritesProLens.map((f) => f._id); */
     return res.status(200).json({
       username: user.username,
       email: user.email,
@@ -60,6 +56,7 @@ router.post("/signin", validateSignIn, async (req, res) => {
       id: user.id,
       favorite: user.favoritesLens,
       favoritePro: user.favoritesProLens,
+      isAdmin:user.isAdmin,
     });
   } catch (e) {
     return res.status(500).json({ message: "Server error", error: e });

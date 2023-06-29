@@ -2,7 +2,6 @@ import { RequestHandler } from "express";
 import { User } from "../db/models/user.js";
 const userAlreadyExists: RequestHandler = async (req, res, next) => {
   try {
-    //find ({email})
     let found = await User.findOne({ email: req.body.email });
     if (found) {
       return res.status(400).json({ message: "Email already exists" });

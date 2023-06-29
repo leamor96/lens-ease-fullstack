@@ -13,43 +13,48 @@ const LensOptionsPage = () => {
   const [clickFavorite, setClickFavorite] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState("");
 
-  const handleSortChange = (value:string) => {
+  const handleSortChange = (value: string) => {
     setSortBy(value);
   };
 
-  const filterByCategory = (lens:LensData) => {
+  const filterByCategory = (lens: LensData) => {
     if (sortBy === "") {
-      return true; // Show all lenses if no sort option is selected
+      return true;
     } else {
-      return lens.category === sortBy; // Filter lenses based on the selected category
+      return lens.category === sortBy;
     }
   };
 
   return (
-    <div className="bg-dark text-light p-3">
-      <SortBy onSortChange={handleSortChange}/>
-      <div className="text-center">
+    <div className="bg-dark text-light p-5">
+      <SortBy onSortChange={handleSortChange} />
+      <div className="text-center mobile-mt">
         <p className="mt-2">
           <strong>Prescription R:</strong>{" "}
           {formData && `${formData.sphRight}/ ${formData.cylRight}`}
         </p>
         <h2>Right Eye options:</h2>
       </div>
-
-      <div className="d-flex flex-wrap justify-content-center mt-2">
-        {data?.lensOptions?.rightEyeOptions
-          .filter(filterByCategory)
-          .map((lens: LensData) => (
-            <div key={lens._id}>
-              <Card
-                lens={lens}
-                token={token || ""}
-                clickFavorite={clickFavorite}
-                setClickFavorite={setClickFavorite}
-              />
-            </div>
-          ))}
-      </div>
+      {data?.lensOptions?.rightEyeOptions.length === 0 ? (
+        <p className="text-center">
+          Sorry, there aren't any lens options available.
+        </p>
+      ) : (
+        <div className="d-flex flex-wrap justify-content-center mt-2">
+          {data?.lensOptions?.rightEyeOptions
+            .filter(filterByCategory)
+            .map((lens: LensData) => (
+              <div key={lens._id}>
+                <Card
+                  lens={lens}
+                  token={token || ""}
+                  clickFavorite={clickFavorite}
+                  setClickFavorite={setClickFavorite}
+                />
+              </div>
+            ))}
+        </div>
+      )}
       <br />
       <hr className="my-hr" />
       <div className="text-center">
@@ -59,21 +64,26 @@ const LensOptionsPage = () => {
         </p>
         <h2>Left Eye options:</h2>
       </div>
-
-      <div className="d-flex flex-wrap justify-content-center mt-2">
-        {data?.lensOptions?.leftEyeOptions
-          .filter(filterByCategory)
-          .map((lens: LensData) => (
-            <div key={lens._id}>
-              <Card
-                lens={lens}
-                token={token || ""}
-                clickFavorite={clickFavorite}
-                setClickFavorite={setClickFavorite}
-              />
-            </div>
-          ))}
-      </div>
+      {data?.lensOptions?.leftEyeOptions.length === 0 ? (
+        <p className="text-center">
+          Sorry, there aren't any lens options available.
+        </p>
+      ) : (
+        <div className="d-flex flex-wrap justify-content-center mt-2">
+          {data?.lensOptions?.leftEyeOptions
+            .filter(filterByCategory)
+            .map((lens: LensData) => (
+              <div key={lens._id}>
+                <Card
+                  lens={lens}
+                  token={token || ""}
+                  clickFavorite={clickFavorite}
+                  setClickFavorite={setClickFavorite}
+                />
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 };

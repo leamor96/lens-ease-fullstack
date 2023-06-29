@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { LensData } from "../../@types";
-import { API_URL } from "../../env";
+import FavAlert from "../../components/utils/FavAlert";
+import axios from "../../api/axios";
 
 interface CardState {
   cards: LensData[];
@@ -18,7 +18,7 @@ const initialState: CardState = {
 };
 
 export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
-  const response = await axios.get<LensData[]>(`${API_URL}/lenses`);
+  const response = await axios.get<LensData[]>("/lenses");
   return response.data;
 });
 
@@ -58,7 +58,7 @@ const cardSlice = createSlice({
         state.cards = updatedCards;
         axios
           .post(
-            `${API_URL}/lenses/${userId}/favorite/${lensId}`,
+            `/lenses/${userId}/favorite/${lensId}`,
             {},
             {
               headers: {
@@ -69,9 +69,8 @@ const cardSlice = createSlice({
           .then((response) => {
           })
           .catch((error) => {
-            alert(error.response?.data);
+             FavAlert({ title: error.response?.data });
             console.error("Failed to update favorite status", error);
-            // Reset the local favorite status to its previous value
             state.cards[index].isFavorite = !favoriteStatus;
           });
       }
@@ -79,15 +78,12 @@ const cardSlice = createSlice({
     toggleUnFavorite: (state, action: PayloadAction<LensData>): void => {
       const lens=action.payload;
       const lensId = lens._id;
-      const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
       
       const index = state.cards.findIndex((c) => c._id === lensId);
 
       if (index !== -1) {
-        const updatedCard = [...state.cards]; // Create a new array
-
-        // Update the isFavorite field of the corresponding card in the new array
+        const updatedCard = [...state.cards]; 
         updatedCard[index] = {
           ...updatedCard[index],
           isFavorite: !updatedCard[index].isFavorite,
@@ -95,27 +91,16 @@ const cardSlice = createSlice({
 
         const favoriteStatus = updatedCard[index].isFavorite;
 
-        // Replace the cards array in the state with the updated array
         state.cards = updatedCard;
 
-        // Send a request to the server to update the favorite status
         axios
           .delete(
-            `http://localhost:3001/api/lenses/${userId}/delete-from-favorite/${lensId}`,
-            {
-              headers: {
-                Authorization: `${token}`,
-              },
-            }
-          )
+            `/lenses/${userId}/delete-from-favorite/${lensId}`)
           .then((response) => {
-            // Handle the response if needed
           })
           .catch((error) => {
-            // Handle any errors
-            alert(error.response?.data)
+            FavAlert({title:error.response?.data})
             console.error("Failed to update favorite status", error);
-            // Reset the local favorite status to its previous value
             state.cards[index].isFavorite = !favoriteStatus;
           });
       }

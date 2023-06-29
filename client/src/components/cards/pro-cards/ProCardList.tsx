@@ -6,16 +6,16 @@ import { AppDispatch, RootState } from "../../../app/store";
 import { ProLensData } from "../../../@types";
 import AuthContext from "../../../context/AuthContext";
 import Modal from "react-modal";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Search from "../../utils/Search";
 import { MdSearch } from "react-icons/md";
+import axios from "../../../api/axios";
 
 const ProCardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const proCards = useSelector((state: RootState) => state.proCard.proCards);
   const token = localStorage.getItem("token");
-  const isAdmin = useContext(AuthContext);
+  const {isAdmin} = useContext(AuthContext);
   const [clickFavorite, setClickFavorite] = useState<boolean>(false);
   const [isOpen, setOpen] = useState(false);
    const [searchQuery, setSearchQuery] = useState<string>("");
@@ -54,13 +54,7 @@ const ProCardList: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Make a POST request to create the new lens
-      await axios.post("http://localhost:3001/api/pro-lenses", newProLens, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      // Close the modal and update the list of lenses
+      await axios.post("/pro-lenses", newProLens);
       openModal();
       dispatch(fetchProCards());
       navigate(-1);
@@ -71,7 +65,7 @@ const ProCardList: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "sphRange.minus" || name === "sphRange.plus") {
-      const axis = name.split(".")[1]; // Get the axis (minus or plus)
+      const axis = name.split(".")[1]; 
       setNewProLens((prevLens) => ({
         ...prevLens,
         sphRange: {
@@ -88,7 +82,7 @@ const ProCardList: React.FC = () => {
   };
 
   return (
-    <div className="card-list-container">
+    <div className="card-list-container vh-100">
       <MdSearch className="search-icon" />
       <Search
         value={searchQuery}
@@ -104,7 +98,7 @@ const ProCardList: React.FC = () => {
             onRequestClose={closeModal}
             isOpen={isOpen}
             contentLabel="New Lens Modal"
-            className="border-0 mt-5"
+            className="border-0"
             style={{
               overlay: {
                 display: "flex",
@@ -215,7 +209,7 @@ const ProCardList: React.FC = () => {
           </Modal>
         </>
       )}
-      <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 p-1">
+      <div className="d-flex flex-wrap justify-content-center align-items-center p-5 mt-0">
         {proCards
           .filter((proCard: ProLensData) =>
             proCard.name.toLowerCase().includes(searchQuery.toLowerCase())

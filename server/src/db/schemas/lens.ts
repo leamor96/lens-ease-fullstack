@@ -1,6 +1,5 @@
 import { Schema } from "mongoose";
 
-// Define a schema for lens options
 const lensSchema = new Schema({
   name: {
     type: String,

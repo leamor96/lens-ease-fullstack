@@ -25,3 +25,7 @@ h1,h2{
   font-family: 'Roboto Slab', serif;
   font-weight: 100;
 }
+
+.btn-finish{
+  width: 7rem;
+}

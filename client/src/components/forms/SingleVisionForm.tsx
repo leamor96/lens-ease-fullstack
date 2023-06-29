@@ -15,7 +15,6 @@ const SingleVisionForm = () => {
   const [pdLeftEye, setPdLeftEye] = useState("30");
   const [pdRightEye, setPdRightEye] = useState("30");
 
-  // Validation function to check if a value is a valid number
   const isValidNumber = (value: any) => {
     return !Number.isNaN(parseFloat(value));
   };
@@ -90,7 +89,7 @@ const SingleVisionForm = () => {
   };
 
   return (
-    <div className="p-5 bg-dark text-light">
+    <div className="p-5 bg-dark text-light vh-100">
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <div className="col">
@@ -317,7 +316,7 @@ const SingleVisionForm = () => {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-warning">
+        <button type="submit" className="btn btn-warning btn-finish">
           Finish
         </button>
       </form>

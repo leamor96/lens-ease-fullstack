@@ -1,7 +1,10 @@
 .card {
   border-color: #ffc107 !important;
   border-width: 0.2rem !important;
-  background-color: #b6b6b6d2 !important;
+  background-color:  #343a40 !important;
+}
+.card p{
+  color: #f8f9fa;
 }
 .card-header {
   color: #f8f9fa !important;
@@ -17,12 +20,15 @@
 }
 
 .card-size {
-  width: 13rem !important;
+  width: 14rem !important;
   height: 19rem !important;
 }
 .card-details {
   width: 24rem;
   height: 23.5rem;
+}
+.card-details label{
+  color: #f8f9fa;
 }
 .admin-btn {
   margin-right: 0.4rem;
@@ -42,6 +48,7 @@
 }
 
 .favorite-icon {
+  color: #f8f9fa;
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
@@ -66,7 +73,7 @@
 }
 
 .card-list-container {
-  background-color: #343a40;
+  background-color:  #212529;
   position: relative;
   padding-top: 2rem;
 }
@@ -87,26 +94,32 @@
 
 .btn-add-new {
   position: absolute;
-  top: 0.9rem;
- left: 50%;
-  transform: translateX(-50%);
+  top: 1rem;
+  left: 3rem;
 }
 .search-box {
   position: absolute;
   top: 1.2rem;
-  right: 6rem;
+  right: 5rem;
 }
 .search-icon{
   color: #ffc107;
    position: absolute;
    font-size: 1.7rem;
   top: 1.4rem;
-  right: 4rem;
+  right: 3rem;
 }
 
 .sort-by-container{
   position: absolute;
   right: 3rem;
+}
+
+.modal-content{
+  z-index: 11 !important;
+}
+.modal-content label{
+ color: #f8f9fa;
 }
 
 

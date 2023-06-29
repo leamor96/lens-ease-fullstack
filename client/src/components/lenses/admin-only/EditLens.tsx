@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { editCard } from "../../../features/cards/cardSlice";
 import { LensData } from "../../../@types";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./AdminOnly.css";
+import axios from "../../../api/axios";
 
 const EditLens: React.FC = () => {
   const location = useLocation();
@@ -29,9 +29,8 @@ const EditLens: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // Make a PUT request to update the lens on the server
       await axios.put(
-        `http://localhost:3001/api/lenses/${editedLens._id}`,
+        `/lenses/${editedLens._id}`,
         editedLens,
         {
           headers: {
@@ -40,7 +39,6 @@ const EditLens: React.FC = () => {
         }
       );
 
-      // Dispatch the editCard action to update the lens in the Redux store
       dispatch(editCard({...editedLens}));
       navigate(-1);
     } catch (error) {
@@ -49,7 +47,7 @@ const EditLens: React.FC = () => {
   };
 
   return (
-    <div className="bg-dark p-3 d-flex justify-content-center">
+    <div className="bg-dark p-5 d-flex justify-content-center">
       <div className="card-details card p-2">
         <label>
           Name:

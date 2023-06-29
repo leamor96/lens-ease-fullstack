@@ -5,7 +5,6 @@ import { isAdmin } from "../middleware/isAdmin.js";
 import { User } from "../db/models/user.js";
 
 const router = Router();
-
 // Get all the lenses from the database
 router.get("/", async (req, res) => {
   try {
@@ -30,13 +29,11 @@ router.get("/:id", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 // Protected routes
 // Create a new lens
 router.post("/", validateToken, isAdmin, async (req, res) => {
   try {
     const newLens = new Lens(req.body);
-    // Check if a lens with the same properties already exists
     const existingLens = await Lens.findOne({
       name: newLens.name,
       category: newLens.category,
@@ -48,7 +45,6 @@ router.post("/", validateToken, isAdmin, async (req, res) => {
       coating: newLens.coating,
       price: newLens.price,
     });
-
     if (existingLens) {
       res.status(400).json({ message: "Lens already exists" });
     } else {
@@ -64,7 +60,6 @@ router.post("/", validateToken, isAdmin, async (req, res) => {
 router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
     const lensId = req.params.id;
-
     const updatedLens = await Lens.findByIdAndUpdate(lensId, req.body, {
       new: true,
     });
@@ -95,24 +90,19 @@ router.post("/:userId/favorite/:lensId", validateToken, async (req, res) => {
   try {
     const userId = req.params.userId; 
     const lensId = req.params.lensId;
-
     const user = await User.findById(userId);
     const lens = await Lens.findById(lensId);
-
     if (!user) {
       return res.status(404).send("User not found.");
     }
     const lensExists = user.favoritesLens.find(
       (e) => e._id.toString() === lensId
     );
-
     if (lensExists) {
       return res.status(422).send("This Exists!");
     }
-
     user.favoritesLens.push(lens);
     await user.save();
-
     res.status(200).send("Favorite status updated successfully");
   } catch (error) {
     console.error(error);
@@ -122,32 +112,18 @@ router.post("/:userId/favorite/:lensId", validateToken, async (req, res) => {
 // Get all favorite lenses for the authenticated user
 router.get("/:id/favorites", validateToken, async (req, res) => {
   try {
-    const id = req.params.id; // Retrieve the user ID from req.userId
-
+    const id = req.params.id;
     const user = await User.findById(id);
-
     if (!user) {
       return res.status(404).send("User not found");
     }
-
-    // Find all favorite entries for the user
-    // const favoritesLens = await Favorite.find({ user: id });
-    // console.log("favorites" + favoritesLens);
-
-    // // Retrieve the lens IDs from the favorite entries
-    // const lensIds = favoritesLens.map((favorite) => favorite.lens);
-
-    // // Fetch the lens details for the retrieved IDs
-    // const lenses = await Lens.find({ _id: { $in: lensIds } });
-    // console.log("lenses" + lenses);
-
     res.status(200).json(user.favoritesLens);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
-
+//remove favorit lens for the authenticated user
 router.delete(
   "/:userId/delete-from-favorite/:lensId",
   validateToken,
@@ -155,23 +131,19 @@ router.delete(
     try {
       const userId = req.params.userId;
       const lensId = req.params.lensId;
-
       const user = await User.findById(userId);
       console.log(user)
       if (!user) {
         return res.status(404).send("User not found");
       }
-
       const lens = await Lens.findById(lensId);
       console.log(lens)
       if (!lens) {
         return res.status(404).send("Lens not found");
       }
-
       const lensExists = user.favoritesLens.find(
         (e) => e._id.toString() === lensId
       );
-
       if (lensExists) {
         user.favoritesLens.pull(lensExists);
       }

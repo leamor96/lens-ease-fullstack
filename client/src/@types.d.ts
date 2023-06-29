@@ -13,7 +13,8 @@ export type AuthContextType = {
     token: string,
     id: string,
     favorite: Array,
-    favoritePro: Array
+    favoritePro: Array,
+    isAdmin:boolean
   ) => void;
   logout: () => void;
   isAdmin: boolean;

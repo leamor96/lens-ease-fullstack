@@ -5,11 +5,12 @@ import { ProLensData } from "../../../@types";
 import { RootState } from "../../../app/store";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
-import "./ProCards.css"
+import "./ProCards.css";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { deleteProCard } from "../../../features/cards/proCardSlice";
-import axios from "axios";
+import axios from "../../../api/axios";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 interface CardDetailsParams extends Record<string, string | undefined> {
   id: string;
@@ -21,26 +22,22 @@ const ProCardDetails: React.FC = () => {
     state.proCard.proCards.find((card) => card._id === id)
   );
   const dispatch = useDispatch();
-  const isAdmin = useContext(AuthContext);
-  const token = localStorage.getItem("token");
+  const { isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Additional logic or API calls for fetching card details if needed
-  }, [id]);
+  useEffect(() => {}, [id]);
 
   if (!proLens) {
-    return <div className="bg-dark text-light p-5">Loading...</div>;
+    return <div className="bg-dark text-light p-5"><LoadingSpinner/></div>;
   }
 
   return (
-    <div className="bg-dark p-3 d-flex justify-content-center">
+    <div className="bg-dark p-4 d-flex justify-content-center">
       <div className="card-details card">
         <div className="card-header">
           <div className="header-field">{proLens.name}</div>
         </div>
         <div className="bg-warning text-center lens-category">
-          {" "}
           {proLens.lensType}
         </div>
         <div className="card-body">
@@ -59,12 +56,12 @@ const ProCardDetails: React.FC = () => {
           >
             Back
           </button>
-          { isAdmin &&  // Conditionally render the add/edit/delete buttons for admin}
+          {isAdmin && (
             <div className="delete-edit-buttons">
               <button
                 className="btn admin-btn btn-secondary mt-0"
                 onClick={() => {
-                  navigate(`/edit-pro/${proLens._id}`, { state: { proLens }});
+                  navigate(`/edit-pro/${proLens._id}`, { state: { proLens } });
                 }}
               >
                 <BsPencil />
@@ -83,24 +80,13 @@ const ProCardDetails: React.FC = () => {
                   }).then((result) => {
                     if (result.isConfirmed) {
                       dispatch(deleteProCard(proLens._id));
-                        axios
-                          .delete(
-                            `http://localhost:3001/api/pro-lenses/${proLens._id}`,
-                            {
-                              headers: {
-                                Authorization: `${token}`,
-                              },
-                            }
-                          )
-                          .then((response) => {
-                            // Handle the response if needed
-                          })
-                          .catch((error) => {
-                            // Handle any errors
-                            console.error("Failed to delete the lens", error);
-                            // Add logic to handle the error, such as showing an error message to the user
-                          });
-                        navigate(-1);
+                      axios
+                        .delete(`/pro-lenses/${proLens._id}`)
+                        .then((response) => {})
+                        .catch((error) => {
+                          console.error("Failed to delete the lens", error);
+                        });
+                      navigate(-1);
                       Swal.fire({
                         title: "Deleted!",
                         icon: "success",
@@ -120,7 +106,7 @@ const ProCardDetails: React.FC = () => {
                 <BsTrash />
               </button>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>

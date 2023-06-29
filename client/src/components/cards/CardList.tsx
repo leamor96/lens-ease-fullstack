@@ -5,23 +5,22 @@ import Card from "./Card";
 import { AppDispatch, RootState } from "../../app/store";
 import { LensData } from "../../@types";
 import Modal from "react-modal";
-import axios from "axios";
 import AuthContext from "../../context/AuthContext";
 import "./Cards.css";
 import { useNavigate } from "react-router-dom";
 import Search from "../utils/Search";
 import { MdSearch } from "react-icons/md";
+import axios from "../../api/axios";
 
-
-const CardList: React.FC = () => {   
+const CardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const cards = useSelector((state: RootState) => state.card.cards);
   const token = localStorage.getItem("token");
-  const isAdmin = useContext(AuthContext);
+  const { isAdmin } = useContext(AuthContext);
   const [clickFavorite, setClickFavorite] = useState<boolean>(false);
   const [isOpen, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
   const [newLens, setNewLens] = useState({
     name: "1.5 400UV",
@@ -50,20 +49,13 @@ const CardList: React.FC = () => {
     dispatch(fetchCards());
   }, [dispatch, clickFavorite]);
 
-
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
 
     try {
-      // Make a POST request to create the new lens
-      await axios.post("http://localhost:3001/api/lenses", newLens, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      // Close the modal and update the list of lenses
+      await axios.post("/lenses", newLens);
       openModal();
       dispatch(fetchCards());
       navigate(-1);
@@ -74,7 +66,7 @@ const CardList: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "sphRange.minus" || name === "sphRange.plus") {
-      const axis = name.split(".")[1]; // Get the axis (minus or plus)
+      const axis = name.split(".")[1];
       setNewLens((prevLens) => ({
         ...prevLens,
         sphRange: {
@@ -98,8 +90,8 @@ const CardList: React.FC = () => {
   };
 
   return (
-    <div className="card-list-container">
-      <MdSearch className="search-icon"/>
+    <div className="card-list-container vh-100">
+      <MdSearch className="search-icon" />
       <Search
         value={searchQuery}
         onChange={setSearchQuery}
@@ -107,14 +99,17 @@ const CardList: React.FC = () => {
       />
       {isAdmin && (
         <>
-          <button className="btn btn-add-new btn-warning p-2" onClick={openModal}>
+          <button
+            className="btn btn-add-new btn-warning p-2"
+            onClick={openModal}
+          >
             Add New Lens
           </button>
           <Modal
             onRequestClose={closeModal}
             isOpen={isOpen}
             contentLabel="New Lens Modal"
-            className="border-0 mt-5"
+            className="border-0"
             style={{
               overlay: {
                 display: "flex",
@@ -228,7 +223,7 @@ const CardList: React.FC = () => {
           </Modal>
         </>
       )}
-      <div className="d-flex flex-wrap justify-content-center align-items-center mt-4 p-1">
+      <div className="d-flex flex-wrap justify-content-center align-items-center p-5 mt-0">
         {cards
           .filter((card: LensData) =>
             card.name.toLowerCase().includes(searchQuery.toLowerCase())

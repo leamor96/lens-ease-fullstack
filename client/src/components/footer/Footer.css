@@ -1,9 +1,10 @@
 .footer {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
+  bottom: 0;
   background-color: #212529a7;
-  z-index: 10;
+  height: 3.5rem;
 }
 
 .logo {
@@ -14,11 +15,18 @@
 }
 .brand {
   font-size: 2rem !important;
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 .social {
   font-size: 1.5rem !important;
+}
+.social a{
+  transform: 0.3s ease-in-out;
+}
+.social a:hover{
+  color:#ffc107 !important;
+   transform: scale(1.1);
 }
 .copyright-mobile {
   display: none !important;

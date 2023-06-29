@@ -3,7 +3,7 @@ import { AuthContextType, ChildProps } from "../@types";
 
 const initialState: AuthContextType = {
   isLoggedIn: false,
-  login(username, email, token, id, favorite,favoritePro) {},
+  login(username, email, token, id, favorite,favoritePro,isAdmin) {},
   logout() {},
   isAdmin: false,
 };
@@ -21,7 +21,8 @@ const AuthContextProvider = ({ children }: ChildProps) => {
       const id = user.id;
       const favorite = user.favorite;
       const favoritePro = user.favoritePro;
-      login(username, email, token, id, favorite,favoritePro);
+      const isAdmin= user.isAdmin;
+      login(username, email, token, id, favorite,favoritePro,isAdmin);
     }
   }, []);
 
@@ -40,7 +41,8 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     token: string,
     id: string,
     favorite: [],
-    favoritePro:[]
+    favoritePro:[],
+    isAdmin: boolean
   ) => {
     setIsLoggedIn(true);
     setEmail(email);
@@ -49,6 +51,7 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     setId(id);
     setFavorite(favorite);
     setFavoritePro(favoritePro);
+    setIsAdmin(isAdmin);
   };
 
   const logout = () => {
@@ -61,26 +64,7 @@ const AuthContextProvider = ({ children }: ChildProps) => {
     setUsername(undefined);
     setId(undefined);
   };
-  const checkAdmin = () => {
-    // Retrieve the user data from local storage
-    const userData = localStorage.getItem("user");
 
-    if (userData) {
-      const user = JSON.parse(userData);
-      const userRoles = user.roles;
-
-      // Check if the user has the admin role
-      const isAdmin = userRoles && userRoles.includes("admin");
-
-      setIsAdmin(isAdmin);
-    }
-  };
-  // Call the checkAdmin function when the user logs in or on component mount
-  useEffect(() => {
-    if (isLoggedIn) {
-      checkAdmin();
-    }
-  }, [isLoggedIn]);
   //what we want to expose/share with the app:
   const contextValues = {
     isLoggedIn,

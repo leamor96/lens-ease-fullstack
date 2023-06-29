@@ -19,7 +19,6 @@ export const calculateProOptions = async (proFormData) => {
     const leftEyeLenses = await ProLens.find(queryLeft).sort({ price: 1 });
 
     if (rightEyeLenses.length === 0 && leftEyeLenses.length === 0) {
-      // No matching lenses found for both eyes
       return {
         rightEyeOptions: [],
         leftEyeOptions: [],

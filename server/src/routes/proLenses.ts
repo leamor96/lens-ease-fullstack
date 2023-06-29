@@ -32,11 +32,10 @@ router.get("/:id", async (req, res) => {
 });
 
 // Protected routes
-// Create a new lens
+// Create a new ptolens
 router.post("/", validateToken, isAdmin, async (req, res) => {
   try {
     const newProLens = new ProLens(req.body);
-    // Check if a lens with the same properties already exists
     const existingProLens = await ProLens.findOne({
       name: newProLens.name,
       lensType: newProLens.lensType,
@@ -65,9 +64,13 @@ router.put("/:id", validateToken, isAdmin, async (req, res) => {
   try {
     const proLensId = req.params.id;
 
-    const updatedProLens = await ProLens.findByIdAndUpdate(proLensId, req.body, {
-      new: true,
-    });
+    const updatedProLens = await ProLens.findByIdAndUpdate(
+      proLensId,
+      req.body,
+      {
+        new: true,
+      }
+    );
     res.json(updatedProLens);
   } catch (error) {
     console.error(error);
@@ -76,15 +79,14 @@ router.put("/:id", validateToken, isAdmin, async (req, res) => {
 });
 
 // Delete a proLens by ID
-//בלי השינויים 
 router.delete("/:id", validateToken, isAdmin, async (req, res) => {
-  const { id } = req.params;
   try {
-    const deletedLens = await ProLens.findByIdAndDelete(id);
+    const proLensId = req.params.id;
+    const deletedLens = await ProLens.findByIdAndDelete(proLensId);
     if (!deletedLens) {
       return res.status(404).send("Lens not found");
     }
-    res.status(200).json(deletedLens);
+    res.status(200).json({ message: "Lens deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -94,7 +96,7 @@ router.delete("/:id", validateToken, isAdmin, async (req, res) => {
 // Toggle favorite status of a prolens for the authenticated user
 router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
   try {
-    const userId = req.params.userId; 
+    const userId = req.params.userId;
     const proLensId = req.params.proLensId;
 
     const user = await User.findById(userId);
@@ -109,8 +111,8 @@ router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
     if (proLensExists) {
       return res.status(422).send("This Exists!");
     }
-     user.favoritesProLens.push(proLens);
-     await user.save();
+    user.favoritesProLens.push(proLens);
+    await user.save();
 
     res.status(200).send("Favorite status updated successfully");
   } catch (error) {
@@ -118,33 +120,21 @@ router.post("/:userId/favorite/:proLensId", validateToken, async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-// Get all favorite lenses for the authenticated user
+// Get all favorite prolenses for the authenticated user
 router.get("/:id/favorites", validateToken, async (req, res) => {
   try {
-     const id = req.params.id; // Retrieve the user ID from req.userId
-
-      const user = await User.findById(id);
-
-      if (!user) {
-        return res.status(404).send("User not found");
-      }
-
-    // Find all favorite entries for the user
-    //const favoritesProLens = await Favorite.find({ user: id });
-
-    // Retrieve the lens IDs from the favorite entries
-    //const proLensIds = favoritesProLens.map((favorite) => favorite.proLens);
-
-    // Fetch the lens details for the retrieved IDs
-    //const proLenses = await ProLens.find({ _id: { $in: proLensIds } });
-
+    const id = req.params.id;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
     res.status(200).json(user.favoritesProLens);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 });
-
+// remove favorite prolens for the authenticated user
 router.delete(
   "/:userId/delete-from-pro-favorite/:proLensId",
   validateToken,
@@ -152,23 +142,18 @@ router.delete(
     try {
       const userId = req.params.userId;
       const proLensId = req.params.proLensId;
-
       const user = await User.findById(userId);
       console.log(user);
       if (!user) {
         return res.status(404).send("User not found");
       }
-
       const proLens = await ProLens.findById(proLensId);
-     
       if (!proLens) {
         return res.status(404).send("Lens not found");
       }
-
       const proLensExists = user.favoritesProLens.find(
         (e) => e._id.toString() === proLensId
       );
-
       if (proLensExists) {
         user.favoritesProLens.pull(proLensExists);
       }

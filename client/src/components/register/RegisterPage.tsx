@@ -4,14 +4,13 @@ import { RegisterFormType } from "../../@types";
 import AuthContext from "../../context/AuthContext";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { ColorRing } from "react-loader-spinner";
 import authService from "../../services/auth.service";
 import "./RegisterPage.css";
 import LoadingSpinner from "../utils/LoadingSpinner";
+import ErrorAlert from "../utils/ErrorAlert";
 
 const RegisterPage = () => {
   const nav = useNavigate();
-  //prevent double submit:
   const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
   const { isLoggedIn } = useContext(AuthContext);
@@ -22,7 +21,6 @@ const RegisterPage = () => {
     password: "",
   };
 
-  //Validations:
   const validationSchema = Yup.object({
     username: Yup.string()
       .min(3, "Name must be at least 2 characters long and a maximum of 30.")
@@ -38,7 +36,6 @@ const RegisterPage = () => {
       .required(),
   });
 
-  //submit function:if all is valid=> this method is invoked
   const handleRegister = (formValues: RegisterFormType) => {
     setIsLoading(true);
 
@@ -47,18 +44,17 @@ const RegisterPage = () => {
       .register(username, email, password)
       .then((res) => {
         console.log(res.data);
-        //swal
         nav("/login");
       })
       .catch((e) => {
         console.log(e);
         if (e.response && e.response.data && e.response.data.message) {
-          const errorMessage = e.response.data.message;
-          const formattedErrorMessage = "Error: " + errorMessage;
-          alert(formattedErrorMessage);
+          const errMessage = e.response.data.message;
+          const formattedErrorMessage = "Error: " + errMessage;
+          ErrorAlert({ message: formattedErrorMessage });
           setErrMessage(formattedErrorMessage);
         } else {
-          alert("An error occurred. Please try again later.");
+          ErrorAlert({ message: "An error occurred. Please try again later." });
           setErrMessage("An error occurred. Please try again later.");
         }
       })
@@ -72,7 +68,7 @@ const RegisterPage = () => {
   return (
     <div className="register-page">
       <div className="register-error">
-        {errMessage && <div>{errMessage}</div>}
+        {errMessage && <ErrorAlert message={errMessage} />}
       </div>
       {isLoading && <LoadingSpinner />}
       <Formik
@@ -136,7 +132,7 @@ const RegisterPage = () => {
           <div className="col-12">
             <button
               disabled={isLoading}
-              className="btn btn-warning"
+              className="btn btn-warning btn-finish"
               type="submit"
             >
               Register

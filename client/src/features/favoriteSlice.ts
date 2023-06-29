@@ -1,8 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { LensData } from "../@types";
 import { RootState } from "../app/store";
-import { API_URL } from "../env";
+import axios from "../api/axios";
 
 interface FavoritesState {
   favorites: LensData[]; 
@@ -19,17 +18,9 @@ const initialState: FavoritesState = {
 export const fetchFavoriteLenses = createAsyncThunk(
   "card/fetchFavoriteLenses",
   async () => {
-    const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
 
-    const { data } = await axios.get<LensData[]>(
-      `${API_URL}/lenses/${userId}/favorites`,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    );
+    const { data } = await axios.get<LensData[]>(`/lenses/${userId}/favorites`);
 
     return data;
   }

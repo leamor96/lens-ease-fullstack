@@ -5,13 +5,12 @@ import "./Footer.css";
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className=" text-light footer">
+    <footer className="text-light footer">
       <div
-        className="container py-4 d-flex justify-content-between align-items-center"
-        style={{ width: "80%" }}
+        className="container d-flex justify-content-between align-items-center"
       >
         <div className="d-flex align-items-center">
-          <a href="/" className="d-flex align-items-center p-0 text-dark">
+          <a href="/" className="d-flex align-items-center p-0 text-dark brand">
             <span className="brand text-light">LensEase</span>
             <GiMicroscopeLens className="logo" />
           </a>

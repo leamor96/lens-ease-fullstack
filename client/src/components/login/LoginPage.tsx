@@ -4,14 +4,13 @@ import { LoginFormType } from "../../@types";
 import AuthContext from "../../context/AuthContext";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { ColorRing } from "react-loader-spinner";
 import authService from "../../services/auth.service";
 import "./LoginPage.css";
 import LoadingSpinner from "../utils/LoadingSpinner";
+import ErrorAlert from "../utils/ErrorAlert";
 
 const LoginPage = () => {
   const nav = useNavigate();
-  //prevent double submit:
   const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState<string | undefined>(undefined);
   const { isLoggedIn, login } = useContext(AuthContext);
@@ -21,13 +20,11 @@ const LoginPage = () => {
     password: "",
   };
 
-  //Validations:
   const validationSchema = Yup.object({
     email: Yup.string().email("Must be a valid email").required(),
     password: Yup.string().min(3, "Password is too short").required(),
   });
 
-  //if all is valid=> this method is invoked
   const handleLogin = (formValues: LoginFormType) => {
     setIsLoading(true);
 
@@ -41,13 +38,13 @@ const LoginPage = () => {
         const id = res.id;
         const favorite = res.favorite;
         const favoritePro = res.favoritePro;
-        //update the context...
-        login(username, email, token, id, favorite,favoritePro);
+        const isAdmin= res.isAdmin;
+        login(username, email, token, id, favorite, favoritePro,isAdmin);
         nav("/");
       })
       .catch((e) => {
         console.log(e);
-        alert(e); //swal //modal
+        ErrorAlert({ message: e });
         setErrMessage(JSON.stringify(e.response.data));
       })
       .finally(() => {
@@ -59,11 +56,10 @@ const LoginPage = () => {
   }
   return (
     <div className="login-page">
-      <div className="login-error">{errMessage && <div>{errMessage}</div>}</div> 
-        {isLoading && (
-          <LoadingSpinner
-          />
-        )}
+      <div className="login-error">
+        {errMessage && <ErrorAlert message={errMessage} />}
+      </div>
+      {isLoading && <LoadingSpinner />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleLogin}
@@ -108,7 +104,7 @@ const LoginPage = () => {
           <div className="col-12">
             <button
               disabled={isLoading}
-              className="btn btn-warning"
+              className="btn btn-warning btn-finish"
               type="submit"
             >
               Login

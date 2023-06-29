@@ -1,9 +1,6 @@
-import axios from "axios";
 import { LensFormData, LensProFormData } from "../@types";
-import { API_URL } from "../env";
+import axios from "../api/axios";
 
-const formUrl = `${API_URL}/submit-form`;
-const proFormUrl = `${API_URL}/submit-pro-form`;
 
 const submitFormDataToServer = async (formData: LensFormData) => {
   const requestBody = {
@@ -15,7 +12,7 @@ const submitFormDataToServer = async (formData: LensFormData) => {
 
 
   try {
-  return await axios.post(formUrl, requestBody);
+  return await axios.post('/submit-form', requestBody);
   
   } catch (error) {
     throw new Error("Failed to submit form data to the server.");
@@ -30,7 +27,7 @@ const submitProFormDataToServer = async (formData: LensProFormData) => {
 
 
   try {
-  return await axios.post(proFormUrl, requestBody);
+  return await axios.post("/submit-pro-form", requestBody);
   
   } catch (error) {
     throw new Error("Failed to submit form data to the server.");

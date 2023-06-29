@@ -8,13 +8,8 @@ const router = Router();
 router.post("/", async (req: Request, res: Response) => {
   try {
     const formData = req.body;
-    
-
-    //   // Perform your algorithm to determine the appropriate lens options based on the form data
     const lensOptions = await calculateLensOptions(formData);
     
-
-    // Return the lens options to the client
     res.status(200).json({
       formData,
       lensOptions: {

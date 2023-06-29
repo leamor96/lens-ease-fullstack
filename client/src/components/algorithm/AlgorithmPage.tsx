@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
-import SingleVisionForm from "../forms/SingleVisionForm";
-import ProgressiveForm from "../forms/ProgressiveForm";
+import { NavLink } from "react-router-dom";
 import "./AlgorithmPage.css";
 
 const AlgorithmPage = () => {
@@ -28,14 +26,6 @@ const AlgorithmPage = () => {
         >
           <h2> Progressive</h2>
         </NavLink>
-      </div>
-
-      {/* Render the form component based on the selected option */}
-      <div className="form-container">
-        <Routes>
-          <Route path="/algorithm/single" element={<SingleVisionForm />} />
-          <Route path="/algorithm/progressive" element={<ProgressiveForm />} />
-        </Routes>
       </div>
     </div>
   );

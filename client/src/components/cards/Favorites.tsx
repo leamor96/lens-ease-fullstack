@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LensData, ProLensData } from "../../@types";
 import { AppDispatch, RootState } from "../../app/store";
@@ -27,7 +27,9 @@ const Favorites = () => {
     <div className="bg-dark text-light p-5">
       <h2 className="text-center">Single Vision Favorites:</h2>
       <div className="d-flex flex-wrap justify-content-center">
-        {favorites.map((lens: LensData) => (
+        {favorites.length === 0 ? (
+          <p className="text-center">Sorry, there aren't any single vision lenses favorites yet.</p>
+        ) : (favorites.map((lens: LensData) => (
           <div key={lens._id}>
             <Card
               lens={lens}
@@ -36,17 +38,18 @@ const Favorites = () => {
               setClickFavorite={setClickFavorite}
             />
           </div>
-        ))}
+        )))}
       </div>
-
       <br />
       <h2 className="text-center">Progressive Favorites:</h2>
       <div className="d-flex flex-wrap justify-content-center">
-        {favoritesPro.map((proLens: ProLensData) => (
+        {favoritesPro.length === 0 ? (
+          <p className="text-center">Sorry, there aren't any progressive lenses favorites yet.</p>
+        ) : (favoritesPro.map((proLens: ProLensData) => (
           <div key={proLens._id}>
             <ProCard proLens={proLens} token={token || ""} clickFavorite={clickFavorite} setClickFavorite={setClickFavorite} />
           </div>
-        ))}
+        )))}
       </div>
     </div>
   );

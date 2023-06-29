@@ -1,7 +1,5 @@
-import { string } from "joi";
 import { Schema } from "mongoose";
 
-// Define a schema for lens options
 const proLensSchema = new Schema({
   name: {
     type: String,
