@@ -26,14 +26,6 @@ const Lenses = () => {
           <h2> Progressive</h2>
         </NavLink>
       </div>
-
-      {/* Render the form component based on the selected option */}
-      {/* <div className="form-container">
-        <Routes>
-          <Route path="/lenses/card-list" element={<CardList />} />
-          <Route path="/lenses/pro-card-list" element={<ProCardList />} />
-        </Routes>
-      </div> */}
     </div>
   );
 }

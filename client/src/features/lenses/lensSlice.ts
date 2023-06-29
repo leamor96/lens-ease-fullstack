@@ -3,6 +3,7 @@ import axios from "axios";
 import { submitFormDataToServer } from "../../services/lens.service";
 import { AppThunk, RootState } from "../../app/store";
 import { LensFormData, LensOptions } from "../../@types";
+import { API_URL } from "../../env";
 
 interface LensState {
   lensOptions: LensOptions;
@@ -19,13 +20,12 @@ const initialState: LensState = {
   error: null,
 };
 
-// Thunk action to fetch the lens data
 export const fetchLensOptions = createAsyncThunk(
   "lens/fetchLensOptions",
   async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/submit-form"
+        `${API_URL}/submit-form`
       );
       const { rightEyeOptions, leftEyeOptions } = response.data;
 
@@ -69,9 +69,6 @@ export const submitFormData =
       const { data } = await submitFormDataToServer(formData);
       
       return data;
-
-      // After successfully submitting the form, fetch the updated lens options
-      // dispatch(fetchLensOptions());
     } catch (error) {
       throw new Error("Failed to submit form data to the server.");
     }

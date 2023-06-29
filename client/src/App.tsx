@@ -24,22 +24,8 @@ import ProCardDetails from "./components/cards/pro-cards/ProCardDetails";
 import EditProLens from "./components/lenses/admin-only/EditProLens";
 
 function App() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn,isAdmin} = useContext(AuthContext);
  
-    //להבין איך מוציאים אדמין מהטוקן נכון
-  const token: string | null = localStorage.getItem("token");
-  let isAdmin = false;
-
-  if (token) {
-    const decodedToken: { isAdmin: boolean } = jwt_decode(token);
-    isAdmin = decodedToken.isAdmin;
-  }
-  console.log(isAdmin);  
-
-/* const { isAdmin } = useContext(AuthContext);
-console.log(isAdmin); */
-  
-
   return (
     <>
       <Navbar />

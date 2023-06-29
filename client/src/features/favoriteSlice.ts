@@ -2,9 +2,10 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../@types";
 import { RootState } from "../app/store";
+import { API_URL } from "../env";
 
 interface FavoritesState {
-  favorites: LensData[]; // Array of card IDs that are marked as favorites
+  favorites: LensData[]; 
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
 }
@@ -15,16 +16,14 @@ const initialState: FavoritesState = {
   error: null,
 };
 
-// Async thunk to fetch the favorite lenses data from the server
 export const fetchFavoriteLenses = createAsyncThunk(
   "card/fetchFavoriteLenses",
   async () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
-  /*   const { id } = useContext(AuthContext); */
 
     const { data } = await axios.get<LensData[]>(
-      `http://localhost:3001/api/lenses/${userId}/favorites`,
+      `${API_URL}/lenses/${userId}/favorites`,
       {
         headers: {
           Authorization: `${token}`,

@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ProLensData } from "../@types";
+import { API_URL } from "../env";
 
 interface FavoriteProState {
-  favoritesPro: ProLensData[]; // Array of card IDs that are marked as favorites
+  favoritesPro: ProLensData[]; 
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null | undefined;
 }
@@ -14,16 +15,14 @@ const initialState: FavoriteProState = {
   error: null,
 };
 
-// Async thunk to fetch the favorite proLenses data from the server
 export const fetchFavoriteProLenses = createAsyncThunk(
   "proCard/fetchFavoriteProLenses",
   async () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
-    /*   const { id } = useContext(AuthContext); */
-
+  
     const { data } = await axios.get<ProLensData[]>(
-      `http://localhost:3001/api/pro-lenses/${userId}/favorites`,
+      `${API_URL}/pro-lenses/${userId}/favorites`,
       {
         headers: {
           Authorization: `${token}`,

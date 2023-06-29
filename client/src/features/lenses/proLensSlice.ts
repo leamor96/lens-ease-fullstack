@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { submitProFormDataToServer } from "../../services/lens.service";
 import { AppThunk, RootState } from "../../app/store";
-import { LensFormData, LensOptions, LensProFormData } from "../../@types";
+import { LensOptions, LensProFormData } from "../../@types";
+import { API_URL } from "../../env";
 
 interface ProLensState {
   lensOptions: LensOptions;
@@ -19,14 +20,11 @@ const initialState: ProLensState = {
   error: null,
 };
 
-// Thunk action to fetch the ProLens data
 export const fetchProLensOptions = createAsyncThunk(
   "pro-lens/fetchProLensOptions",
   async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/submit-pro-form"
-      );
+      const response = await axios.post(`${API_URL}/submit-pro-form`);
       const { rightEyeOptions, leftEyeOptions } = response.data;
 
       return {
@@ -69,9 +67,6 @@ export const submitProFormData =
       const { data } = await submitProFormDataToServer(proFormData);
 
       return data;
-
-      // After successfully submitting the form, fetch the updated lens options
-      // dispatch(fetchLensOptions());
     } catch (error) {
       throw new Error("Failed to submit form data to the server.");
     }

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_URL } from "../env";
 
-const baseUrl = "http://localhost:3001/api/auth";
+const baseUrl = `${API_URL}/auth`;
 
 const register = async (username: string, email: string, password: string) => {
   return await axios.post(baseUrl + "/signup", { username, email, password });

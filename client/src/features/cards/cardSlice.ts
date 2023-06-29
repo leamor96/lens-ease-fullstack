@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { LensData } from "../../@types";
+import { API_URL } from "../../env";
 
 interface CardState {
   cards: LensData[];
@@ -16,11 +17,8 @@ const initialState: CardState = {
   error: null,
 };
 
-// Async thunk to fetch the card data from the server
 export const fetchCards = createAsyncThunk("card/fetchCards", async () => {
-  const response = await axios.get<LensData[]>(
-    "http://localhost:3001/api/lenses"
-  );
+  const response = await axios.get<LensData[]>(`${API_URL}/lenses`);
   return response.data;
 });
 
@@ -30,11 +28,9 @@ const cardSlice = createSlice({
   reducers: {
     addCard(state, action: PayloadAction<LensData>) {
       state.cards.push(action.payload);
-      //להוסיף אקסיוס לשרת
     },
     deleteCard(state, action: PayloadAction<string>) {
       state.cards = state.cards.filter((card) => card._id !== action.payload);
-      //להוסיף אקסיוס לשרת
     },
     editCard(state, action: PayloadAction<LensData>) {
       const { _id } = action.payload;
@@ -52,23 +48,17 @@ const cardSlice = createSlice({
       const index = state.cards.findIndex((c) => c._id === lensId);
 
       if (index !== -1) {
-        const updatedCards = [...state.cards]; // Create a new array
-
-        // Update the isFavorite field of the corresponding card in the new array
+        const updatedCards = [...state.cards]; 
         updatedCards[index] = {
           ...updatedCards[index],
           isFavorite: !updatedCards[index].isFavorite,
         };
 
         const favoriteStatus = updatedCards[index].isFavorite;
-
-        // Replace the cards array in the state with the updated array
         state.cards = updatedCards;
-
-        // Send a request to the server to update the favorite status
         axios
           .post(
-            `http://localhost:3001/api/lenses/${userId}/favorite/${lensId}`,
+            `${API_URL}/lenses/${userId}/favorite/${lensId}`,
             {},
             {
               headers: {
@@ -77,10 +67,8 @@ const cardSlice = createSlice({
             }
           )
           .then((response) => {
-            // Handle the response if needed
           })
           .catch((error) => {
-            // Handle any errors
             alert(error.response?.data);
             console.error("Failed to update favorite status", error);
             // Reset the local favorite status to its previous value
