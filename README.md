@@ -7,6 +7,7 @@ The project is designed to calculate the price options for glasses lenses based 
 - User registration and login functionality.
 - Input prescription details and receive lens options based on the database.
 - Favorite lens options for future reference.
+- CRUD operations for admin user.
 - Logout functionality.
 
 ## Technologies Used
