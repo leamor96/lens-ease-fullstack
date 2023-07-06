@@ -33,6 +33,23 @@ The project is designed to calculate the price options for glasses lenses based 
   - Lottie for animations
   - React Toastify for notifications
 
+## Installation
+- 1.Install server dependencies.
+  - cd server
+  - npm install
+- 2.Set up environment variables.
+  - Create a .env file in the server root directory and provide the following variable:
+  - MONGODB_URI=(provided in the pdf file)
+- 3.Start the server.
+  - npm run tsw
+  - open a second terminal for:
+  - npm run dev
+- 4.Install client dependencies.
+  - cd ../client
+  - npm install
+- 5.Start the client.
+  - npm start
+
 ## For more information please contact me by email:
 leamor96@gmail.com
 
