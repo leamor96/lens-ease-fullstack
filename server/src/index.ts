@@ -17,7 +17,7 @@ connect().catch((e) => {
 
 app.use(
   cors({
-    origin:"https://lens-ease-client.web.app",
+    origin:"http://localhost:3000",
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
