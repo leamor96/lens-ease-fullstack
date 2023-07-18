@@ -12,11 +12,12 @@ const login = async (email: string, password: string) => {
       const email = res.data.email;
       const username = res.data.username;
       const id = res.data.id;
+      const isAdmin=res.data.isAdmin;
       if (token) {
         localStorage.setItem("token", token);
         localStorage.setItem(
           "user",
-          JSON.stringify({ email, username, token, id })
+          JSON.stringify({ email, username, token, id, isAdmin})
         );
         localStorage.setItem("userId", id);
       }
